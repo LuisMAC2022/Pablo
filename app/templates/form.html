@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Solicitud Única de Servicios</title>
+</head>
+<body>
+
+  <h1>Universidad Nacional Autónoma de México</h1>
+  <h2>Secretarías y Unidades Administrativas - SGC</h2>
+  <h3>Solicitud Única de Servicios</h3>
+
+  {% if error %}
+    <p style="color: red;">{{ error }}</p>
+  {% endif %}
+
+  <form action="/solicitud" method="post">
+
+    <section>
+      <label for="area_solicitante">Área solicitante:</label>
+      <select id="area_solicitante" name="area_solicitante" required>
+        <option value="">Seleccione un área</option>
+
+        {% for area in areas %}
+          <option value="{{ area }}">{{ area }}</option>
+        {% endfor %}
+      </select>
+
+      <br><br>
+
+      <label for="nombre_usuario">Nombre del usuario:</label>
+      <input
+        type="text"
+        id="nombre_usuario"
+        name="nombre_usuario"
+        required
+      >
+
+      <br><br>
+
+      <label for="telefono">Teléfono:</label>
+      <input
+        type="tel"
+        id="telefono"
+        name="telefono"
+        required
+      >
+    </section>
+
+    <hr>
+
+    <section>
+      <h2>Tipo de servicio</h2>
+
+      <fieldset>
+        <legend>Mantenimiento</legend>
+
+        <fieldset>
+          <legend>Infraestructura</legend>
+
+          <label>
+            <input type="checkbox" name="infraestructura" value="albanileria">
+            Albañilería
+          </label>
+          <br>
+
+          <label>
+            <input type="checkbox" name="infraestructura" value="carpinteria">
+            Carpintería
+          </label>
+          <br>
+
+          <label>
+            <input type="checkbox" name="infraestructura" value="electricidad">
+            Electricidad
+          </label>
+          <br>
+
+          <label>
+            <input type="checkbox" name="infraestructura" value="herreria">
+            Herrería
+          </label>
+          <br>
+
+          <label>
+            <input type="checkbox" name="infraestructura" value="pintura">
+            Pintura
+          </label>
+          <br>
+
+          <label>
+            <input type="checkbox" name="infraestructura" value="plomeria">
+            Plomería
+          </label>
+          <br>
+
+          <label>
+            <input type="checkbox" name="infraestructura" value="otro">
+            Otro
+          </label>
+        </fieldset>
+
+        <br>
+
+        <fieldset>
+          <legend>Equipo y parque vehicular</legend>
+
+          <label>
+            <input type="checkbox" name="equipo_parque_vehicular" value="mecanica">
+            Mecánica
+          </label>
+          <br>
+
+          <label>
+            <input type="checkbox" name="equipo_parque_vehicular" value="refrigeracion">
+            Refrigeración
+          </label>
+          <br>
+
+          <label>
+            <input type="checkbox" name="equipo_parque_vehicular" value="aire_acondicionado">
+            Aire acondicionado
+          </label>
+          <br>
+
+          <label>
+            <input type="checkbox" name="equipo_parque_vehicular" value="equipo_computo">
+            Equipo de cómputo
+          </label>
+          <br>
+
+          <label>
+            <input type="checkbox" name="equipo_parque_vehicular" value="reparacion_equipo">
+            Reparación de equipo
+          </label>
+          <br>
+
+          <label>
+            <input type="checkbox" name="equipo_parque_vehicular" value="planta_luz">
+            Planta de luz
+          </label>
+          <br>
+
+          <label>
+            <input type="checkbox" name="equipo_parque_vehicular" value="otro">
+            Otro
+          </label>
+        </fieldset>
+      </fieldset>
+
+      <br>
+
+      <fieldset>
+        <legend>Seguridad</legend>
+
+        <label>
+          <input type="checkbox" name="seguridad" value="vigilancia_eventos">
+          Vigilancia para eventos
+        </label>
+        <br>
+
+        <label>
+          <input type="checkbox" name="seguridad" value="control_accesos">
+          Control de accesos
+        </label>
+        <br>
+
+        <label>
+          <input type="checkbox" name="seguridad" value="otro">
+          Otro
+        </label>
+      </fieldset>
+    </section>
+
+    <hr>
+
+    <section>
+      <h2>Servicios de apoyo</h2>
+
+      <fieldset>
+        <legend>Transporte</legend>
+
+        <label>
+          <input type="checkbox" name="transporte" value="local">
+          Local
+        </label>
+        <br>
+
+        <label>
+          <input type="checkbox" name="transporte" value="foraneo">
+          Foráneo
+        </label>
+        <br>
+
+        <label>
+          <input type="checkbox" name="transporte" value="pasajeros">
+          Pasajeros
+        </label>
+        <br>
+
+        <label>
+          <input type="checkbox" name="transporte" value="carga">
+          Carga
+        </label>
+      </fieldset>
+
+      <br>
+
+      <fieldset>
+        <legend>Diversos y limpieza</legend>
+
+        <fieldset>
+          <legend>Préstamo de</legend>
+
+          <label>
+            <input type="checkbox" name="prestamo_de" value="salas_aulas">
+            Salas o aulas
+          </label>
+          <br>
+
+          <label>
+            <input type="checkbox" name="prestamo_de" value="auditorio">
+            Auditorio
+          </label>
+          <br>
+
+          <label>
+            <input type="checkbox" name="prestamo_de" value="equipo_audiovisual">
+            Equipo audiovisual
+          </label>
+        </fieldset>
+
+        <br>
+
+        <label>
+          <input type="checkbox" name="diversos_limpieza" value="cafeteria">
+          Cafetería
+        </label>
+        <br>
+
+        <label>
+          <input type="checkbox" name="diversos_limpieza" value="cerrajeria">
+          Cerrajería
+        </label>
+        <br>
+
+        <label>
+          <input type="checkbox" name="diversos_limpieza" value="limpieza">
+          Limpieza
+        </label>
+        <br>
+
+        <label>
+          <input type="checkbox" name="diversos_limpieza" value="otro">
+          Otro
+        </label>
+      </fieldset>
+
+      <br>
+
+      <fieldset>
+        <legend>Correspondencia y/o paquetería</legend>
+
+        <label>
+          <input type="checkbox" name="correspondencia_paqueteria" value="propio">
+          Propio
+        </label>
+        <br>
+
+        <label>
+          <input type="checkbox" name="correspondencia_paqueteria" value="correo_ordinario">
+          C. ordinario
+        </label>
+        <br>
+
+        <label>
+          <input type="checkbox" name="correspondencia_paqueteria" value="mensajeria_especializada">
+          M. especializada
+        </label>
+      </fieldset>
+
+      <br>
+
+      <fieldset>
+        <legend>Reproducción y/o engargolado</legend>
+
+        <label>
+          <input type="checkbox" name="reproduccion_engargolado" value="reproduccion">
+          Reproducción
+        </label>
+        <br>
+
+        <label>
+          <input type="checkbox" name="reproduccion_engargolado" value="engargolado">
+          Engargolado
+        </label>
+        <br>
+
+        <label>
+          <input type="checkbox" name="reproduccion_engargolado" value="otro">
+          Otro
+        </label>
+      </fieldset>
+    </section>
+
+    <hr>
+
+    <section>
+      <label for="descripcion_servicio">
+        Descripción del servicio
+        <br>
+        <small>Especificar claramente fecha y hora del servicio requerido</small>
+      </label>
+
+      <br>
+
+      <textarea
+        id="descripcion_servicio"
+        name="descripcion_servicio"
+        rows="8"
+        cols="80"
+        required
+      ></textarea>
+    </section>
+
+    <br>
+
+    <button type="submit">Enviar solicitud</button>
+  </form>
+
+</body>
+</html>
