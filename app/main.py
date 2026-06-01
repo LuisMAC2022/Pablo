@@ -1,8 +1,13 @@
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Request, Form, Depends
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
+
+from sqlalchemy.orm import Session
 from typing import List, Optional
 from datetime import date
+
+from app.database import get_db
+from app.models import Solicitud
 
 app = FastAPI()
 templates = Jinja2Templates(directory="app/templates")
