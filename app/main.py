@@ -12,7 +12,6 @@ from app.models import Solicitud
 app = FastAPI()
 templates = Jinja2Templates(directory="app/templates")
 
-folio_counter = 0
 
 AREAS = [
     "Mantenimiento y Protección Civil",
@@ -22,6 +21,12 @@ AREAS = [
     "Exposiciones Museográficas",
     "Delegación Administrativa",
 ]
+
+
+def generar_folio(db: Session) -> str:
+    total = db.query(Solicitud).count()
+    return str(total + 1).zfill(3)
+
 
 @app.get("/solicitud", response_class=HTMLResponse)
 async def mostrar_formulario(request: Request):
@@ -33,9 +38,11 @@ async def mostrar_formulario(request: Request):
         },
     )
 
+
 @app.post("/solicitud", response_class=HTMLResponse)
 async def recibir_formulario(
     request: Request,
+    db: Session = Depends(get_db),
     nombre_usuario: str = Form(...),
     telefono: str = Form(...),
     area_solicitante: str = Form(...),
@@ -43,8 +50,6 @@ async def recibir_formulario(
     infraestructura: Optional[List[str]] = Form(None),
     equipo_parque_vehicular: Optional[List[str]] = Form(None),
 ):
-    global folio_counter
-
     if area_solicitante not in AREAS:
         return templates.TemplateResponse(
             request=request,
@@ -56,26 +61,30 @@ async def recibir_formulario(
             status_code=400,
         )
 
-    folio_counter += 1
-    folio = str(folio_counter).zfill(3)
-    fecha = date.today().strftime("%d/%m/%Y")
+    folio = generar_folio(db)
+    fecha = date.today()
 
-    print("--- SOLICITUD RECIBIDA ---")
-    print(f"Folio: {folio}")
-    print(f"Fecha: {fecha}")
-    print(f"Nombre: {nombre_usuario}")
-    print(f"Teléfono: {telefono}")
-    print(f"Área: {area_solicitante}")
-    print(f"Infraestructura: {infraestructura}")
-    print(f"Equipo: {equipo_parque_vehicular}")
-    print(f"Descripción: {descripcion_servicio}")
+    solicitud = Solicitud(
+        folio=folio,
+        fecha=fecha,
+        nombre_usuario=nombre_usuario,
+        telefono=telefono,
+        area_solicitante=area_solicitante,
+        descripcion_servicio=descripcion_servicio,
+        infraestructura=infraestructura,
+        equipo_parque_vehicular=equipo_parque_vehicular,
+    )
+
+    db.add(solicitud)
+    db.commit()
+    db.refresh(solicitud)
 
     return templates.TemplateResponse(
         request=request,
         name="confirmacion.html",
         context={
             "folio": folio,
-            "fecha": fecha,
+            "fecha": fecha.strftime("%d/%m/%Y"),
             "nombre_usuario": nombre_usuario,
             "area_solicitante": area_solicitante,
         },

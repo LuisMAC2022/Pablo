@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from sqlalchem.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker
 
 DATABASE_URL = "postgresql://pabellon:pabellon123@localhost:5432/pabellon_db"
 
