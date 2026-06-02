@@ -19,11 +19,11 @@ templates = Jinja2Templates(directory="app/templates")
 
 AREAS = [
     "Mantenimiento y Protección Civil",
-    "Seguridad",
-    "Servicios Educativos",
-    "Servicios de Apoyo",
-    "Exposiciones Museográficas",
-    "Delegación Administrativa",
+  #  "Seguridad",
+  #  "Servicios Educativos",
+  #  "Servicios de Apoyo",
+   # "Exposiciones Museográficas",
+   # "Delegación Administrativa",
 ]
 
 
