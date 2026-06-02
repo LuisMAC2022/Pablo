@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"  content="width= device-wodth, initial-scale=1.0" >
+	<title> Registro de Visitantes </title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+<body>
+	<main class="container">
+		<header>
+			<h1> Registro de Visitantes </h1>
+			<p> Pabellón Nacional de la Biodiversidad UNAM </p>
+		</header>
+		<form method="post" action="/visitantes">
+			<label for="cantidad"> Número de visitantes</label>
+			<input type="number" id ="cantidad"  name="cantidad" min="0" required>
+			<button type= "submit" > Registrar </button>
+		</form>
+	</main>
+</body>
+</html>

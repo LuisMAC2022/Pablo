@@ -12,6 +12,8 @@ from datetime import date
 from app.database import get_db
 from app.models import Solicitud
 from app.sheets import agregar_solicitud
+from app.visitantes import registrar_visitantes
+
 
 app = FastAPI()
 templates = Jinja2Templates(directory="app/templates")
@@ -91,5 +93,39 @@ async def recibir_formulario(
             "fecha": fecha.strftime("%d/%m/%Y"),
             "nombre_usuario": nombre_usuario,
             "area_solicitante": area_solicitante,
+        },
+    )
+
+@app.get("/visitantes", response_class=HTMLResponse)
+async def mostrar_visitantes(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="visitantes.html",
+        context={},
+    )
+
+
+@app.post("/visitantes", response_class=HTMLResponse)
+async def recibir_visitantes(
+    request: Request,
+    cantidad: int = Form(...),
+):
+    if cantidad <= 0:
+        return templates.TemplateResponse(
+            request=request,
+            name="visitantes.html",
+            context={
+                "error": "La cantidad de visitantes debe ser mayor que cero.",
+            },
+            status_code=400,
+        )
+
+    registrar_visitantes(cantidad)
+
+    return templates.TemplateResponse(
+        request=request,
+        name="visitantes_confirmacion.html",
+        context={
+            "cantidad": cantidad,
         },
     )
