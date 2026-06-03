@@ -29,3 +29,9 @@ INFO:     100.83.45.49:59292 - "POST /visitantes HTTP/1.1" 200 OK
 INFO:     100.83.45.49:59293 - "POST /visitantes HTTP/1.1" 200 OK
 INFO:     192.168.106.11:35134 - "GET /visitantes HTTP/1.1" 200 OK
 INFO:     192.168.106.11:35134 - "POST /visitantes HTTP/1.1" 200 OK
+INFO:     169.254.83.107:50387 - "GET /visitantes HTTP/1.1" 200 OK
+INFO:     169.254.83.107:50387 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     169.254.83.107:55063 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     169.254.83.107:55973 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     169.254.83.107:55974 - "GET /visitantes HTTP/1.1" 200 OK
+INFO:     169.254.83.107:56036 - "POST /visitantes HTTP/1.1" 200 OK
