@@ -24,3 +24,8 @@ INFO:     100.83.45.49:57298 - "GET /visitantes HTTP/1.1" 200 OK
 INFO:     100.83.45.49:57299 - "POST /visitantes HTTP/1.1" 500 Internal Server Error
 INFO:     100.83.45.49:58908 - "POST /visitantes HTTP/1.1" 500 Internal Server Error
 INFO:     100.83.45.49:58947 - "POST /visitantes HTTP/1.1" 500 Internal Server Error
+INFO:     100.83.45.49:59292 - "GET /visitantes HTTP/1.1" 200 OK
+INFO:     100.83.45.49:59292 - "POST /visitantes HTTP/1.1" 200 OK
+INFO:     100.83.45.49:59293 - "POST /visitantes HTTP/1.1" 200 OK
+INFO:     192.168.106.11:35134 - "GET /visitantes HTTP/1.1" 200 OK
+INFO:     192.168.106.11:35134 - "POST /visitantes HTTP/1.1" 200 OK

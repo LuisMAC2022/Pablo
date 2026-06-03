@@ -17,3 +17,13 @@ class Solicitud(Base):
 	infraestructura = Column(ARRAY(String), nullable=True)
 	equipo_parque_vehicular = Column(ARRAY(String), nullable=True)
 	descripcion_servicio = Column(Text, nullable=False)
+
+
+class Usuario(Base):
+    __tablename__ = "usuarios"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nombre = Column(String(100), nullable=False)
+    email = Column(String(100), unique=True, nullable=False)
+    password_hash = Column(String(200), nullable=False)
+    rol = Column(String(20), nullable=False)  # admin, biologo, desarrollador, seguridad
