@@ -20,6 +20,6 @@ jobs:
           GITLAB_REPO: gitlab.com/LaRana99/pabio
         run: |
           git remote add gitlab "https://oauth2:${GITLAB_TOKEN}@${GITLAB_REPO}"
-          git push gitlab main
+          git push gitlab master
           git push gitlab --tags
       
