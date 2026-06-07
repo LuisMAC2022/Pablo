@@ -9,13 +9,13 @@ def crear_usuarios_restantes():
         Usuario(
             nombre="Administrador",
             email="admin@pabellon.mx",
-            password_hash=hashear_password("admin123"),
+            password_hash=hashear_password("admin123#PASS"),
             rol="admin"
         ),
         Usuario(
             nombre="Desarrollador",
             email="dev@pabellon.mx",
-            password_hash=hashear_password("dev123"),
+            password_hash=hashear_password("dev123#PASS"),
             rol="desarrollador"
         ),
     ]
