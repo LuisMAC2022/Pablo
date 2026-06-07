@@ -7,7 +7,11 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.dependencies import get_usuario_actual
 from app.permissions import ROLES_SOLICITUDES, usuario_tiene_rol
-from app.services.solicitudes import AREAS, AreaSolicitanteInvalida, crear_solicitud
+from app.services.solicitudes import (
+    AREAS_SOLICITUD_ACTIVAS,
+    AreaSolicitanteInvalida,
+    crear_solicitud,
+)
 
 
 router = APIRouter()
@@ -26,7 +30,7 @@ async def mostrar_formulario(
         request=request,
         name="form.html",
         context={
-            "areas": AREAS,
+            "areas": AREAS_SOLICITUD_ACTIVAS,
         },
     )
 
@@ -63,7 +67,7 @@ async def recibir_formulario(
             request=request,
             name="form.html",
             context={
-                "areas": AREAS,
+                "areas": AREAS_SOLICITUD_ACTIVAS,
                 "error": str(exc),
             },
             status_code=400,

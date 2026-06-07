@@ -7,11 +7,16 @@ from app.models import Solicitud
 from app.sheets import agregar_solicitud
 
 
-AREAS = [
+AREAS_SOLICITUD_ACTIVAS = [
     "Mantenimiento y Protección Civil",
     "Seguridad",
-    "Servicios Educativos",
     "Servicios de Apoyo",
+]
+
+# Áreas existentes reservadas para uso futuro: Servicios Educativos,
+# Exposiciones Museográficas, Delegación Administrativa.
+AREAS_SOLICITUD_INACTIVAS = [
+    "Servicios Educativos",
     "Exposiciones Museográficas",
     "Delegación Administrativa",
 ]
@@ -36,7 +41,7 @@ def crear_solicitud(
     infraestructura: Optional[List[str]] = None,
     equipo_parque_vehicular: Optional[List[str]] = None,
 ) -> Solicitud:
-    if area_solicitante not in AREAS:
+    if area_solicitante not in AREAS_SOLICITUD_ACTIVAS:
         raise AreaSolicitanteInvalida("Área solicitante inválida.")
 
     solicitud = Solicitud(
