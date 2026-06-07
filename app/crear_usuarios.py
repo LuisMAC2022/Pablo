@@ -10,9 +10,8 @@ from app.auth import hashear_password
 
 ROL_USUARIO = "biologo"
 
-# Para desarrollo usa "biologo123".
-# En producción, define PASSWORD_TEMPORAL_BIOLOGOS en .env o en variables de entorno.
-PASSWORD_TEMPORAL = get_settings().password_temporal_biologos
+# Define PASSWORD_TEMPORAL_BIOLOGOS en .env local o en variables de entorno seguras.
+PASSWORD_TEMPORAL = get_settings().password_temporal_biologos.get_secret_value()
 
 
 def cargar_registros(ruta_json: Path):
