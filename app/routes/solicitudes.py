@@ -31,6 +31,7 @@ async def mostrar_formulario(
         name="form.html",
         context={
             "areas": AREAS_SOLICITUD_ACTIVAS,
+            "nombre_usuario": usuario.get("nombre", ""),
         },
     )
 
@@ -40,7 +41,6 @@ async def recibir_formulario(
     request: Request,
     db: Session = Depends(get_db),
     usuario: dict = Depends(get_usuario_actual),
-    nombre_usuario: str = Form(...),
     telefono: str = Form(...),
     area_solicitante: str = Form(...),
     descripcion_servicio: str = Form(...),
@@ -51,6 +51,8 @@ async def recibir_formulario(
         return RedirectResponse(url="/login", status_code=302)
 
     templates = request.app.state.templates
+
+    nombre_usuario = usuario.get("nombre", "")
 
     try:
         solicitud = crear_solicitud(
@@ -68,6 +70,7 @@ async def recibir_formulario(
             name="form.html",
             context={
                 "areas": AREAS_SOLICITUD_ACTIVAS,
+                "nombre_usuario": nombre_usuario,
                 "error": str(exc),
             },
             status_code=400,
