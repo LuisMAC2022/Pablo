@@ -7,13 +7,16 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
 from app.auth import crear_token, verificar_password, verificar_token
+from app.config import get_settings
 from app.database import get_db
 from app.models import Solicitud, Usuario
 from app.sheets import agregar_solicitud
 from app.visitantes import registrar_visitantes
 
 
-app = FastAPI()
+settings = get_settings()
+
+app = FastAPI(title=settings.app_name, debug=settings.debug)
 templates = Jinja2Templates(directory="app/templates")
 
 
