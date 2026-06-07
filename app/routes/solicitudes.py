@@ -33,6 +33,7 @@ async def mostrar_formulario(
             "areas": AREAS_SOLICITUD_ACTIVAS,
             "nombre_usuario": usuario.get("nombre", ""),
             "telefono": usuario.get("telefono", ""),
+            "area_solicitante": "",
         },
     )
 
@@ -73,6 +74,7 @@ async def recibir_formulario(
                 "areas": AREAS_SOLICITUD_ACTIVAS,
                 "nombre_usuario": nombre_usuario,
                 "telefono": telefono,
+                "area_solicitante": area_solicitante,
                 "error": str(exc),
             },
             status_code=400,
