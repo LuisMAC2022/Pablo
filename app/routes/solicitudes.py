@@ -32,6 +32,7 @@ async def mostrar_formulario(
         context={
             "areas": AREAS_SOLICITUD_ACTIVAS,
             "nombre_usuario": usuario.get("nombre", ""),
+            "telefono": usuario.get("telefono", ""),
         },
     )
 
@@ -41,7 +42,6 @@ async def recibir_formulario(
     request: Request,
     db: Session = Depends(get_db),
     usuario: dict = Depends(get_usuario_actual),
-    telefono: str = Form(...),
     area_solicitante: str = Form(...),
     descripcion_servicio: str = Form(...),
     infraestructura: Optional[List[str]] = Form(None),
@@ -53,6 +53,7 @@ async def recibir_formulario(
     templates = request.app.state.templates
 
     nombre_usuario = usuario.get("nombre", "")
+    telefono = usuario.get("telefono", "") or ""
 
     try:
         solicitud = crear_solicitud(
@@ -71,6 +72,7 @@ async def recibir_formulario(
             context={
                 "areas": AREAS_SOLICITUD_ACTIVAS,
                 "nombre_usuario": nombre_usuario,
+                "telefono": telefono,
                 "error": str(exc),
             },
             status_code=400,
