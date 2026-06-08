@@ -2,347 +2,173 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Solicitud Única de Servicios</title>
 </head>
 <body>
+  <a href="#contenido-principal">Saltar al contenido principal</a>
 
-  <h1>Universidad Nacional Autónoma de México</h1>
-  <h2>Secretarías y Unidades Administrativas - SGC</h2>
-  <h3>Solicitud Única de Servicios</h3>
+  <header>
+    <h1>Universidad Nacional Autónoma de México</h1>
+    <p>Secretarías y Unidades Administrativas - SGC</p>
+  </header>
 
-  {% if error %}
-    <p style="color: red;">{{ error }}</p>
-  {% endif %}
+  <main id="contenido-principal">
+    <h2>Solicitud Única de Servicios</h2>
 
-  <form action="/solicitud" method="post">
+    {% if error %}
+      <p role="alert" style="color: red;">{{ error }}</p>
+    {% endif %}
 
-    <section>
-      <label for="area_solicitante">Área solicitante:</label>
-      <select id="area_solicitante" name="area_solicitante" required>
-        <option value="">Seleccione un área</option>
+    {% macro opciones_servicio(subcategoria) %}
+      <fieldset
+        data-subcategory-options="{{ subcategoria.id }}"
+        {% if subcategoria_servicio|default('') != subcategoria.id %}hidden disabled{% endif %}
+      >
+        <legend>{{ subcategoria.nombre }}</legend>
 
-        {% for area in areas %}
-          <option value="{{ area }}"{% if area == area_solicitante %} selected{% endif %}>{{ area }}</option>
+        {% for opcion in subcategoria.opciones %}
+          {% set opcion_id = subcategoria.id ~ '-' ~ opcion.valor %}
+          <div>
+            <input
+              type="checkbox"
+              id="{{ opcion_id }}"
+              name="{{ subcategoria.id }}"
+              value="{{ opcion.valor }}"
+            >
+            <label for="{{ opcion_id }}">{{ opcion.etiqueta }}</label>
+          </div>
         {% endfor %}
-      </select>
-
-      <br><br>
-
-      <p><strong>Nombre del usuario:</strong> {{ nombre_usuario }}</p>
-
-      <br><br>
-
-      <p><strong>Teléfono:</strong> {{ telefono or "Sin teléfono registrado" }}</p>
-    </section>
-
-    <hr>
-
-    <section>
-      <h2>Tipo de servicio</h2>
-
-      <fieldset
-        data-area-section="Mantenimiento y Protección Civil"
-        {% if area_solicitante != "Mantenimiento y Protección Civil" %}hidden disabled{% endif %}
-      >
-        <legend>Mantenimiento y Protección Civil</legend>
-
-        <fieldset>
-          <legend>Infraestructura</legend>
-
-          <label>
-            <input type="checkbox" name="infraestructura" value="albanileria">
-            Albañilería
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="infraestructura" value="carpinteria">
-            Carpintería
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="infraestructura" value="electricidad">
-            Electricidad
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="infraestructura" value="herreria">
-            Herrería
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="infraestructura" value="pintura">
-            Pintura
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="infraestructura" value="plomeria">
-            Plomería
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="infraestructura" value="otro">
-            Otro
-          </label>
-        </fieldset>
-
-        <br>
-
-        <fieldset>
-          <legend>Equipo y parque vehicular</legend>
-
-          <label>
-            <input type="checkbox" name="equipo_parque_vehicular" value="mecanica">
-            Mecánica
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="equipo_parque_vehicular" value="refrigeracion">
-            Refrigeración
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="equipo_parque_vehicular" value="aire_acondicionado">
-            Aire acondicionado
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="equipo_parque_vehicular" value="equipo_computo">
-            Equipo de cómputo
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="equipo_parque_vehicular" value="reparacion_equipo">
-            Reparación de equipo
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="equipo_parque_vehicular" value="planta_luz">
-            Planta de luz
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="equipo_parque_vehicular" value="otro">
-            Otro
-          </label>
-        </fieldset>
       </fieldset>
+    {% endmacro %}
 
-      <br>
-
+    {% macro area_servicio(area) %}
+      {% set area_activa = area.nombre == area_solicitante %}
+      {% set select_id = 'subcategoria_servicio-' ~ area.slug %}
       <fieldset
-        data-area-section="Seguridad"
-        {% if area_solicitante != "Seguridad" %}hidden disabled{% endif %}
+        data-area-section="{{ area.nombre }}"
+        {% if not area_activa %}hidden disabled{% endif %}
       >
-        <legend>Seguridad</legend>
+        <legend>{{ area.nombre }}</legend>
 
-        <label>
-          <input type="checkbox" name="seguridad" value="vigilancia_eventos">
-          Vigilancia para eventos
-        </label>
-        <br>
+        <label for="{{ select_id }}">Subcategoría del servicio:</label>
+        <select
+          id="{{ select_id }}"
+          name="subcategoria_servicio"
+          data-subcategory-select
+          {% if not area_activa %}disabled{% endif %}
+          {% if area_activa %}required{% endif %}
+        >
+          <option value="">Seleccione una subcategoría</option>
+          {% for subcategoria in area.subcategorias %}
+            <option
+              value="{{ subcategoria.id }}"
+              {% if subcategoria_servicio|default('') == subcategoria.id %}selected{% endif %}
+            >
+              {{ subcategoria.nombre }}
+            </option>
+          {% endfor %}
+        </select>
 
-        <label>
-          <input type="checkbox" name="seguridad" value="control_accesos">
-          Control de accesos
-        </label>
-        <br>
-
-        <label>
-          <input type="checkbox" name="seguridad" value="otro">
-          Otro
-        </label>
+        {% for subcategoria in area.subcategorias %}
+          {{ opciones_servicio(subcategoria) }}
+        {% endfor %}
       </fieldset>
+    {% endmacro %}
 
-      <br>
+    <form action="/solicitud" method="post">
+      <section aria-labelledby="datos-solicitud">
+        <h3 id="datos-solicitud">Datos de la solicitud</h3>
 
-      <fieldset
-        data-area-section="Servicios de Apoyo"
-        {% if area_solicitante != "Servicios de Apoyo" %}hidden disabled{% endif %}
-      >
-        <legend>Servicios de Apoyo</legend>
+        <label for="area_solicitante">Área solicitante:</label>
+        <select id="area_solicitante" name="area_solicitante" required>
+          <option value="">Seleccione un área</option>
+          {% for area in areas %}
+            <option value="{{ area }}"{% if area == area_solicitante %} selected{% endif %}>{{ area }}</option>
+          {% endfor %}
+        </select>
 
-        <fieldset>
-          <legend>Transporte</legend>
+        <p><strong>Nombre del usuario:</strong> {{ nombre_usuario }}</p>
+        <p><strong>Teléfono:</strong> {{ telefono or "Sin teléfono registrado" }}</p>
+      </section>
 
-          <label>
-            <input type="checkbox" name="transporte" value="local">
-            Local
-          </label>
+      <section aria-labelledby="tipo-servicio">
+        <h3 id="tipo-servicio">Tipo de servicio</h3>
+
+        {% for area in catalogo_servicios %}
+          {{ area_servicio(area) }}
+        {% endfor %}
+      </section>
+
+      <section aria-labelledby="descripcion-servicio-titulo">
+        <h3 id="descripcion-servicio-titulo">Descripción del servicio</h3>
+
+        <label for="descripcion_servicio">
+          Descripción del servicio
           <br>
-
-          <label>
-            <input type="checkbox" name="transporte" value="foraneo">
-            Foráneo
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="transporte" value="pasajeros">
-            Pasajeros
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="transporte" value="carga">
-            Carga
-          </label>
-        </fieldset>
+          <small id="descripcion-servicio-ayuda">Especificar claramente fecha y hora del servicio requerido</small>
+        </label>
 
         <br>
 
-        <fieldset>
-          <legend>Diversos y limpieza</legend>
+        <textarea
+          id="descripcion_servicio"
+          name="descripcion_servicio"
+          rows="8"
+          cols="80"
+          required
+          aria-describedby="descripcion-servicio-ayuda"
+        ></textarea>
+      </section>
 
-          <fieldset>
-            <legend>Préstamo de</legend>
-
-            <label>
-              <input type="checkbox" name="prestamo_de" value="salas_aulas">
-              Salas o aulas
-            </label>
-            <br>
-
-            <label>
-              <input type="checkbox" name="prestamo_de" value="auditorio">
-              Auditorio
-            </label>
-            <br>
-
-            <label>
-              <input type="checkbox" name="prestamo_de" value="equipo_audiovisual">
-              Equipo audiovisual
-            </label>
-          </fieldset>
-
-          <br>
-
-          <label>
-            <input type="checkbox" name="diversos_limpieza" value="cafeteria">
-            Cafetería
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="diversos_limpieza" value="cerrajeria">
-            Cerrajería
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="diversos_limpieza" value="limpieza">
-            Limpieza
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="diversos_limpieza" value="otro">
-            Otro
-          </label>
-        </fieldset>
-
-        <br>
-
-        <fieldset>
-          <legend>Correspondencia y/o paquetería</legend>
-
-          <label>
-            <input type="checkbox" name="correspondencia_paqueteria" value="propio">
-            Propio
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="correspondencia_paqueteria" value="correo_ordinario">
-            C. ordinario
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="correspondencia_paqueteria" value="mensajeria_especializada">
-            M. especializada
-          </label>
-        </fieldset>
-
-        <br>
-
-        <fieldset>
-          <legend>Reproducción y/o engargolado</legend>
-
-          <label>
-            <input type="checkbox" name="reproduccion_engargolado" value="reproduccion">
-            Reproducción
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="reproduccion_engargolado" value="engargolado">
-            Engargolado
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="reproduccion_engargolado" value="otro">
-            Otro
-          </label>
-        </fieldset>
-      </fieldset>
-    </section>
-
-    <hr>
-
-    <section>
-      <label for="descripcion_servicio">
-        Descripción del servicio
-        <br>
-        <small>Especificar claramente fecha y hora del servicio requerido</small>
-      </label>
-
-      <br>
-
-      <textarea
-        id="descripcion_servicio"
-        name="descripcion_servicio"
-        rows="8"
-        cols="80"
-        required
-      ></textarea>
-    </section>
-
-    <br>
-
-    <button type="submit">Enviar solicitud</button>
-  </form>
+      <button type="submit">Enviar solicitud</button>
+    </form>
+  </main>
 
   <script>
     const areaSelect = document.querySelector('#area_solicitante');
     const areaSections = document.querySelectorAll('[data-area-section]');
+
+    function setFieldsetState(fieldset, isActive) {
+      fieldset.hidden = !isActive;
+      fieldset.disabled = !isActive;
+    }
+
+    function updateSubcategoryOptions(areaSection) {
+      const subcategorySelect = areaSection.querySelector('[data-subcategory-select]');
+      const selectedSubcategory = subcategorySelect.value;
+      const optionFieldsets = areaSection.querySelectorAll('[data-subcategory-options]');
+
+      optionFieldsets.forEach((fieldset) => {
+        setFieldsetState(fieldset, fieldset.dataset.subcategoryOptions === selectedSubcategory);
+      });
+    }
 
     function updateAreaSections() {
       const selectedArea = areaSelect.value;
 
       areaSections.forEach((section) => {
         const isActive = section.dataset.areaSection === selectedArea;
+        const subcategorySelect = section.querySelector('[data-subcategory-select]');
 
-        section.hidden = !isActive;
-        section.disabled = !isActive;
+        setFieldsetState(section, isActive);
+        subcategorySelect.disabled = !isActive;
+        subcategorySelect.required = isActive;
+
+        if (!isActive) {
+          subcategorySelect.value = '';
+        }
+
+        updateSubcategoryOptions(section);
       });
     }
 
     areaSelect.addEventListener('change', updateAreaSections);
+    areaSections.forEach((section) => {
+      const subcategorySelect = section.querySelector('[data-subcategory-select]');
+      subcategorySelect.addEventListener('change', () => updateSubcategoryOptions(section));
+    });
     updateAreaSections();
   </script>
-
 </body>
 </html>

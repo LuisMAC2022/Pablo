@@ -28,5 +28,11 @@ def agregar_solicitud(solicitud):
         solicitud.area_solicitante,
         ", ".join(solicitud.infraestructura or []),
         ", ".join(solicitud.equipo_parque_vehicular or []),
+        ", ".join(solicitud.seguridad or []),
+        ", ".join(solicitud.transporte or []),
+        ", ".join(solicitud.diversos_limpieza or []),
+        ", ".join(solicitud.prestamo_de or []),
+        ", ".join(solicitud.correspondencia_paqueteria or []),
+        ", ".join(solicitud.reproduccion_engargolado or []),
         solicitud.descripcion_servicio,
     ])
