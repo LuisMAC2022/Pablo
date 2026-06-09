@@ -1,13 +1,18 @@
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, Form, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.models import Solicitud
 from app.dependencies import get_usuario_actual
 from app.permissions import ROLES_SOLICITUDES, usuario_tiene_rol
 from app.services.catalogo_solicitudes import AREAS_SOLICITUD_ACTIVAS, CATALOGO_SERVICIOS
+from app.services.plantilla_solicitud import (
+    NOMBRE_ARCHIVO_SOLICITUD,
+    generar_plantilla_solicitud,
+)
 from app.services.solicitudes import (
     AreaSolicitanteInvalida,
     OpcionServicioInvalida,
@@ -38,6 +43,28 @@ async def mostrar_formulario(
             "telefono": usuario.get("telefono", ""),
             "area_solicitante": "",
         },
+    )
+
+
+@router.get("/solicitud/{folio}/plantilla")
+async def descargar_plantilla_solicitud(
+    folio: str,
+    db: Session = Depends(get_db),
+    usuario: dict = Depends(get_usuario_actual),
+):
+    if not usuario_tiene_rol(usuario, ROLES_SOLICITUDES):
+        return RedirectResponse(url="/login", status_code=302)
+
+    solicitud = db.query(Solicitud).filter(Solicitud.folio == folio).first()
+    if solicitud is None:
+        return RedirectResponse(url="/solicitud", status_code=302)
+
+    contenido = generar_plantilla_solicitud(solicitud)
+    nombre_descarga = f"{solicitud.folio}_{NOMBRE_ARCHIVO_SOLICITUD}"
+    return Response(
+        content=contenido,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f'attachment; filename="{nombre_descarga}"'},
     )
 
 
@@ -107,5 +134,6 @@ async def recibir_formulario(
             "fecha": solicitud.fecha.strftime("%d/%m/%Y"),
             "nombre_usuario": solicitud.nombre_usuario,
             "area_solicitante": solicitud.area_solicitante,
+            "url_descarga_plantilla": f"/solicitud/{solicitud.folio}/plantilla",
         },
     )
