@@ -54,8 +54,11 @@ def _normalizar_opciones_servicio(
     valores_validos = {opcion["valor"] for opcion in subcategoria["opciones"]}
     opciones_seleccionadas = opciones_por_campo.get(subcategoria_servicio) or []
 
+    if len(opciones_seleccionadas) != 1:
+        raise OpcionServicioInvalida("Seleccione exactamente una opción para la subcategoría elegida.")
+
     if any(opcion not in valores_validos for opcion in opciones_seleccionadas):
-        raise OpcionServicioInvalida("Seleccione opciones válidas para la subcategoría elegida.")
+        raise OpcionServicioInvalida("Seleccione una opción válida para la subcategoría elegida.")
 
     return {
         campo: opciones_seleccionadas if campo == subcategoria_servicio else None
