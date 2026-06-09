@@ -1,7 +1,7 @@
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, Form, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, StreamingResponse
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -14,6 +14,7 @@ from app.services.solicitudes import (
     SubcategoriaServicioInvalida,
     crear_solicitud,
 )
+from app.services.plantilla_solicitud import generar_archivo_solicitud
 
 
 router = APIRouter()
@@ -41,7 +42,7 @@ async def mostrar_formulario(
     )
 
 
-@router.post("/solicitud", response_class=HTMLResponse)
+@router.post("/solicitud")
 async def recibir_formulario(
     request: Request,
     db: Session = Depends(get_db),
@@ -99,13 +100,11 @@ async def recibir_formulario(
             status_code=400,
         )
 
-    return templates.TemplateResponse(
-        request=request,
-        name="confirmacion.html",
-        context={
-            "folio": solicitud.folio,
-            "fecha": solicitud.fecha.strftime("%d/%m/%Y"),
-            "nombre_usuario": solicitud.nombre_usuario,
-            "area_solicitante": solicitud.area_solicitante,
-        },
+    archivo_solicitud = generar_archivo_solicitud(solicitud)
+    nombre_archivo = f"solicitud_{solicitud.folio}.xlsx"
+
+    return StreamingResponse(
+        archivo_solicitud,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f'attachment; filename="{nombre_archivo}"'},
     )
