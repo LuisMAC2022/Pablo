@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+<body>
+    <main class="container">
+        <header>
+            <h1>Pabellón Nacional de la Biodiversidad</h1>
+            <p>Bienvenido, {{ usuario.nombre }}</p>
+        </header>
+        <nav>
+            {% if usuario.rol in ["biologo", "admin", "desarrollador"] %}
+            <a href="/solicitud"><button>Nueva solicitud de mantenimiento</button></a>
+            {% endif %}
+            {% if usuario.rol in ["seguridad", "admin", "desarrollador"] %}
+            <a href="/visitantes"><button>Registrar visitantes</button></a>
+            {% endif %}
+        </nav>
+        <footer>
+            <a href="/logout">Cerrar sesión</a>
+        </footer>
+    </main>
+</body>
+</html>
