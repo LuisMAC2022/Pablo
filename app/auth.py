@@ -3,9 +3,10 @@ from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from typing import Optional
 
-SECRET_KEY = "cambia_esto_por_una_clave_secreta_larga"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 480  # 8 horas
+from app.config import get_settings
+
+
+settings = get_settings()
 
 
 def verificar_password(password_plano: str, password_hash: str) -> bool:
@@ -27,14 +28,24 @@ def hashear_password(password: str) -> str:
 
 def crear_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
-    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+    expire = datetime.utcnow() + (
+        expires_delta or timedelta(minutes=settings.access_token_expire_minutes)
+    )
     to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return jwt.encode(
+        to_encode,
+        settings.jwt_secret_key.get_secret_value(),
+        algorithm=settings.jwt_algorithm,
+    )
 
 
 def verificar_token(token: str) -> Optional[dict]:
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(
+            token,
+            settings.jwt_secret_key.get_secret_value(),
+            algorithms=[settings.jwt_algorithm],
+        )
         return payload
     except JWTError:
         return None

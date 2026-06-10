@@ -16,6 +16,12 @@ class Solicitud(Base):
 	area_solicitante = Column(String(100), nullable=False)
 	infraestructura = Column(ARRAY(String), nullable=True)
 	equipo_parque_vehicular = Column(ARRAY(String), nullable=True)
+	seguridad = Column(ARRAY(String), nullable=True)
+	transporte = Column(ARRAY(String), nullable=True)
+	diversos_limpieza = Column(ARRAY(String), nullable=True)
+	prestamo_de = Column(ARRAY(String), nullable=True)
+	correspondencia_paqueteria = Column(ARRAY(String), nullable=True)
+	reproduccion_engargolado = Column(ARRAY(String), nullable=True)
 	descripcion_servicio = Column(Text, nullable=False)
 
 

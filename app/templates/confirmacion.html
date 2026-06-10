@@ -1,22 +1,38 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solicitud enviada</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitud enviada</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 </head>
 <body>
-    <main class="container">
-        <h1>Solicitud enviada</h1>
-        <p>Tu solicitud fue registrada correctamente.</p>
-        <ul>
-            <li><strong>Folio:</strong> {{ folio }}</li>
-            <li><strong>Fecha:</strong> {{ fecha }}</li>
-            <li><strong>Nombre:</strong> {{ nombre_usuario }}</li>
-            <li><strong>Área:</strong> {{ area_solicitante }}</li>
-        </ul>
-        <a href="/solicitud">Nueva solicitud</a>
-    </main>
+  <a href="#contenido-principal">Saltar al contenido principal</a>
+
+  <main id="contenido-principal" class="container">
+    <h1>Solicitud enviada</h1>
+    <p role="status">Tu solicitud fue registrada correctamente.</p>
+
+    <section aria-labelledby="resumen-solicitud">
+      <h2 id="resumen-solicitud">Resumen de la solicitud</h2>
+      <ul>
+        <li><strong>Folio:</strong> {{ folio }}</li>
+        <li><strong>Fecha:</strong> {{ fecha }}</li>
+        <li><strong>Nombre:</strong> {{ nombre_usuario }}</li>
+        <li><strong>Área:</strong> {{ area_solicitante }}</li>
+      </ul>
+    </section>
+
+    <nav aria-label="Acciones de la solicitud">
+      <ul>
+        <li>
+          <a href="{{ url_descarga_plantilla }}" role="button" download>
+            Descargar copia de la plantilla llena
+          </a>
+        </li>
+        <li><a href="/solicitud">Nueva solicitud</a></li>
+      </ul>
+    </nav>
+  </main>
 </body>
 </html>

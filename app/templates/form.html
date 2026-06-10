@@ -2,331 +2,174 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Solicitud Única de Servicios</title>
 </head>
 <body>
+  <a href="#contenido-principal">Saltar al contenido principal</a>
 
-  <h1>Universidad Nacional Autónoma de México</h1>
-  <h2>Secretarías y Unidades Administrativas - SGC</h2>
-  <h3>Solicitud Única de Servicios</h3>
+  <header>
+    <h1>Universidad Nacional Autónoma de México</h1>
+    <p>Secretarías y Unidades Administrativas - SGC</p>
+  </header>
 
-  {% if error %}
-    <p style="color: red;">{{ error }}</p>
-  {% endif %}
+  <main id="contenido-principal">
+    <h2>Solicitud Única de Servicios</h2>
 
-  <form action="/solicitud" method="post">
+    {% if error %}
+      <p role="alert" style="color: red;">{{ error }}</p>
+    {% endif %}
 
-    <section>
-      <label for="area_solicitante">Área solicitante:</label>
-      <select id="area_solicitante" name="area_solicitante" required>
-        <option value="">Seleccione un área</option>
+    {% macro opciones_servicio(subcategoria) %}
+      <fieldset
+        data-subcategory-options="{{ subcategoria.id }}"
+        {% if subcategoria_servicio|default('') != subcategoria.id %}hidden disabled{% endif %}
+      >
+        <legend>{{ subcategoria.nombre }}</legend>
 
-        {% for area in areas %}
-          <option value="{{ area }}">{{ area }}</option>
+        {% for opcion in subcategoria.opciones %}
+          {% set opcion_id = subcategoria.id ~ '-' ~ opcion.valor %}
+          <div>
+            <input
+              type="radio"
+              id="{{ opcion_id }}"
+              name="{{ subcategoria.id }}"
+              value="{{ opcion.valor }}"
+              required
+            >
+            <label for="{{ opcion_id }}">{{ opcion.etiqueta }}</label>
+          </div>
         {% endfor %}
-      </select>
+      </fieldset>
+    {% endmacro %}
 
-      <br><br>
-
-      <label for="nombre_usuario">Nombre del usuario:</label>
-      <input
-        type="text"
-        id="nombre_usuario"
-        name="nombre_usuario"
-        required
+    {% macro area_servicio(area) %}
+      {% set area_activa = area.nombre == area_solicitante %}
+      {% set select_id = 'subcategoria_servicio-' ~ area.slug %}
+      <fieldset
+        data-area-section="{{ area.nombre }}"
+        {% if not area_activa %}hidden disabled{% endif %}
       >
+        <legend>{{ area.nombre }}</legend>
 
-      <br><br>
+        <label for="{{ select_id }}">Subcategoría del servicio:</label>
+        <select
+          id="{{ select_id }}"
+          name="subcategoria_servicio"
+          data-subcategory-select
+          {% if not area_activa %}disabled{% endif %}
+          {% if area_activa %}required{% endif %}
+        >
+          <option value="">Seleccione una subcategoría</option>
+          {% for subcategoria in area.subcategorias %}
+            <option
+              value="{{ subcategoria.id }}"
+              {% if subcategoria_servicio|default('') == subcategoria.id %}selected{% endif %}
+            >
+              {{ subcategoria.nombre }}
+            </option>
+          {% endfor %}
+        </select>
 
-      <label for="telefono">Teléfono:</label>
-      <input
-        type="tel"
-        id="telefono"
-        name="telefono"
-        required
-      >
-    </section>
-
-    <hr>
-
-    <section>
-      <h2>Tipo de servicio</h2>
-
-      <fieldset>
-        <legend>Mantenimiento</legend>
-
-        <fieldset>
-          <legend>Infraestructura</legend>
-
-          <label>
-            <input type="checkbox" name="infraestructura" value="albanileria">
-            Albañilería
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="infraestructura" value="carpinteria">
-            Carpintería
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="infraestructura" value="electricidad">
-            Electricidad
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="infraestructura" value="herreria">
-            Herrería
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="infraestructura" value="pintura">
-            Pintura
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="infraestructura" value="plomeria">
-            Plomería
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="infraestructura" value="otro">
-            Otro
-          </label>
-        </fieldset>
-
-        <br>
-
-        <fieldset>
-          <legend>Equipo y parque vehicular</legend>
-
-          <label>
-            <input type="checkbox" name="equipo_parque_vehicular" value="mecanica">
-            Mecánica
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="equipo_parque_vehicular" value="refrigeracion">
-            Refrigeración
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="equipo_parque_vehicular" value="aire_acondicionado">
-            Aire acondicionado
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="equipo_parque_vehicular" value="equipo_computo">
-            Equipo de cómputo
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="equipo_parque_vehicular" value="reparacion_equipo">
-            Reparación de equipo
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="equipo_parque_vehicular" value="planta_luz">
-            Planta de luz
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="equipo_parque_vehicular" value="otro">
-            Otro
-          </label>
-        </fieldset>
+        {% for subcategoria in area.subcategorias %}
+          {{ opciones_servicio(subcategoria) }}
+        {% endfor %}
       </fieldset>
-<!--
-      <br>
+    {% endmacro %}
 
-      <fieldset>
-        <legend>Seguridad</legend>
+    <form action="/solicitud" method="post">
+      <section aria-labelledby="datos-solicitud">
+        <h3 id="datos-solicitud">Datos de la solicitud</h3>
 
-        <label>
-          <input type="checkbox" name="seguridad" value="vigilancia_eventos">
-          Vigilancia para eventos
-        </label>
-        <br>
+        <label for="area_solicitante">Área solicitante:</label>
+        <select id="area_solicitante" name="area_solicitante" required>
+          <option value="">Seleccione un área</option>
+          {% for area in areas %}
+            <option value="{{ area }}"{% if area == area_solicitante %} selected{% endif %}>{{ area }}</option>
+          {% endfor %}
+        </select>
 
-        <label>
-          <input type="checkbox" name="seguridad" value="control_accesos">
-          Control de accesos
-        </label>
-        <br>
+        <p><strong>Nombre del usuario:</strong> {{ nombre_usuario }}</p>
+        <p><strong>Teléfono:</strong> {{ telefono or "Sin teléfono registrado" }}</p>
+      </section>
 
-        <label>
-          <input type="checkbox" name="seguridad" value="otro">
-          Otro
-        </label>
-      </fieldset>
-    </section>
+      <section aria-labelledby="tipo-servicio">
+        <h3 id="tipo-servicio">Tipo de servicio</h3>
 
-    <hr>
+        {% for area in catalogo_servicios %}
+          {{ area_servicio(area) }}
+        {% endfor %}
+      </section>
 
-    <section>
-      <h2>Servicios de apoyo</h2>
+      <section aria-labelledby="descripcion-servicio-titulo">
+        <h3 id="descripcion-servicio-titulo">Descripción del servicio</h3>
 
-      <fieldset>
-        <legend>Transporte</legend>
-
-        <label>
-          <input type="checkbox" name="transporte" value="local">
-          Local
-        </label>
-        <br>
-
-        <label>
-          <input type="checkbox" name="transporte" value="foraneo">
-          Foráneo
-        </label>
-        <br>
-
-        <label>
-          <input type="checkbox" name="transporte" value="pasajeros">
-          Pasajeros
-        </label>
-        <br>
-
-        <label>
-          <input type="checkbox" name="transporte" value="carga">
-          Carga
-        </label>
-      </fieldset>
-
-      <br>
-
-      <fieldset>
-        <legend>Diversos y limpieza</legend>
-
-        <fieldset>
-          <legend>Préstamo de</legend>
-
-          <label>
-            <input type="checkbox" name="prestamo_de" value="salas_aulas">
-            Salas o aulas
-          </label>
+        <label for="descripcion_servicio">
+          Descripción del servicio
           <br>
-
-          <label>
-            <input type="checkbox" name="prestamo_de" value="auditorio">
-            Auditorio
-          </label>
-          <br>
-
-          <label>
-            <input type="checkbox" name="prestamo_de" value="equipo_audiovisual">
-            Equipo audiovisual
-          </label>
-        </fieldset>
+          <small id="descripcion-servicio-ayuda">Especificar claramente fecha y hora del servicio requerido</small>
+        </label>
 
         <br>
 
-        <label>
-          <input type="checkbox" name="diversos_limpieza" value="cafeteria">
-          Cafetería
-        </label>
-        <br>
+        <textarea
+          id="descripcion_servicio"
+          name="descripcion_servicio"
+          rows="8"
+          cols="80"
+          required
+          aria-describedby="descripcion-servicio-ayuda"
+        ></textarea>
+      </section>
 
-        <label>
-          <input type="checkbox" name="diversos_limpieza" value="cerrajeria">
-          Cerrajería
-        </label>
-        <br>
+      <button type="submit">Enviar solicitud</button>
+    </form>
+  </main>
 
-        <label>
-          <input type="checkbox" name="diversos_limpieza" value="limpieza">
-          Limpieza
-        </label>
-        <br>
+  <script>
+    const areaSelect = document.querySelector('#area_solicitante');
+    const areaSections = document.querySelectorAll('[data-area-section]');
 
-        <label>
-          <input type="checkbox" name="diversos_limpieza" value="otro">
-          Otro
-        </label>
-      </fieldset>
+    function setFieldsetState(fieldset, isActive) {
+      fieldset.hidden = !isActive;
+      fieldset.disabled = !isActive;
+    }
 
-      <br>
+    function updateSubcategoryOptions(areaSection) {
+      const subcategorySelect = areaSection.querySelector('[data-subcategory-select]');
+      const selectedSubcategory = subcategorySelect.value;
+      const optionFieldsets = areaSection.querySelectorAll('[data-subcategory-options]');
 
-      <fieldset>
-        <legend>Correspondencia y/o paquetería</legend>
+      optionFieldsets.forEach((fieldset) => {
+        setFieldsetState(fieldset, fieldset.dataset.subcategoryOptions === selectedSubcategory);
+      });
+    }
 
-        <label>
-          <input type="checkbox" name="correspondencia_paqueteria" value="propio">
-          Propio
-        </label>
-        <br>
+    function updateAreaSections() {
+      const selectedArea = areaSelect.value;
 
-        <label>
-          <input type="checkbox" name="correspondencia_paqueteria" value="correo_ordinario">
-          C. ordinario
-        </label>
-        <br>
+      areaSections.forEach((section) => {
+        const isActive = section.dataset.areaSection === selectedArea;
+        const subcategorySelect = section.querySelector('[data-subcategory-select]');
 
-        <label>
-          <input type="checkbox" name="correspondencia_paqueteria" value="mensajeria_especializada">
-          M. especializada
-        </label>
-      </fieldset>
+        setFieldsetState(section, isActive);
+        subcategorySelect.disabled = !isActive;
+        subcategorySelect.required = isActive;
 
-      <br>
+        if (!isActive) {
+          subcategorySelect.value = '';
+        }
 
-      <fieldset>
-        <legend>Reproducción y/o engargolado</legend>
+        updateSubcategoryOptions(section);
+      });
+    }
 
-        <label>
-          <input type="checkbox" name="reproduccion_engargolado" value="reproduccion">
-          Reproducción
-        </label>
-        <br>
-
-        <label>
-          <input type="checkbox" name="reproduccion_engargolado" value="engargolado">
-          Engargolado
-        </label>
-        <br>
-
-        <label>
-          <input type="checkbox" name="reproduccion_engargolado" value="otro">
-          Otro
-        </label>
-      </fieldset>
-    </section>
--->
-    <hr>
-
-    <section>
-      <label for="descripcion_servicio">
-        Descripción del servicio
-        <br>
-        <small>Especificar claramente fecha y hora del servicio requerido</small>
-      </label>
-
-      <br>
-
-      <textarea
-        id="descripcion_servicio"
-        name="descripcion_servicio"
-        rows="8"
-        cols="80"
-        required
-      ></textarea>
-    </section>
-
-    <br>
-
-    <button type="submit">Enviar solicitud</button>
-  </form>
-
+    areaSelect.addEventListener('change', updateAreaSections);
+    areaSections.forEach((section) => {
+      const subcategorySelect = section.querySelector('[data-subcategory-select]');
+      subcategorySelect.addEventListener('change', () => updateSubcategoryOptions(section));
+    });
+    updateAreaSections();
+  </script>
 </body>
 </html>
