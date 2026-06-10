@@ -5,3 +5,4 @@ credentials.json
 .env
 alembic.ini
 directorio_personal.json
+logs/
