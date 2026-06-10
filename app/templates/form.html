@@ -31,10 +31,11 @@
           {% set opcion_id = subcategoria.id ~ '-' ~ opcion.valor %}
           <div>
             <input
-              type="checkbox"
+              type="radio"
               id="{{ opcion_id }}"
               name="{{ subcategoria.id }}"
               value="{{ opcion.valor }}"
+              required
             >
             <label for="{{ opcion_id }}">{{ opcion.etiqueta }}</label>
           </div>
