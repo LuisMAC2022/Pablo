@@ -4,21 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="/static/css/museo.css">
 </head>
 <body>
-    <main class="container">
+    <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+    <main id="contenido-principal" class="container">
         <header>
             <h1>Pabellón Nacional de la Biodiversidad</h1>
             <p>Bienvenido, {{ usuario.nombre }}</p>
         </header>
-        <nav>
-            {% if usuario.rol in ["biologo", "admin", "desarrollador"] %}
-            <a href="/solicitud"><button>Nueva solicitud de mantenimiento</button></a>
-            {% endif %}
-            {% if usuario.rol in ["seguridad", "admin", "desarrollador"] %}
-            <a href="/visitantes"><button>Registrar visitantes</button></a>
-            {% endif %}
+        <nav aria-label="Áreas de trabajo">
+            <ul>
+                {% if usuario.rol in ["biologo", "admin", "desarrollador"] %}
+                <li><a class="button" href="/solicitud">Nueva solicitud de mantenimiento</a></li>
+                {% endif %}
+                {% if usuario.rol in ["seguridad", "admin", "desarrollador"] %}
+                <li><a class="button" href="/visitantes">Registrar visitantes</a></li>
+                {% endif %}
+            </ul>
         </nav>
         <footer>
             <a href="/logout">Cerrar sesión</a>
