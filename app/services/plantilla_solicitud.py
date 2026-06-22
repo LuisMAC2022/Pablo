@@ -154,7 +154,7 @@ def _valores_solicitud(solicitud: Solicitud) -> Dict[str, ValorCelda]:
         "AD9": solicitud.fecha.day,
         "AE9": solicitud.fecha.month,
         "AF9": solicitud.fecha.year,
-        "I11": solicitud.nombre_usuario,
+        "I11": solicitud.responsable_area_solicitante or solicitud.nombre_usuario,
         "AC11": solicitud.telefono,
         "B38": solicitud.descripcion_servicio,
         "U56": solicitud.nombre_usuario,

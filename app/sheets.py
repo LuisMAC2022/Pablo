@@ -25,6 +25,7 @@ def agregar_solicitud(solicitud):
         solicitud.fecha.strftime("%d/%m/%Y"),
         solicitud.nombre_usuario,
         solicitud.telefono,
+        solicitud.responsable_area_solicitante or "",
         solicitud.area_solicitante,
         ", ".join(solicitud.infraestructura or []),
         ", ".join(solicitud.equipo_parque_vehicular or []),
