@@ -90,8 +90,66 @@
           {% endfor %}
         </select>
 
-        <p><strong>Nombre del usuario:</strong> {{ nombre_usuario }}</p>
-        <p><strong>Teléfono:</strong> {{ telefono or "Sin teléfono registrado" }}</p>
+        <label for="nombre_usuario">Nombre del usuario:</label>
+        <input
+          type="text"
+          id="nombre_usuario"
+          name="nombre_usuario"
+          value="{{ nombre_usuario }}"
+          list="personas-autocomplete"
+          required
+          {% if not puede_editar_datos_solicitante %}readonly{% endif %}
+          aria-describedby="nombre-usuario-ayuda"
+        >
+        <small id="nombre-usuario-ayuda">
+          {% if puede_editar_datos_solicitante %}
+            Escriba el nombre y seleccione una sugerencia si aparece.
+          {% else %}
+            Este dato se toma de su sesión.
+          {% endif %}
+        </small>
+
+        <label for="responsable_area_solicitante">Responsable del área solicitante:</label>
+        <input
+          type="text"
+          id="responsable_area_solicitante"
+          name="responsable_area_solicitante"
+          value="{{ responsable_area_solicitante }}"
+          list="responsables-autocomplete"
+          required
+          {% if not puede_editar_datos_solicitante %}readonly{% endif %}
+          aria-describedby="responsable-area-ayuda"
+        >
+        <small id="responsable-area-ayuda">
+          {% if puede_editar_datos_solicitante %}
+            Escriba el nombre del responsable y seleccione una sugerencia si aparece.
+          {% else %}
+            Este dato se valida con la política del servidor.
+          {% endif %}
+        </small>
+
+        <label for="telefono">Teléfono:</label>
+        <input
+          type="tel"
+          id="telefono"
+          name="telefono"
+          value="{{ telefono or '5556228222 ext. 82581' }}"
+          required
+          aria-describedby="telefono-ayuda"
+        >
+        <small id="telefono-ayuda">Por ahora se usa el teléfono del jefe de mantenimiento, pero puede editarse.</small>
+
+        <datalist id="personas-autocomplete">
+          {% for persona in personas_autocomplete %}
+            <option value="{{ persona.nombre }}" label="{{ persona.etiqueta }}"></option>
+          {% endfor %}
+        </datalist>
+
+        <datalist id="responsables-autocomplete">
+          {% for persona in personas_autocomplete %}
+            <option value="{{ persona.nombre }}" label="{{ persona.etiqueta }}"></option>
+          {% endfor %}
+        </datalist>
       </section>
 
       <section aria-labelledby="tipo-servicio">
@@ -120,7 +178,7 @@
           cols="80"
           required
           aria-describedby="descripcion-servicio-ayuda"
-        ></textarea>
+        >{{ descripcion_servicio|default('') }}</textarea>
       </section>
 
       <button type="submit">Enviar solicitud</button>

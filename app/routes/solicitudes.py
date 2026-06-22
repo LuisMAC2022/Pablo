@@ -1,3 +1,5 @@
+import json
+from pathlib import Path
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, Form, Request
@@ -7,7 +9,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import Solicitud
 from app.dependencies import get_usuario_actual
-from app.permissions import ROLES_SOLICITUDES, usuario_tiene_rol
+from app.permissions import ROLES_SOLICITUDES, puede_editar_datos_solicitante, usuario_tiene_rol
 from app.services.catalogo_solicitudes import AREAS_SOLICITUD_ACTIVAS, CATALOGO_SERVICIOS
 from app.services.plantilla_solicitud import (
     NOMBRE_ARCHIVO_SOLICITUD,
@@ -23,6 +25,41 @@ from app.services.solicitudes import (
 
 router = APIRouter()
 
+TELEFONO_JEFE_MANTENIMIENTO = "5556228222 ext. 82581"
+RUTA_DIRECTORIO_AUTOCOMPLETE = Path(__file__).resolve().parents[2] / "dir_autocomplete.json"
+
+
+def cargar_personas_autocomplete() -> list[dict[str, str]]:
+    with RUTA_DIRECTORIO_AUTOCOMPLETE.open(encoding="utf-8") as archivo:
+        directorio = json.load(archivo)
+
+    personas = []
+    for persona in directorio.get("personas", []):
+        nombre = str(persona.get("nombre", "")).strip()
+        if not nombre:
+            continue
+
+        etiqueta = str(persona.get("etiqueta", "")).strip()
+        personas.append({"nombre": nombre, "etiqueta": etiqueta})
+
+    return personas
+
+
+def contexto_formulario(usuario: dict, **valores) -> dict:
+    puede_editar = puede_editar_datos_solicitante(usuario)
+    return {
+        "areas": AREAS_SOLICITUD_ACTIVAS,
+        "catalogo_servicios": CATALOGO_SERVICIOS,
+        "nombre_usuario": valores.get("nombre_usuario", usuario.get("nombre", "")),
+        "responsable_area_solicitante": valores.get("responsable_area_solicitante", ""),
+        "telefono": valores.get("telefono", TELEFONO_JEFE_MANTENIMIENTO),
+        "area_solicitante": valores.get("area_solicitante", ""),
+        "subcategoria_servicio": valores.get("subcategoria_servicio", ""),
+        "descripcion_servicio": valores.get("descripcion_servicio", ""),
+        "personas_autocomplete": cargar_personas_autocomplete(),
+        "puede_editar_datos_solicitante": puede_editar,
+    }
+
 
 @router.get("/solicitud", response_class=HTMLResponse)
 async def mostrar_formulario(
@@ -36,13 +73,7 @@ async def mostrar_formulario(
     return templates.TemplateResponse(
         request=request,
         name="form.html",
-        context={
-            "areas": AREAS_SOLICITUD_ACTIVAS,
-            "catalogo_servicios": CATALOGO_SERVICIOS,
-            "nombre_usuario": usuario.get("nombre", ""),
-            "telefono": usuario.get("telefono", ""),
-            "area_solicitante": "",
-        },
+        context=contexto_formulario(usuario),
     )
 
 
@@ -74,6 +105,9 @@ async def recibir_formulario(
     db: Session = Depends(get_db),
     usuario: dict = Depends(get_usuario_actual),
     area_solicitante: str = Form(...),
+    nombre_usuario: str = Form(...),
+    responsable_area_solicitante: str = Form(...),
+    telefono: str = Form(TELEFONO_JEFE_MANTENIMIENTO),
     descripcion_servicio: str = Form(...),
     subcategoria_servicio: Optional[str] = Form(None),
     infraestructura: Optional[List[str]] = Form(None),
@@ -90,14 +124,20 @@ async def recibir_formulario(
 
     templates = request.app.state.templates
 
-    nombre_usuario = usuario.get("nombre", "")
-    telefono = usuario.get("telefono", "") or ""
+    nombre_usuario = nombre_usuario.strip()
+    responsable_area_solicitante = responsable_area_solicitante.strip()
+    telefono = telefono.strip() or TELEFONO_JEFE_MANTENIMIENTO
+
+    if not puede_editar_datos_solicitante(usuario):
+        nombre_usuario = str(usuario.get("nombre", "")).strip()
+        responsable_area_solicitante = responsable_area_solicitante or nombre_usuario
 
     try:
         solicitud = crear_solicitud(
             db,
             nombre_usuario=nombre_usuario,
             telefono=telefono,
+            responsable_area_solicitante=responsable_area_solicitante,
             area_solicitante=area_solicitante,
             descripcion_servicio=descripcion_servicio,
             subcategoria_servicio=subcategoria_servicio,
@@ -115,12 +155,15 @@ async def recibir_formulario(
             request=request,
             name="form.html",
             context={
-                "areas": AREAS_SOLICITUD_ACTIVAS,
-                "catalogo_servicios": CATALOGO_SERVICIOS,
-                "nombre_usuario": nombre_usuario,
-                "telefono": telefono,
-                "area_solicitante": area_solicitante,
-                "subcategoria_servicio": subcategoria_servicio,
+                **contexto_formulario(
+                    usuario,
+                    nombre_usuario=nombre_usuario,
+                    responsable_area_solicitante=responsable_area_solicitante,
+                    telefono=telefono,
+                    area_solicitante=area_solicitante,
+                    subcategoria_servicio=subcategoria_servicio,
+                    descripcion_servicio=descripcion_servicio,
+                ),
                 "error": str(exc),
             },
             status_code=400,
@@ -133,6 +176,8 @@ async def recibir_formulario(
             "folio": solicitud.folio,
             "fecha": solicitud.fecha.strftime("%d/%m/%Y"),
             "nombre_usuario": solicitud.nombre_usuario,
+            "responsable_area_solicitante": solicitud.responsable_area_solicitante,
+            "telefono": solicitud.telefono,
             "area_solicitante": solicitud.area_solicitante,
             "url_descarga_plantilla": f"/solicitud/{solicitud.folio}/plantilla",
         },
