@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, Form, Request
+from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from sqlalchemy.orm import Session
 
@@ -12,7 +12,10 @@ from app.dependencies import get_usuario_actual
 from app.permissions import ROLES_SOLICITUDES, puede_editar_datos_solicitante, usuario_tiene_rol
 from app.services.catalogo_solicitudes import AREAS_SOLICITUD_ACTIVAS, CATALOGO_SERVICIOS
 from app.services.plantilla_solicitud import (
+    ErrorConversionPDF,
+    NOMBRE_ARCHIVO_PDF_SOLICITUD,
     NOMBRE_ARCHIVO_SOLICITUD,
+    generar_pdf_solicitud,
     generar_plantilla_solicitud,
 )
 from app.services.solicitudes import (
@@ -100,6 +103,32 @@ async def descargar_plantilla_solicitud(
     )
 
 
+@router.get("/solicitud/{folio}/pdf")
+async def abrir_pdf_plantilla_solicitud(
+    folio: str,
+    db: Session = Depends(get_db),
+    usuario: dict = Depends(get_usuario_actual),
+):
+    if not usuario_tiene_rol(usuario, ROLES_SOLICITUDES):
+        return RedirectResponse(url="/login", status_code=302)
+
+    solicitud = db.query(Solicitud).filter(Solicitud.folio == folio).first()
+    if solicitud is None:
+        return RedirectResponse(url="/solicitud", status_code=302)
+
+    try:
+        contenido = generar_pdf_solicitud(solicitud)
+    except ErrorConversionPDF as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+    nombre_pdf = f"{solicitud.folio}_{NOMBRE_ARCHIVO_PDF_SOLICITUD}"
+    return Response(
+        content=contenido,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'inline; filename="{nombre_pdf}"'},
+    )
+
+
 @router.post("/solicitud", response_class=HTMLResponse)
 async def recibir_formulario(
     request: Request,
@@ -181,6 +210,7 @@ async def recibir_formulario(
             "telefono": solicitud.telefono,
             "area_solicitante": solicitud.area_solicitante,
             "url_descarga_plantilla": f"/solicitud/{solicitud.folio}/plantilla",
+            "url_pdf_plantilla": f"/solicitud/{solicitud.folio}/pdf",
             "usuario": usuario,
         },
     )

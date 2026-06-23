@@ -2,6 +2,9 @@
 
 from io import BytesIO
 from pathlib import Path
+import shutil
+import subprocess
+import tempfile
 from typing import Dict, Iterable, Tuple, Union
 from xml.etree import ElementTree as ET
 from zipfile import ZIP_DEFLATED, ZipFile
@@ -13,6 +16,7 @@ RUTA_PLANTILLA_SOLICITUD = RAIZ_PROYECTO / "plantilla_solicitud_unica_servicios_
 
 MARCA_OPCION = "X"
 NOMBRE_ARCHIVO_SOLICITUD = "plantilla_solicitud_unica_de_servicios.xlsx"
+NOMBRE_ARCHIVO_PDF_SOLICITUD = "plantilla_solicitud_unica_de_servicios.pdf"
 
 ESPACIO_NOMBRES_HOJA = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 ET.register_namespace("", ESPACIO_NOMBRES_HOJA)
@@ -186,3 +190,53 @@ def generar_plantilla_solicitud(solicitud: Solicitud) -> bytes:
                 copia.writestr(elemento, contenido)
 
     return salida.getvalue()
+
+
+class ErrorConversionPDF(RuntimeError):
+    """Indica que LibreOffice no pudo convertir la plantilla XLSX a PDF."""
+
+
+def generar_pdf_solicitud(solicitud: Solicitud) -> bytes:
+    """Devuelve la plantilla llena convertida a PDF con LibreOffice headless.
+
+    El servidor debe tener instalado el ejecutable ``libreoffice`` para poder
+    convertir el XLSX generado en memoria a PDF.
+    """
+    ejecutable_libreoffice = shutil.which("libreoffice")
+    if ejecutable_libreoffice is None:
+        raise ErrorConversionPDF(
+            "No se encontró LibreOffice en el servidor; instale el ejecutable "
+            "'libreoffice' para convertir la plantilla XLSX a PDF."
+        )
+
+    contenido_xlsx = generar_plantilla_solicitud(solicitud)
+
+    with tempfile.TemporaryDirectory() as directorio_temporal:
+        ruta_temporal = Path(directorio_temporal)
+        ruta_xlsx = ruta_temporal / "solicitud.xlsx"
+        ruta_xlsx.write_bytes(contenido_xlsx)
+
+        resultado = subprocess.run(
+            [
+                ejecutable_libreoffice,
+                "--headless",
+                "--convert-to",
+                "pdf",
+                "--outdir",
+                str(ruta_temporal),
+                str(ruta_xlsx),
+            ],
+            capture_output=True,
+            check=False,
+            text=True,
+        )
+
+        ruta_pdf = ruta_temporal / "solicitud.pdf"
+        if resultado.returncode != 0 or not ruta_pdf.exists():
+            detalle = (resultado.stderr or resultado.stdout or "sin detalle").strip()
+            raise ErrorConversionPDF(
+                "LibreOffice no pudo convertir la plantilla XLSX a PDF: "
+                f"{detalle}"
+            )
+
+        return ruta_pdf.read_bytes()
