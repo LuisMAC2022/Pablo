@@ -1,0 +1,4045 @@
+{
+  "metadata": {
+    "schema_version": "1.0.0",
+    "proposito": "autocomplete_formulario",
+    "descripcion": "Lista plana de contactos sugeridos para acelerar el llenado de formularios. Los datos autocompletados son editables y no representan una verdad institucional definitiva.",
+    "fecha_generacion": "2026-06-21",
+    "timezone": "America/Mexico_City",
+    "fuentes": [
+      {
+        "id": "directorio_academico_ib",
+        "tipo": "scrape_local_normalizado",
+        "archivo": "directorio_academico_normalizado.json",
+        "registros_entrada": 164
+      },
+      {
+        "id": "directorio_pabio",
+        "tipo": "pagina_publica",
+        "url": "https://www.ib.unam.mx/ib/pabio/acerca-de-pabio/directorio/",
+        "registros_entrada": 6
+      }
+    ],
+    "reglas": {
+      "alcance": "No clasifica pertenencia institucional; solo produce sugerencias de contacto para autocompletar.",
+      "deduplicacion": [
+        "Coincidencia exacta por correo.",
+        "Coincidencia por nombre normalizado cuando el directorio de PaBio omite segundo nombre y no hay ambigüedad.",
+        "Si no hay coincidencia clara, se conserva como registro independiente."
+      ],
+      "prioridad": [
+        "PaBio gana para etiqueta/cargo operativo.",
+        "PaBio gana para correo y teléfono cuando los publica.",
+        "El directorio académico se usa como respaldo cuando PaBio no publica correo o teléfono."
+      ],
+      "interaccion": "El formulario debe permitir editar manualmente nombre, correo, teléfono y extensión."
+    },
+    "conteos": {
+      "registros_academico_entrada": 164,
+      "registros_pabio_entrada": 6,
+      "registros_pabio_fusionados": 2,
+      "registros_pabio_agregados": 4,
+      "personas_salida": 168,
+      "sin_correo": 0,
+      "sin_telefono": 54
+    },
+    "anotaciones": {
+      "ids_sin_correo": [],
+      "ids_sin_telefono": [
+        "DIR-0011",
+        "DIR-0012",
+        "DIR-0020",
+        "DIR-0024",
+        "DIR-0026",
+        "DIR-0034",
+        "DIR-0035",
+        "DIR-0038",
+        "DIR-0041",
+        "DIR-0042",
+        "DIR-0043",
+        "DIR-0044",
+        "DIR-0045",
+        "DIR-0047",
+        "DIR-0049",
+        "DIR-0051",
+        "DIR-0053",
+        "DIR-0054",
+        "DIR-0056",
+        "DIR-0057",
+        "DIR-0059",
+        "DIR-0061",
+        "DIR-0066",
+        "DIR-0068",
+        "DIR-0071",
+        "DIR-0072",
+        "DIR-0074",
+        "DIR-0076",
+        "DIR-0077",
+        "DIR-0084",
+        "DIR-0086",
+        "DIR-0087",
+        "DIR-0089",
+        "DIR-0091",
+        "DIR-0093",
+        "DIR-0094",
+        "DIR-0098",
+        "DIR-0100",
+        "DIR-0103",
+        "DIR-0105",
+        "DIR-0113",
+        "DIR-0114",
+        "DIR-0129",
+        "DIR-0134",
+        "DIR-0135",
+        "DIR-0136",
+        "DIR-0144",
+        "DIR-0145",
+        "DIR-0151",
+        "DIR-0161",
+        "DIR-0163",
+        "DIR-0165",
+        "DIR-0166",
+        "DIR-0168"
+      ],
+      "merge_log": [
+        {
+          "accion": "fusionado",
+          "match": "nombre_normalizado",
+          "registro_pabio": "Dra. Susana Magallón Puebla",
+          "persona_id": "DIR-0084",
+          "antes": {
+            "nombre": "Susana Aurora Magallón Puebla",
+            "correo": "s.magallon@ib.unam.mx",
+            "telefono": "5556229087",
+            "extension": null,
+            "etiqueta": "Investigador titular C · Botánica"
+          },
+          "despues": {
+            "nombre": "Susana Aurora Magallón Puebla",
+            "correo": "s.magallon@ib.unam.mx",
+            "telefono": "5556229087",
+            "extension": null,
+            "etiqueta": "Dirección del Instituto de Biología · PaBio"
+          }
+        },
+        {
+          "accion": "agregado",
+          "match": null,
+          "registro_pabio": "Mtra. María González Flores",
+          "persona_id": "DIR-0165"
+        },
+        {
+          "accion": "fusionado",
+          "match": "correo",
+          "registro_pabio": "Mtra. Luisa Nivón Ramírez",
+          "persona_id": "DIR-0106",
+          "antes": {
+            "nombre": "Luisa Fernanda Nivón Ramírez",
+            "correo": "luisa.nivon@ib.unam.mx",
+            "telefono": null,
+            "extension": null,
+            "etiqueta": "Técnico académico asociado C · Pabellón Nacional de la Biodiversidad (PaBio)"
+          },
+          "despues": {
+            "nombre": "Luisa Fernanda Nivón Ramírez",
+            "correo": "luisa.nivon@ib.unam.mx",
+            "telefono": "5556226389",
+            "extension": null,
+            "etiqueta": "Encargada de Servicios Educativos · PaBio"
+          }
+        },
+        {
+          "accion": "agregado",
+          "match": null,
+          "registro_pabio": "Ing. Uriel Morales Hernández",
+          "persona_id": "DIR-0166"
+        },
+        {
+          "accion": "agregado",
+          "match": null,
+          "registro_pabio": "Ing. Enrique Sandoval Ballesteros",
+          "persona_id": "DIR-0167"
+        },
+        {
+          "accion": "agregado",
+          "match": null,
+          "registro_pabio": "Lic. Gabriela Guerra Nicolás",
+          "persona_id": "DIR-0168"
+        }
+      ]
+    }
+  },
+  "personas": [
+    {
+      "id": "DIR-0001",
+      "nombre": "Enrique Sandoval Ballesteros",
+      "nombre_busqueda": "enrique sandoval ballesteros",
+      "correo": "enrique.sandoval@ib.unam.mx",
+      "telefono": "5556228222",
+      "extension": "82580",
+      "telefono_original": "Tel. 55 5622 8222 ext. 82580",
+      "telefono_e164": "+525556228222",
+      "etiqueta": "Delegado Administrativo · PaBio",
+      "fuente_preferida": "directorio_pabio",
+      "fuentes": [
+        "directorio_pabio"
+      ],
+      "datos_auxiliares": {
+        "cargo_pabio": "Delegado Administrativo",
+        "tratamiento_pabio": "Ing",
+        "nombre_publicado_pabio": "Ing. Enrique Sandoval Ballesteros",
+        "orden_pabio": 5
+      },
+      "id_anterior": "DIR-0167"
+    },
+    {
+      "id": "DIR-0002",
+      "nombre": "Gabriela Guerra Nicolás",
+      "nombre_busqueda": "gabriela guerra nicolas",
+      "correo": "gabriela.guerra@ib.unam.mx",
+      "telefono": "5556226388",
+      "extension": null,
+      "telefono_original": "Tel. 55 5622 6388",
+      "telefono_e164": "+525556226388",
+      "etiqueta": "Asistente Ejecutiva · PaBio",
+      "fuente_preferida": "directorio_pabio",
+      "fuentes": [
+        "directorio_pabio"
+      ],
+      "datos_auxiliares": {
+        "cargo_pabio": "Asistente Ejecutiva",
+        "tratamiento_pabio": "Lic",
+        "nombre_publicado_pabio": "Lic. Gabriela Guerra Nicolás",
+        "orden_pabio": 6
+      },
+      "id_anterior": "DIR-0168"
+    },
+    {
+      "id": "DIR-0003",
+      "nombre": "Luisa Fernanda Nivón Ramírez",
+      "nombre_busqueda": "luisa fernanda nivon ramirez",
+      "correo": "luisa.nivon@ib.unam.mx",
+      "telefono": "5556226389",
+      "extension": null,
+      "telefono_original": "Tel. 55 5622 6389",
+      "telefono_e164": "+525556226389",
+      "etiqueta": "Encargada de Servicios Educativos · PaBio",
+      "fuente_preferida": "directorio_pabio",
+      "fuentes": [
+        "directorio_academico_ib",
+        "directorio_pabio"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00106",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Pabellón Nacional de la Biodiversidad (PaBio)",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=RktCNUVsbmduUlE0ZnpFdmlvS2grdz09",
+        "crypt": "RktCNUVsbmduUlE0ZnpFdmlvS2grdz09",
+        "cargo_pabio": "Encargada de Servicios Educativos",
+        "tratamiento_pabio": "Mtra",
+        "nombre_publicado_pabio": "Mtra. Luisa Nivón Ramírez",
+        "orden_pabio": 3,
+        "match_pabio": "correo"
+      },
+      "id_anterior": "DIR-0106"
+    },
+    {
+      "id": "DIR-0004",
+      "nombre": "María González Flores",
+      "nombre_busqueda": "maria gonzalez flores",
+      "correo": "maria.gonzalez@ib.unam.mx",
+      "telefono": "5556228222",
+      "extension": "82579",
+      "telefono_original": "Tel. 55 5622 8222 ext.82579",
+      "telefono_e164": "+525556228222",
+      "etiqueta": "Responsable de Exposiciones Museográficas · PaBio",
+      "fuente_preferida": "directorio_pabio",
+      "fuentes": [
+        "directorio_pabio"
+      ],
+      "datos_auxiliares": {
+        "cargo_pabio": "Responsable de Exposiciones Museográficas",
+        "tratamiento_pabio": "Mtra",
+        "nombre_publicado_pabio": "Mtra. María González Flores",
+        "orden_pabio": 2
+      },
+      "id_anterior": "DIR-0165"
+    },
+    {
+      "id": "DIR-0005",
+      "nombre": "Susana Aurora Magallón Puebla",
+      "nombre_busqueda": "susana aurora magallon puebla",
+      "correo": "s.magallon@ib.unam.mx",
+      "telefono": "5556229087",
+      "extension": null,
+      "telefono_original": "555-62-29087",
+      "telefono_e164": "+525556229087",
+      "etiqueta": "Dirección del Instituto de Biología · PaBio",
+      "fuente_preferida": "directorio_pabio",
+      "fuentes": [
+        "directorio_academico_ib",
+        "directorio_pabio"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00084",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=cTdxMHhsZUYxR2RKYW42SkQ5OVMwQT09",
+        "crypt": "cTdxMHhsZUYxR2RKYW42SkQ5OVMwQT09",
+        "cargo_pabio": "Dirección del Instituto de Biología",
+        "tratamiento_pabio": "Dra",
+        "nombre_publicado_pabio": "Dra. Susana Magallón Puebla",
+        "orden_pabio": 1,
+        "match_pabio": "nombre_normalizado"
+      },
+      "id_anterior": "DIR-0084"
+    },
+    {
+      "id": "DIR-0006",
+      "nombre": "Uriel Morales Hernández",
+      "nombre_busqueda": "uriel morales hernandez",
+      "correo": "uriel.morales@ib.unam.mx",
+      "telefono": "5556228222",
+      "extension": "82581",
+      "telefono_original": "Tel. 55 5622 8222 ext. 82581",
+      "telefono_e164": "+525556228222",
+      "etiqueta": "Jefe de Mantenimiento · PaBio",
+      "fuente_preferida": "directorio_pabio",
+      "fuentes": [
+        "directorio_pabio"
+      ],
+      "datos_auxiliares": {
+        "cargo_pabio": "Jefe de Mantenimiento",
+        "tratamiento_pabio": "Ing",
+        "nombre_publicado_pabio": "Ing. Uriel Morales Hernández",
+        "orden_pabio": 4
+      },
+      "id_anterior": "DIR-0166"
+    },
+    {
+      "id": "DIR-0007",
+      "nombre": "Abisaí Josué García Mendoza",
+      "nombre_busqueda": "abisai josue garcia mendoza",
+      "correo": "abisai@ib.unam.mx",
+      "telefono": "56228991",
+      "extension": null,
+      "telefono_original": "56-22-89-91",
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico titular C · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00046",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=V0JrSjlpUVA0cTdQNXZpeDIveEVSUT09",
+        "crypt": "V0JrSjlpUVA0cTdQNXZpeDIveEVSUT09"
+      },
+      "id_anterior": "DIR-0046"
+    },
+    {
+      "id": "DIR-0008",
+      "nombre": "Adriana Benítez Villaseñor",
+      "nombre_busqueda": "adriana benitez villasenor",
+      "correo": "adriana.benitez@ib.unam.mx",
+      "telefono": "5556228222",
+      "extension": "47775",
+      "telefono_original": "55-56-22-82-22 Ext. 47775",
+      "telefono_e164": "+525556228222",
+      "etiqueta": "Técnico académico asociado C · Secretaría Técnica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00016",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Secretaría Técnica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=NUROTVRUbVU4WUFYek5sKzhESGdqZz09",
+        "crypt": "NUROTVRUbVU4WUFYek5sKzhESGdqZz09"
+      },
+      "id_anterior": "DIR-0016"
+    },
+    {
+      "id": "DIR-0009",
+      "nombre": "Alana Pacheco Flores",
+      "nombre_busqueda": "alana pacheco flores",
+      "correo": "alana.pacheco@ib.unam.mx",
+      "telefono": "5556228222",
+      "extension": "47901",
+      "telefono_original": "55-56-22-82-22 Ext. 47901",
+      "telefono_e164": "+525556228222",
+      "etiqueta": "Técnico académico asociado C · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00121",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=Qk05M1RHOHQ4VFJzcWs2c3JZTmJMZz09",
+        "crypt": "Qk05M1RHOHQ4VFJzcWs2c3JZTmJMZz09"
+      },
+      "id_anterior": "DIR-0121"
+    },
+    {
+      "id": "DIR-0010",
+      "nombre": "Alejandra Citlalli Moreno Letelier",
+      "nombre_busqueda": "alejandra citlalli moreno letelier",
+      "correo": "amletelier@ib.unam.mx",
+      "telefono": "5556237725",
+      "extension": null,
+      "telefono_original": "55-56-23-77-25",
+      "telefono_e164": "+525556237725",
+      "etiqueta": "Investigador asociado C · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00101",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=a2lERHdaSUhIU2dUMW5adi8yemV1dz09",
+        "crypt": "a2lERHdaSUhIU2dUMW5adi8yemV1dz09"
+      },
+      "id_anterior": "DIR-0101"
+    },
+    {
+      "id": "DIR-0011",
+      "nombre": "Alejandro Francisco Oceguera Figueroa",
+      "nombre_busqueda": "alejandro francisco oceguera figueroa",
+      "correo": "aoceguera@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular A · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00108",
+        "nombramiento": "Investigador titular A",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=ZGE1RlA5NThobUM4bWlRTExWenRLdz09",
+        "crypt": "ZGE1RlA5NThobUM4bWlRTExWenRLdz09"
+      },
+      "id_anterior": "DIR-0108"
+    },
+    {
+      "id": "DIR-0012",
+      "nombre": "Alejandro Zaldívar Riverón",
+      "nombre_busqueda": "alejandro zaldivar riveron",
+      "correo": "azaldivar@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00162",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=UWZTWHRGWm9lc3FpbGUyNzdqT2lMQT09",
+        "crypt": "UWZTWHRGWm9lc3FpbGUyNzdqT2lMQT09"
+      },
+      "id_anterior": "DIR-0162"
+    },
+    {
+      "id": "DIR-0013",
+      "nombre": "Alfonso Octavio Delgado Salinas",
+      "nombre_busqueda": "alfonso octavio delgado salinas",
+      "correo": "adelgado@ib.unam.mx",
+      "telefono": "5556229115",
+      "extension": null,
+      "telefono_original": "555-62-29115",
+      "telefono_e164": "+525556229115",
+      "etiqueta": "Investigador titular C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00036",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=SklZS3ZZL1hvZDZIRk5uZjNDdVFrZz09",
+        "crypt": "SklZS3ZZL1hvZDZIRk5uZjNDdVFrZz09"
+      },
+      "id_anterior": "DIR-0036"
+    },
+    {
+      "id": "DIR-0014",
+      "nombre": "Alí Citlalli Segovia Rivas",
+      "nombre_busqueda": "ali citlalli segovia rivas",
+      "correo": "ali.segovia@ib.unam.mx",
+      "telefono": "5556225999",
+      "extension": "82592",
+      "telefono_original": "55-562-25999 Ext. 82592",
+      "telefono_e164": "+525556225999",
+      "etiqueta": "Técnico académico asociado B · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00142",
+        "nombramiento": "Técnico académico asociado B",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=V1luOGpFa3FGRzZrZnk1a2c0MHJCUT09",
+        "crypt": "V1luOGpFa3FGRzZrZnk1a2c0MHJCUT09"
+      },
+      "id_anterior": "DIR-0142"
+    },
+    {
+      "id": "DIR-0015",
+      "nombre": "Alma Yadira Martínez Rendón",
+      "nombre_busqueda": "alma yadira martinez rendon",
+      "correo": "alma.martinez@ib.unam.mx",
+      "telefono": "2464611311",
+      "extension": null,
+      "telefono_original": "246-461-13-11",
+      "telefono_e164": "+522464611311",
+      "etiqueta": "Técnico académico titular A · Secretaría Técnica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00089",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Secretaría Técnica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=cE5lZjZIeUFzUFJIZFFPU05DUExSQT09",
+        "crypt": "cE5lZjZIeUFzUFJIZFFPU05DUExSQT09"
+      },
+      "id_anterior": "DIR-0089"
+    },
+    {
+      "id": "DIR-0016",
+      "nombre": "Ana Laura López Escamilla",
+      "nombre_busqueda": "ana laura lopez escamilla",
+      "correo": "lopezescamilla@st.ib.unam.mx",
+      "telefono": "2464611311",
+      "extension": null,
+      "telefono_original": "246-461-13-11",
+      "telefono_e164": "+522464611311",
+      "etiqueta": "Técnico académico titular A · Secretaría Técnica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00079",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Secretaría Técnica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=d2l2L0JSMm4vNG91UzhESEFqUE9aZz09",
+        "crypt": "d2l2L0JSMm4vNG91UzhESEFqUE9aZz09"
+      },
+      "id_anterior": "DIR-0079"
+    },
+    {
+      "id": "DIR-0017",
+      "nombre": "Ana Laura Wegier Briuolo",
+      "nombre_busqueda": "ana laura wegier briuolo",
+      "correo": "awegier@ib.unam.mx",
+      "telefono": "5556228986",
+      "extension": null,
+      "telefono_original": "55-562-28986",
+      "telefono_e164": "+525556228986",
+      "etiqueta": "Investigador titular A · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00160",
+        "nombramiento": "Investigador titular A",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=dUFidkFRUWMyNS9oVmtSWFUvWVRuZz09",
+        "crypt": "dUFidkFRUWMyNS9oVmtSWFUvWVRuZz09"
+      },
+      "id_anterior": "DIR-0160"
+    },
+    {
+      "id": "DIR-0018",
+      "nombre": "Ana Paola Peña Retes",
+      "nombre_busqueda": "ana paola pena retes",
+      "correo": "paoretes@ib.unam.mx",
+      "telefono": "5556228000",
+      "extension": "47749",
+      "telefono_original": "555-62-28000 Ext. 47749",
+      "telefono_e164": "+525556228000",
+      "etiqueta": "Técnico académico asociado C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00124",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=TlVlcGZjeEh3WVV6V05OeXlhaTJqdz09",
+        "crypt": "TlVlcGZjeEh3WVV6V05OeXlhaTJqdz09"
+      },
+      "id_anterior": "DIR-0124"
+    },
+    {
+      "id": "DIR-0019",
+      "nombre": "Andrea Martínez Ballesté",
+      "nombre_busqueda": "andrea martinez balleste",
+      "correo": "andrea.martinez@ib.unam.mx",
+      "telefono": "5556229056",
+      "extension": null,
+      "telefono_original": "55-56-22-90-56",
+      "telefono_e164": "+525556229056",
+      "etiqueta": "Investigador titular A · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00087",
+        "nombramiento": "Investigador titular A",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=VVdBT2dnS1FteWRYeEN0Tmg3MDNKUT09",
+        "crypt": "VVdBT2dnS1FteWRYeEN0Tmg3MDNKUT09"
+      },
+      "id_anterior": "DIR-0087"
+    },
+    {
+      "id": "DIR-0020",
+      "nombre": "Andrea Rubí Jiménez Marín",
+      "nombre_busqueda": "andrea rubi jimenez marin",
+      "correo": "andrea.jimenez@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico titular A · Secretaría Técnica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00075",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Secretaría Técnica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=elY1USt5RVYvNW9kSjFnSFZlTVlPdz09",
+        "crypt": "elY1USt5RVYvNW9kSjFnSFZlTVlPdz09"
+      },
+      "id_anterior": "DIR-0075"
+    },
+    {
+      "id": "DIR-0021",
+      "nombre": "Andrés Ernesto Ortiz Rodríguez",
+      "nombre_busqueda": "andres ernesto ortiz rodriguez",
+      "correo": "andres.ortiz@ib.unam.mx",
+      "telefono": "5556229141",
+      "extension": null,
+      "telefono_original": "555-62-29141",
+      "telefono_e164": "+525556229141",
+      "etiqueta": "Investigador asociado C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00119",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=UG5SaUFlVmJBZzNxclZIUXBsQVE4dz09",
+        "crypt": "UG5SaUFlVmJBZzNxclZIUXBsQVE4dz09"
+      },
+      "id_anterior": "DIR-0119"
+    },
+    {
+      "id": "DIR-0022",
+      "nombre": "Andrés García Aguayo",
+      "nombre_busqueda": "andres garcia aguayo",
+      "correo": "chanoc@ib.unam.mx",
+      "telefono": "5556226512",
+      "extension": null,
+      "telefono_original": "55-56-22-65-12",
+      "telefono_e164": "+525556226512",
+      "etiqueta": "Investigador titular B · Estación Chamela",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00043",
+        "nombramiento": "Investigador titular B",
+        "departamento": "Estación Chamela",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=WWdJOU15OUJ1bDExc3pXQ2RZT0FaQT09",
+        "crypt": "WWdJOU15OUJ1bDExc3pXQ2RZT0FaQT09"
+      },
+      "id_anterior": "DIR-0043"
+    },
+    {
+      "id": "DIR-0023",
+      "nombre": "Angel Salvador Arias Montes",
+      "nombre_busqueda": "angel salvador arias montes",
+      "correo": "sarias@ib.unam.mx",
+      "telefono": "5556228988",
+      "extension": "46880",
+      "telefono_original": "55-56-22-89-88 Ext. 46880",
+      "telefono_e164": "+525556228988",
+      "etiqueta": "Investigador titular B · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00007",
+        "nombramiento": "Investigador titular B",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=cTVoVUVhbUo5MEU2L1BnNnNjNnVJdz09",
+        "crypt": "cTVoVUVhbUo5MEU2L1BnNnNjNnVJdz09"
+      },
+      "id_anterior": "DIR-0007"
+    },
+    {
+      "id": "DIR-0024",
+      "nombre": "Atilano Contreras Ramos",
+      "nombre_busqueda": "atilano contreras ramos",
+      "correo": "acontreras@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular B · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00032",
+        "nombramiento": "Investigador titular B",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=bzREZS9SYTRMTHRQN0wxV241cGpwUT09",
+        "crypt": "bzREZS9SYTRMTHRQN0wxV241cGpwUT09"
+      },
+      "id_anterior": "DIR-0032"
+    },
+    {
+      "id": "DIR-0025",
+      "nombre": "Axel Alejandro González Becerril",
+      "nombre_busqueda": "axel alejandro gonzalez becerril",
+      "correo": "axelgz@ib.unam.mx",
+      "telefono": "5556229147",
+      "extension": null,
+      "telefono_original": "55-56-22-91-47",
+      "telefono_e164": "+525556229147",
+      "etiqueta": "Técnico académico asociado C · Pabellón Nacional de la Biodiversidad (PaBio)",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00056",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Pabellón Nacional de la Biodiversidad (PaBio)",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=aThaVngrY1o4WVU1VHpYNGY4TTBNZz09",
+        "crypt": "aThaVngrY1o4WVU1VHpYNGY4TTBNZz09"
+      },
+      "id_anterior": "DIR-0056"
+    },
+    {
+      "id": "DIR-0026",
+      "nombre": "Bertha Patricia Escalante Pliego",
+      "nombre_busqueda": "bertha patricia escalante pliego",
+      "correo": "tilmatura@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular B · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00038",
+        "nombramiento": "Investigador titular B",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=bUFIQTllNTZQVFJkMk4vYXYxdW1rQT09",
+        "crypt": "bUFIQTllNTZQVFJkMk4vYXYxdW1rQT09"
+      },
+      "id_anterior": "DIR-0038"
+    },
+    {
+      "id": "DIR-0027",
+      "nombre": "Blanca Verónica Juárez Jaimes",
+      "nombre_busqueda": "blanca veronica juarez jaimes",
+      "correo": "vjuarez@ib.unam.mx",
+      "telefono": "5556228000",
+      "extension": "47792",
+      "telefono_original": "555-62-28000 Ext. 47792",
+      "telefono_e164": "+525556228000",
+      "etiqueta": "Técnico académico titular C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00076",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=RjlVeExhVHh4K0ttOGxRUlljN2kwZz09",
+        "crypt": "RjlVeExhVHh4K0ttOGxRUlljN2kwZz09"
+      },
+      "id_anterior": "DIR-0076"
+    },
+    {
+      "id": "DIR-0028",
+      "nombre": "Bonifacio Don Juan Macías",
+      "nombre_busqueda": "bonifacio don juan macias",
+      "correo": "bdnjuan@ib.unam.mx",
+      "telefono": "5556229250",
+      "extension": "47904",
+      "telefono_original": "55-56-22-92-50 Ext. 47904",
+      "telefono_e164": "+525556229250",
+      "etiqueta": "Técnico académico titular A · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00037",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=SXZqYXp1TWR6R2JuSm1tZjFjVzJ0QT09",
+        "crypt": "SXZqYXp1TWR6R2JuSm1tZjFjVzJ0QT09"
+      },
+      "id_anterior": "DIR-0037"
+    },
+    {
+      "id": "DIR-0029",
+      "nombre": "Camila Alcantara Pereira da Silva",
+      "nombre_busqueda": "camila alcantara pereira da silva",
+      "correo": "camila.alcantara@ib.unam.mx",
+      "telefono": "5556229073",
+      "extension": null,
+      "telefono_original": "55-562-29073",
+      "telefono_e164": "+525556229073",
+      "etiqueta": "Técnico académico asociado C · Secretaría Técnica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00002",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Secretaría Técnica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=OTh4eDRtRDhzMDZMWmswVHV4R2UrUT09",
+        "crypt": "OTh4eDRtRDhzMDZMWmswVHV4R2UrUT09"
+      },
+      "id_anterior": "DIR-0002"
+    },
+    {
+      "id": "DIR-0030",
+      "nombre": "Carlos Gómez Hinostrosa",
+      "nombre_busqueda": "carlos gomez hinostrosa",
+      "correo": "cgh@ib.unam.mx",
+      "telefono": "5556229174",
+      "extension": null,
+      "telefono_original": "555-62-29174",
+      "telefono_e164": "+525556229174",
+      "etiqueta": "Técnico académico titular C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00054",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=T1ZuUit1b3dYRWd1a2lhWVFnRUJMZz09",
+        "crypt": "T1ZuUit1b3dYRWd1a2lhWVFnRUJMZz09"
+      },
+      "id_anterior": "DIR-0054"
+    },
+    {
+      "id": "DIR-0031",
+      "nombre": "Carmen Cecilia Hernández Zacarías",
+      "nombre_busqueda": "carmen cecilia hernandez zacarias",
+      "correo": "carmenh@ib.unam.mx",
+      "telefono": "5556229047",
+      "extension": null,
+      "telefono_original": "55-56-22-90-47",
+      "telefono_e164": "+525556229047",
+      "etiqueta": "Técnico académico titular A · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00068",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=WU5MMjlra2VGVHYxK1h1ZUk4d1ZsUT09",
+        "crypt": "WU5MMjlra2VGVHYxK1h1ZUk4d1ZsUT09"
+      },
+      "id_anterior": "DIR-0068"
+    },
+    {
+      "id": "DIR-0032",
+      "nombre": "Carolina Granados Mendoza",
+      "nombre_busqueda": "carolina granados mendoza",
+      "correo": "carolina.granados@ib.unam.mx",
+      "telefono": "5556229126",
+      "extension": null,
+      "telefono_original": "555-62-29126",
+      "telefono_e164": "+525556229126",
+      "etiqueta": "Investigador titular A · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00060",
+        "nombramiento": "Investigador titular A",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=ZmZLRTZQNHRXK2tGREFHeXUxODFHdz09",
+        "crypt": "ZmZLRTZQNHRXK2tGREFHeXUxODFHdz09"
+      },
+      "id_anterior": "DIR-0060"
+    },
+    {
+      "id": "DIR-0033",
+      "nombre": "Celina del Carmen Bernal Ramírez",
+      "nombre_busqueda": "celina del carmen bernal ramirez",
+      "correo": "celina@ib.unam.mx",
+      "telefono": "5556229168",
+      "extension": null,
+      "telefono_original": "55-562-29168",
+      "telefono_e164": "+525556229168",
+      "etiqueta": "Técnico académico titular A · Unidad de Sistemas y Tecnologías de la Información y Comunicación (USTIC)",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00017",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Unidad de Sistemas y Tecnologías de la Información y Comunicación (USTIC)",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=ZmNaQm1ES2tkdndTRVAyWkhlVEpLUT09",
+        "crypt": "ZmNaQm1ES2tkdndTRVAyWkhlVEpLUT09"
+      },
+      "id_anterior": "DIR-0017"
+    },
+    {
+      "id": "DIR-0034",
+      "nombre": "Claudia Patricia Ornelas García",
+      "nombre_busqueda": "claudia patricia ornelas garcia",
+      "correo": "patricia.ornelas.g@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular A · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00114",
+        "nombramiento": "Investigador titular A",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=dnR1aklWUU1uMVRIUlFPY0s0dVpJQT09",
+        "crypt": "dnR1aklWUU1uMVRIUlFPY0s0dVpJQT09"
+      },
+      "id_anterior": "DIR-0114"
+    },
+    {
+      "id": "DIR-0035",
+      "nombre": "Claudio Delgadillo Moya",
+      "nombre_busqueda": "claudio delgadillo moya",
+      "correo": "moya@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00035",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=MTJyV3c3Rlc0Ni85dzdidkFaRmJXUT09",
+        "crypt": "MTJyV3c3Rlc0Ni85dzdidkFaRmJXUT09"
+      },
+      "id_anterior": "DIR-0035"
+    },
+    {
+      "id": "DIR-0036",
+      "nombre": "Daniel Sánchez Carbajal",
+      "nombre_busqueda": "daniel sanchez carbajal",
+      "correo": "dsanchez@ib.unam.mx",
+      "telefono": "3153510202",
+      "extension": null,
+      "telefono_original": "315-3510202",
+      "telefono_e164": "+523153510202",
+      "etiqueta": "Investigador asociado C · Estación Chamela",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00139",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Estación Chamela",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=Lzh2Q3YzbGdlNzE0U2puOHh4eGFiUT09",
+        "crypt": "Lzh2Q3YzbGdlNzE0U2puOHh4eGFiUT09"
+      },
+      "id_anterior": "DIR-0139"
+    },
+    {
+      "id": "DIR-0037",
+      "nombre": "Dariana Raquel Guerrero Fuentes",
+      "nombre_busqueda": "dariana raquel guerrero fuentes",
+      "correo": "dariana.guerrero@ib.unam.mx",
+      "telefono": "5556228222",
+      "extension": "47860",
+      "telefono_original": "55-56-22-82-22 Ext. 47860",
+      "telefono_e164": "+525556228222",
+      "etiqueta": "Técnico académico asociado C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00061",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=N0RlUUlBK1RXSG93TXNMTk9TRkRZdz09",
+        "crypt": "N0RlUUlBK1RXSG93TXNMTk9TRkRZdz09"
+      },
+      "id_anterior": "DIR-0061"
+    },
+    {
+      "id": "DIR-0038",
+      "nombre": "David Iván Guadalupe Hernández Mena",
+      "nombre_busqueda": "david ivan guadalupe hernandez mena",
+      "correo": "dhernandez@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador asociado C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00064",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=aE45d0Rnd3lQRytWR0FuWmRmQjQ0QT09",
+        "crypt": "aE45d0Rnd3lQRytWR0FuWmRmQjQ0QT09"
+      },
+      "id_anterior": "DIR-0064"
+    },
+    {
+      "id": "DIR-0039",
+      "nombre": "David Sebastian Gernandt",
+      "nombre_busqueda": "david sebastian gernandt",
+      "correo": "dgernandt@ib.unam.mx",
+      "telefono": "5556229080",
+      "extension": null,
+      "telefono_original": "555-62-29080",
+      "telefono_e164": "+525556229080",
+      "etiqueta": "Investigador titular A · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00052",
+        "nombramiento": "Investigador titular A",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=OFR5Qk5DckZ6cnkwK0lRVlNzcXkzUT09",
+        "crypt": "OFR5Qk5DckZ6cnkwK0lRVlNzcXkzUT09"
+      },
+      "id_anterior": "DIR-0052"
+    },
+    {
+      "id": "DIR-0040",
+      "nombre": "Delfino Álvaro Campos Villanueva",
+      "nombre_busqueda": "delfino alvaro campos villanueva",
+      "correo": "acampos@ib.unam.mx",
+      "telefono": "2001255406",
+      "extension": "28038",
+      "telefono_original": "200-125-54-06 Ext. 28038",
+      "telefono_e164": "+522001255406",
+      "etiqueta": "Técnico académico asociado C · Estación Los Tuxtlas",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00025",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Estación Los Tuxtlas",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=Y1lqVDUrdDNTeDVJQ3E4SEFvQTMxdz09",
+        "crypt": "Y1lqVDUrdDNTeDVJQ3E4SEFvQTMxdz09"
+      },
+      "id_anterior": "DIR-0025"
+    },
+    {
+      "id": "DIR-0041",
+      "nombre": "Diana Graciela Flores Camargo",
+      "nombre_busqueda": "diana graciela flores camargo",
+      "correo": "diana.flores@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico asociado C · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00039",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=NnMzeTZGQ0NzZndJa0RTeE9TeC9tdz09",
+        "crypt": "NnMzeTZGQ0NzZndJa0RTeE9TeC9tdz09"
+      },
+      "id_anterior": "DIR-0039"
+    },
+    {
+      "id": "DIR-0042",
+      "nombre": "Edmundo González Santillán",
+      "nombre_busqueda": "edmundo gonzalez santillan",
+      "correo": "edmundo.gonzalez@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular A · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00058",
+        "nombramiento": "Investigador titular A",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=THNSdys3YlJnc09EMFh6N3dqSjE2Zz09",
+        "crypt": "THNSdys3YlJnc09EMFh6N3dqSjE2Zz09"
+      },
+      "id_anterior": "DIR-0058"
+    },
+    {
+      "id": "DIR-0043",
+      "nombre": "Edna Naranjo García",
+      "nombre_busqueda": "edna naranjo garcia",
+      "correo": "pallifera@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular B · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00104",
+        "nombramiento": "Investigador titular B",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=VWl1Y0lLbXlhRDNheDVHZmdTdnRwZz09",
+        "crypt": "VWl1Y0lLbXlhRDNheDVHZmdTdnRwZz09"
+      },
+      "id_anterior": "DIR-0104"
+    },
+    {
+      "id": "DIR-0044",
+      "nombre": "Eloísa Torres Hernández",
+      "nombre_busqueda": "eloisa torres hernandez",
+      "correo": "etorres@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico asociado C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00148",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=QUhlb25tcWZwaUphaCtWQ1ZaRnNsZz09",
+        "crypt": "QUhlb25tcWZwaUphaCtWQ1ZaRnNsZz09"
+      },
+      "id_anterior": "DIR-0148"
+    },
+    {
+      "id": "DIR-0045",
+      "nombre": "Enrique Martínez Meyer",
+      "nombre_busqueda": "enrique martinez meyer",
+      "correo": "emm@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00088",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=WDBxRiszZmJEUGFGYzF2c1JtMklYUT09",
+        "crypt": "WDBxRiszZmJEUGFGYzF2c1JtMklYUT09"
+      },
+      "id_anterior": "DIR-0088"
+    },
+    {
+      "id": "DIR-0046",
+      "nombre": "Enrique Ortiz Bermúdez",
+      "nombre_busqueda": "enrique ortiz bermudez",
+      "correo": "eortiz@ib.unam.mx",
+      "telefono": "5556228000",
+      "extension": "47796",
+      "telefono_original": "555-62-28000 Ext. 47796",
+      "telefono_e164": "+525556228000",
+      "etiqueta": "Técnico académico asociado C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00117",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=WFI3S0Z2cnpRa2NIWDJoRjF2M2V0dz09",
+        "crypt": "WFI3S0Z2cnpRa2NIWDJoRjF2M2V0dz09"
+      },
+      "id_anterior": "DIR-0117"
+    },
+    {
+      "id": "DIR-0047",
+      "nombre": "Enrique Ramírez García",
+      "nombre_busqueda": "enrique ramirez garcia",
+      "correo": "eramgar@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico titular B · Estación Chamela",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00128",
+        "nombramiento": "Técnico académico titular B",
+        "departamento": "Estación Chamela",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=azJaQWNtUWJ4UmRqc1BwM0NtOS8vQT09",
+        "crypt": "azJaQWNtUWJ4UmRqc1BwM0NtOS8vQT09"
+      },
+      "id_anterior": "DIR-0128"
+    },
+    {
+      "id": "DIR-0048",
+      "nombre": "Esteban Manuel Martínez Salas",
+      "nombre_busqueda": "esteban manuel martinez salas",
+      "correo": "ems@ib.unam.mx",
+      "telefono": "5556229101",
+      "extension": null,
+      "telefono_original": "555-62-29101",
+      "telefono_e164": "+525556229101",
+      "etiqueta": "Técnico académico titular B · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00090",
+        "nombramiento": "Técnico académico titular B",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=b0dpelNDUWRXQ0dkWVM2cEw0QXFKUT09",
+        "crypt": "b0dpelNDUWRXQ0dkWVM2cEw0QXFKUT09"
+      },
+      "id_anterior": "DIR-0090"
+    },
+    {
+      "id": "DIR-0049",
+      "nombre": "Estefany Karen López Estrada",
+      "nombre_busqueda": "estefany karen lopez estrada",
+      "correo": "lokaren21@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador asociado C · Unidad de Síntesis en Sistemática y Evolución (UniSSE)",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00080",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Unidad de Síntesis en Sistemática y Evolución (UniSSE)",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=RkZPbzhBVzNBUjRkRUVmU0J1N3l0Zz09",
+        "crypt": "RkZPbzhBVzNBUjRkRUVmU0J1N3l0Zz09"
+      },
+      "id_anterior": "DIR-0080"
+    },
+    {
+      "id": "DIR-0050",
+      "nombre": "Estela Sandoval Zapotitla",
+      "nombre_busqueda": "estela sandoval zapotitla",
+      "correo": "esz@ib.unam.mx",
+      "telefono": "5556228987",
+      "extension": null,
+      "telefono_original": "55-56-22-89-87",
+      "telefono_e164": "+525556228987",
+      "etiqueta": "Técnico académico titular C · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00141",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=azNOamtuNFREY29DRW9aUkNUV3lJdz09",
+        "crypt": "azNOamtuNFREY29DRW9aUkNUV3lJdz09"
+      },
+      "id_anterior": "DIR-0141"
+    },
+    {
+      "id": "DIR-0051",
+      "nombre": "Fausto Roberto Méndez de la Cruz",
+      "nombre_busqueda": "fausto roberto mendez de la cruz",
+      "correo": "faustor@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00094",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=Qkp5NjdtQU5ZMTN4eGwvdE8zY28wUT09",
+        "crypt": "Qkp5NjdtQU5ZMTN4eGwvdE8zY28wUT09"
+      },
+      "id_anterior": "DIR-0094"
+    },
+    {
+      "id": "DIR-0052",
+      "nombre": "Felipe Arturo Noguera Martínez",
+      "nombre_busqueda": "felipe arturo noguera martinez",
+      "correo": "fnoguera@ib.unam.mx",
+      "telefono": "5556226512",
+      "extension": null,
+      "telefono_original": "55-56-22-65-12",
+      "telefono_e164": "+525556226512",
+      "etiqueta": "Investigador titular A · Estación Chamela",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00107",
+        "nombramiento": "Investigador titular A",
+        "departamento": "Estación Chamela",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=WUVrdUhZWEZwendhWWRVVzF6TVVqZz09",
+        "crypt": "WUVrdUhZWEZwendhWWRVVzF6TVVqZz09"
+      },
+      "id_anterior": "DIR-0107"
+    },
+    {
+      "id": "DIR-0053",
+      "nombre": "Fernando Alfredo Cervantes Reza",
+      "nombre_busqueda": "fernando alfredo cervantes reza",
+      "correo": "fac@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00027",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=d1JMTm5pNkFyQktxNHo4Rkd1dVFLQT09",
+        "crypt": "d1JMTm5pNkFyQktxNHo4Rkd1dVFLQT09"
+      },
+      "id_anterior": "DIR-0027"
+    },
+    {
+      "id": "DIR-0054",
+      "nombre": "Fernando Álvarez Noguera",
+      "nombre_busqueda": "fernando alvarez noguera",
+      "correo": "falvarez@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00004",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=cDVWY24waWk0Y0tzNW15Q3Q5MXUwdz09",
+        "crypt": "cDVWY24waWk0Y0tzNW15Q3Q5MXUwdz09"
+      },
+      "id_anterior": "DIR-0004"
+    },
+    {
+      "id": "DIR-0055",
+      "nombre": "Francisco Alberto Basurto Peña",
+      "nombre_busqueda": "francisco alberto basurto pena",
+      "correo": "abasurto@ib.unam.mx",
+      "telefono": "5556228983",
+      "extension": null,
+      "telefono_original": "55-562-28983",
+      "telefono_e164": "+525556228983",
+      "etiqueta": "Técnico académico titular B · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00014",
+        "nombramiento": "Técnico académico titular B",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=SXRibkhXazRtUU92cFdwWkROTGhEdz09",
+        "crypt": "SXRibkhXazRtUU92cFdwWkROTGhEdz09"
+      },
+      "id_anterior": "DIR-0014"
+    },
+    {
+      "id": "DIR-0056",
+      "nombre": "Francisco Armendáriz Toledano",
+      "nombre_busqueda": "francisco armendariz toledano",
+      "correo": "farmendariztoledano@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador asociado C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00009",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=L29COHNVbmxQcWNuS3JNWGJOWGdoQT09",
+        "crypt": "L29COHNVbmxQcWNuS3JNWGJOWGdoQT09"
+      },
+      "id_anterior": "DIR-0009"
+    },
+    {
+      "id": "DIR-0057",
+      "nombre": "Francisco Javier Botello López",
+      "nombre_busqueda": "francisco javier botello lopez",
+      "correo": "francisco.botello@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico asociado C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00018",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=MkJ2d1pONy9CcjhDeGNKTVM2ZmM4UT09",
+        "crypt": "MkJ2d1pONy9CcjhDeGNKTVM2ZmM4UT09"
+      },
+      "id_anterior": "DIR-0018"
+    },
+    {
+      "id": "DIR-0058",
+      "nombre": "Francisco Roberto Vergara Silva",
+      "nombre_busqueda": "francisco roberto vergara silva",
+      "correo": "fvs@ib.unam.mx",
+      "telefono": "5556228978",
+      "extension": null,
+      "telefono_original": "55-562-28978",
+      "telefono_e164": "+525556228978",
+      "etiqueta": "Investigador titular A · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00155",
+        "nombramiento": "Investigador titular A",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=SzJ2TVFKaTJFTjhSQmNqMUlQdDNodz09",
+        "crypt": "SzJ2TVFKaTJFTjhSQmNqMUlQdDNodz09"
+      },
+      "id_anterior": "DIR-0155"
+    },
+    {
+      "id": "DIR-0059",
+      "nombre": "Francisco Salvador Hernández Pulido",
+      "nombre_busqueda": "francisco salvador hernandez pulido",
+      "correo": "fshp@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico asociado C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00067",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=UmcrNHhlSXp2dnRUWmFIUVoyangrUT09",
+        "crypt": "UmcrNHhlSXp2dnRUWmFIUVoyangrUT09"
+      },
+      "id_anterior": "DIR-0067"
+    },
+    {
+      "id": "DIR-0060",
+      "nombre": "Gabriel Olalde Parra",
+      "nombre_busqueda": "gabriel olalde parra",
+      "correo": "golalde@ib.unam.mx",
+      "telefono": "5556228989",
+      "extension": null,
+      "telefono_original": "55-56-22-89-89",
+      "telefono_e164": "+525556228989",
+      "etiqueta": "Técnico académico titular A · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00111",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=THFqNUJqek5XNjluV25wNXE1ZjRldz09",
+        "crypt": "THFqNUJqek5XNjluV25wNXE1ZjRldz09"
+      },
+      "id_anterior": "DIR-0111"
+    },
+    {
+      "id": "DIR-0061",
+      "nombre": "Gabriela Parra Olea",
+      "nombre_busqueda": "gabriela parra olea",
+      "correo": "gparra@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00123",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=NHRWMmFZa0FDR3V2WFkzRzRrRzF4QT09",
+        "crypt": "NHRWMmFZa0FDR3V2WFkzRzRrRzF4QT09"
+      },
+      "id_anterior": "DIR-0123"
+    },
+    {
+      "id": "DIR-0062",
+      "nombre": "Georgina Ortega Leite",
+      "nombre_busqueda": "georgina ortega leite",
+      "correo": "leite@ib.unam.mx",
+      "telefono": "5556229111",
+      "extension": null,
+      "telefono_original": "55-56-22-91-11",
+      "telefono_e164": "+525556229111",
+      "etiqueta": "Técnico académico titular A · Secretaría Académica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00116",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Secretaría Académica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=c2twZzVDbVQvRm1tRE84OU11MDhwQT09",
+        "crypt": "c2twZzVDbVQvRm1tRE84OU11MDhwQT09"
+      },
+      "id_anterior": "DIR-0116"
+    },
+    {
+      "id": "DIR-0063",
+      "nombre": "Gerardo Adolfo Salazar Chávez",
+      "nombre_busqueda": "gerardo adolfo salazar chavez",
+      "correo": "gasc@ib.unam.mx",
+      "telefono": "5556228000",
+      "extension": "47953",
+      "telefono_original": "555-62-28000 Ext. 47953",
+      "telefono_e164": "+525556228000",
+      "etiqueta": "Investigador titular B · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00136",
+        "nombramiento": "Investigador titular B",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=QTNKVGh5V3VFMjNQbEFSczlubmExUT09",
+        "crypt": "QTNKVGh5V3VFMjNQbEFSczlubmExUT09"
+      },
+      "id_anterior": "DIR-0136"
+    },
+    {
+      "id": "DIR-0064",
+      "nombre": "Gerardo Arévalo Guzmán",
+      "nombre_busqueda": "gerardo arevalo guzman",
+      "correo": "arevalo@ib.unam.mx",
+      "telefono": "5556229250",
+      "extension": "47782",
+      "telefono_original": "55-56-22-92-50 Ext. 47782",
+      "telefono_e164": "+525556229250",
+      "etiqueta": "Técnico académico titular A · Secretaría Académica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00006",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Secretaría Académica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=cW50bkp4YVRaODVVb0R3UXF3NS9pUT09",
+        "crypt": "cW50bkp4YVRaODVVb0R3UXF3NS9pUT09"
+      },
+      "id_anterior": "DIR-0006"
+    },
+    {
+      "id": "DIR-0065",
+      "nombre": "Gilda Ortiz Calderón",
+      "nombre_busqueda": "gilda ortiz calderon",
+      "correo": "gilda@ib.unam.mx",
+      "telefono": "5556229102",
+      "extension": null,
+      "telefono_original": "555-62-29102",
+      "telefono_e164": "+525556229102",
+      "etiqueta": "Técnico académico titular A · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00118",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=Qkozb0IzclF0QlhibHZZUTFXa1hUQT09",
+        "crypt": "Qkozb0IzclF0QlhibHZZUTFXa1hUQT09"
+      },
+      "id_anterior": "DIR-0118"
+    },
+    {
+      "id": "DIR-0066",
+      "nombre": "Griselda Montiel Parra",
+      "nombre_busqueda": "griselda montiel parra",
+      "correo": "grismp@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico titular B · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00099",
+        "nombramiento": "Técnico académico titular B",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=S2dQYWdBenhZK0VhL0JjNnVIbWRqdz09",
+        "crypt": "S2dQYWdBenhZK0VhL0JjNnVIbWRqdz09"
+      },
+      "id_anterior": "DIR-0099"
+    },
+    {
+      "id": "DIR-0067",
+      "nombre": "Guillermo Salgado Maldonado",
+      "nombre_busqueda": "guillermo salgado maldonado",
+      "correo": "gsalgado@ib.unam.mx",
+      "telefono": "5556229250",
+      "extension": "47871",
+      "telefono_original": "55-56-22-92-50 Ext. 47871",
+      "telefono_e164": "+525556229250",
+      "etiqueta": "Investigador titular C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00138",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=SmRDWXdGQ3dGVmsyQVZSZUVjUk9IUT09",
+        "crypt": "SmRDWXdGQ3dGVmsyQVZSZUVjUk9IUT09"
+      },
+      "id_anterior": "DIR-0138"
+    },
+    {
+      "id": "DIR-0068",
+      "nombre": "Harry Urad Brailovsky Alperowitz",
+      "nombre_busqueda": "harry urad brailovsky alperowitz",
+      "correo": "coreidae@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00019",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=OWNFZ3h1VTZ6WUNOSjI2ejE3ZFFXQT09",
+        "crypt": "OWNFZ3h1VTZ6WUNOSjI2ejE3ZFFXQT09"
+      },
+      "id_anterior": "DIR-0019"
+    },
+    {
+      "id": "DIR-0069",
+      "nombre": "Héctor Manuel Hernández Macías",
+      "nombre_busqueda": "hector manuel hernandez macias",
+      "correo": "hmhm@ib.unam.mx",
+      "telefono": "5556229123",
+      "extension": null,
+      "telefono_original": "555-62-29123",
+      "telefono_e164": "+525556229123",
+      "etiqueta": "Investigador titular C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00063",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=MTZsWnBBYkxha3lpbEEvNGNLT08wQT09",
+        "crypt": "MTZsWnBBYkxha3lpbEEvNGNLT08wQT09"
+      },
+      "id_anterior": "DIR-0063"
+    },
+    {
+      "id": "DIR-0070",
+      "nombre": "Helga Ochoterena Booth",
+      "nombre_busqueda": "helga ochoterena booth",
+      "correo": "helga@ib.unam.mx",
+      "telefono": "5556229122",
+      "extension": null,
+      "telefono_original": "555-62-29122",
+      "telefono_e164": "+525556229122",
+      "etiqueta": "Investigador titular C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00109",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=T05wUjR6WjJESjhhMm1VMENvQnAzZz09",
+        "crypt": "T05wUjR6WjJESjhhMm1VMENvQnAzZz09"
+      },
+      "id_anterior": "DIR-0109"
+    },
+    {
+      "id": "DIR-0071",
+      "nombre": "Hernán Vázquez Miranda",
+      "nombre_busqueda": "hernan vazquez miranda",
+      "correo": "hernan@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador asociado C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00153",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=cVJkVHFtMG5kWGJyQ1RJamVKL0FnZz09",
+        "crypt": "cVJkVHFtMG5kWGJyQ1RJamVKL0FnZz09"
+      },
+      "id_anterior": "DIR-0153"
+    },
+    {
+      "id": "DIR-0072",
+      "nombre": "Horacio Mena González",
+      "nombre_busqueda": "horacio mena gonzalez",
+      "correo": "horacio.mena@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico asociado B · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00093",
+        "nombramiento": "Técnico académico asociado B",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=alYvTjNuUGswY0tGa1JSMjNRRjZOZz09",
+        "crypt": "alYvTjNuUGswY0tGa1JSMjNRRjZOZz09"
+      },
+      "id_anterior": "DIR-0093"
+    },
+    {
+      "id": "DIR-0073",
+      "nombre": "Ingrid Brunner Caligaris",
+      "nombre_busqueda": "ingrid brunner caligaris",
+      "correo": "brunner@ib.unam.mx",
+      "telefono": "5556223022",
+      "extension": null,
+      "telefono_original": "55-56-22-30-22",
+      "telefono_e164": "+525556223022",
+      "etiqueta": "Técnico académico asociado A · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00020",
+        "nombramiento": "Técnico académico asociado A",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=OVVYY3VyVWpWWjZ2RU1IZk1aTU5YZz09",
+        "crypt": "OVVYY3VyVWpWWjZ2RU1IZk1aTU5YZz09"
+      },
+      "id_anterior": "DIR-0020"
+    },
+    {
+      "id": "DIR-0074",
+      "nombre": "Ismael Alejandro Hinojosa Díaz",
+      "nombre_busqueda": "ismael alejandro hinojosa diaz",
+      "correo": "ihinojosa@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador asociado C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00071",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=d1hHTDRkZTZnTjljeFViTlBTamJPdz09",
+        "crypt": "d1hHTDRkZTZnTjljeFViTlBTamJPdz09"
+      },
+      "id_anterior": "DIR-0071"
+    },
+    {
+      "id": "DIR-0075",
+      "nombre": "Ivonne Guadalupe Olalde Omaña",
+      "nombre_busqueda": "ivonne guadalupe olalde omana",
+      "correo": "ivolalde@ib.unam.mx",
+      "telefono": "5556237729",
+      "extension": null,
+      "telefono_original": "55-56-23-77-29",
+      "telefono_e164": "+525556237729",
+      "etiqueta": "Técnico académico titular A · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00110",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=TVhtOFhrbjhVQ01ZNFpUL3pqRklwZz09",
+        "crypt": "TVhtOFhrbjhVQ01ZNFpUL3pqRklwZz09"
+      },
+      "id_anterior": "DIR-0110"
+    },
+    {
+      "id": "DIR-0076",
+      "nombre": "Ivonne Janeth Garzón Orduña",
+      "nombre_busqueda": "ivonne janeth garzon orduna",
+      "correo": "ivonne.garzon@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador asociado C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00051",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=Tm5BdCtrVlF2RFBQQXVZbk8zM2lKZz09",
+        "crypt": "Tm5BdCtrVlF2RFBQQXVZbk8zM2lKZz09"
+      },
+      "id_anterior": "DIR-0051"
+    },
+    {
+      "id": "DIR-0077",
+      "nombre": "Jairo Andrés Arroyave Gutiérrez",
+      "nombre_busqueda": "jairo andres arroyave gutierrez",
+      "correo": "jarroyave@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular A · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00010",
+        "nombramiento": "Investigador titular A",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=eEtPT0dSYmdRQldoLy90OG1Nell4dz09",
+        "crypt": "eEtPT0dSYmdRQldoLy90OG1Nell4dz09"
+      },
+      "id_anterior": "DIR-0010"
+    },
+    {
+      "id": "DIR-0078",
+      "nombre": "Jesús Teodolinda Balcázar Sol",
+      "nombre_busqueda": "jesus teodolinda balcazar sol",
+      "correo": "bsol@ib.unam.mx",
+      "telefono": "5556228982",
+      "extension": null,
+      "telefono_original": "55-56-22-89-82",
+      "telefono_e164": "+525556228982",
+      "etiqueta": "Técnico académico titular B · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00012",
+        "nombramiento": "Técnico académico titular B",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=WlRFdFJtVldVdEJLK0xtWFFZSENvdz09",
+        "crypt": "WlRFdFJtVldVdEJLK0xtWFFZSENvdz09"
+      },
+      "id_anterior": "DIR-0012"
+    },
+    {
+      "id": "DIR-0079",
+      "nombre": "Joel Villavicencio Cisneros",
+      "nombre_busqueda": "joel villavicencio cisneros",
+      "correo": "jvilla65@ib.unam.mx",
+      "telefono": "5556229106",
+      "extension": null,
+      "telefono_original": "55-562-29106",
+      "telefono_e164": "+525556229106",
+      "etiqueta": "Técnico académico titular B · Unidad de Sistemas y Tecnologías de la Información y Comunicación (USTIC)",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00159",
+        "nombramiento": "Técnico académico titular B",
+        "departamento": "Unidad de Sistemas y Tecnologías de la Información y Comunicación (USTIC)",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=NVpVS1o2UkVyeXNaNGFOcmVYbi9Cdz09",
+        "crypt": "NVpVS1o2UkVyeXNaNGFOcmVYbi9Cdz09"
+      },
+      "id_anterior": "DIR-0159"
+    },
+    {
+      "id": "DIR-0080",
+      "nombre": "Jorge Adilson Pinedo Escatel",
+      "nombre_busqueda": "jorge adilson pinedo escatel",
+      "correo": "adilson.pinedo@ib.unam.mx",
+      "telefono": "5556229150",
+      "extension": null,
+      "telefono_original": "55-562-29150",
+      "telefono_e164": "+525556229150",
+      "etiqueta": "Investigador asociado C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00126",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=Q2ZZQmtXZVYyaDV6d3BmdGVUOW9iZz09",
+        "crypt": "Q2ZZQmtXZVYyaDV6d3BmdGVUOW9iZz09"
+      },
+      "id_anterior": "DIR-0126"
+    },
+    {
+      "id": "DIR-0081",
+      "nombre": "Jorge Aurelio Saldívar Sandoval",
+      "nombre_busqueda": "jorge aurelio saldivar sandoval",
+      "correo": "saldivar@ib.unam.mx",
+      "telefono": "5556228977",
+      "extension": null,
+      "telefono_original": "55-56-22-89-77",
+      "telefono_e164": "+525556228977",
+      "etiqueta": "Técnico académico asociado C · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00137",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=YjRyOHl3c0JxSG10L3lrbnRIM3kvQT09",
+        "crypt": "YjRyOHl3c0JxSG10L3lrbnRIM3kvQT09"
+      },
+      "id_anterior": "DIR-0137"
+    },
+    {
+      "id": "DIR-0082",
+      "nombre": "Jorge Cortés Flores",
+      "nombre_busqueda": "jorge cortes flores",
+      "correo": "jorge.cortes@ib.unam.mx",
+      "telefono": "2464611311",
+      "extension": null,
+      "telefono_original": "01-24-64-61-13-11",
+      "telefono_e164": "+522464611311",
+      "etiqueta": "Investigador asociado C · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00033",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=WVFnNUVhNmk2UVZLUzNtOW91bkdJZz09",
+        "crypt": "WVFnNUVhNmk2UVZLUzNtOW91bkdJZz09"
+      },
+      "id_anterior": "DIR-0033"
+    },
+    {
+      "id": "DIR-0083",
+      "nombre": "Jorge Gerardo López Ibarra",
+      "nombre_busqueda": "jorge gerardo lopez ibarra",
+      "correo": "jlopez@ib.unam.mx",
+      "telefono": "5556229106",
+      "extension": null,
+      "telefono_original": "55-56-22-91-06",
+      "telefono_e164": "+525556229106",
+      "etiqueta": "Técnico académico titular B · Unidad de Sistemas y Tecnologías de la Información y Comunicación (USTIC)",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00081",
+        "nombramiento": "Técnico académico titular B",
+        "departamento": "Unidad de Sistemas y Tecnologías de la Información y Comunicación (USTIC)",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=dHBwSURFZEZkMFRZcXJIVDlHNHdpZz09",
+        "crypt": "dHBwSURFZEZkMFRZcXJIVDlHNHdpZz09"
+      },
+      "id_anterior": "DIR-0081"
+    },
+    {
+      "id": "DIR-0084",
+      "nombre": "Jorge Nieto Sotelo",
+      "nombre_busqueda": "jorge nieto sotelo",
+      "correo": "jorge.nieto@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular B · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00105",
+        "nombramiento": "Investigador titular B",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=ZkZkaktiSWdTcjdhUHpqN3FKV1lkdz09",
+        "crypt": "ZkZkaktiSWdTcjdhUHpqN3FKV1lkdz09"
+      },
+      "id_anterior": "DIR-0105"
+    },
+    {
+      "id": "DIR-0085",
+      "nombre": "José Alfredo Wong León",
+      "nombre_busqueda": "jose alfredo wong leon",
+      "correo": "alfredo@ib.unam.mx",
+      "telefono": "5556229106",
+      "extension": null,
+      "telefono_original": "55-562-29106",
+      "telefono_e164": "+525556229106",
+      "etiqueta": "Técnico académico titular B · Unidad de Sistemas y Tecnologías de la Información y Comunicación (USTIC)",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00161",
+        "nombramiento": "Técnico académico titular B",
+        "departamento": "Unidad de Sistemas y Tecnologías de la Información y Comunicación (USTIC)",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=YTlKQXQ4Yk5NVzRiQmxXeUI2YVZVZz09",
+        "crypt": "YTlKQXQ4Yk5NVzRiQmxXeUI2YVZVZz09"
+      },
+      "id_anterior": "DIR-0161"
+    },
+    {
+      "id": "DIR-0086",
+      "nombre": "José Javier García Figueroa Morales",
+      "nombre_busqueda": "jose javier garcia figueroa morales",
+      "correo": "jgarcia@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico titular B · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00045",
+        "nombramiento": "Técnico académico titular B",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=QnBOeGlTdlNmTHNQeWZ0RGUyaU9xdz09",
+        "crypt": "QnBOeGlTdlNmTHNQeWZ0RGUyaU9xdz09"
+      },
+      "id_anterior": "DIR-0045"
+    },
+    {
+      "id": "DIR-0087",
+      "nombre": "José Juan Flores Martínez",
+      "nombre_busqueda": "jose juan flores martinez",
+      "correo": "jj@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico titular B · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00040",
+        "nombramiento": "Técnico académico titular B",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=d2RvWkdrSHp2OFJ5U1MwREFzTjBsQT09",
+        "crypt": "d2RvWkdrSHp2OFJ5U1MwREFzTjBsQT09"
+      },
+      "id_anterior": "DIR-0040"
+    },
+    {
+      "id": "DIR-0088",
+      "nombre": "José Luis Godínez Ortega",
+      "nombre_busqueda": "jose luis godinez ortega",
+      "correo": "jlgo@ib.unam.mx",
+      "telefono": "5556229114",
+      "extension": null,
+      "telefono_original": "555-62-29114",
+      "telefono_e164": "+525556229114",
+      "etiqueta": "Técnico académico titular C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00053",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=ZVRySS92aWpuVVBqOGR0RmEzcDlBUT09",
+        "crypt": "ZVRySS92aWpuVVBqOGR0RmEzcDlBUT09"
+      },
+      "id_anterior": "DIR-0053"
+    },
+    {
+      "id": "DIR-0089",
+      "nombre": "José Luis Villalobos Hiriart",
+      "nombre_busqueda": "jose luis villalobos hiriart",
+      "correo": "hiriart@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00157",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=dWsxRWd4NmVxZm5pVCs5aHV2eGY4QT09",
+        "crypt": "dWsxRWd4NmVxZm5pVCs5aHV2eGY4QT09"
+      },
+      "id_anterior": "DIR-0157"
+    },
+    {
+      "id": "DIR-0090",
+      "nombre": "José Luis Villaseñor Ríos",
+      "nombre_busqueda": "jose luis villasenor rios",
+      "correo": "vrios@ib.unam.mx",
+      "telefono": "5556228000",
+      "extension": "47796",
+      "telefono_original": "555-62-28000 Ext. 47796",
+      "telefono_e164": "+525556228000",
+      "etiqueta": "Investigador titular C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00158",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=Y2lPalg5OEd0TTdvU3ZNUTRoRVdNQT09",
+        "crypt": "Y2lPalg5OEd0TTdvU3ZNUTRoRVdNQT09"
+      },
+      "id_anterior": "DIR-0158"
+    },
+    {
+      "id": "DIR-0091",
+      "nombre": "José Martín García Varela",
+      "nombre_busqueda": "jose martin garcia varela",
+      "correo": "garciav@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00049",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=bWFldlRpQjBXL0FjaloyWGJUdUF3Zz09",
+        "crypt": "bWFldlRpQjBXL0FjaloyWGJUdUF3Zz09"
+      },
+      "id_anterior": "DIR-0049"
+    },
+    {
+      "id": "DIR-0092",
+      "nombre": "Jovana Magdalena Jasso Martínez",
+      "nombre_busqueda": "jovana magdalena jasso martinez",
+      "correo": "jovana.jasso@ib.unam.mx",
+      "telefono": "5556229170",
+      "extension": "47821",
+      "telefono_original": "55-562-29170 Ext. 47821",
+      "telefono_e164": "+525556229170",
+      "etiqueta": "Investigador asociado C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00073",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=ZDlJS2g1bHo1OEsvQmNnVzlETjRNZz09",
+        "crypt": "ZDlJS2g1bHo1OEsvQmNnVzlETjRNZz09"
+      },
+      "id_anterior": "DIR-0073"
+    },
+    {
+      "id": "DIR-0093",
+      "nombre": "Julieta Alvarez Manjarrez",
+      "nombre_busqueda": "julieta alvarez manjarrez",
+      "correo": "julieta.alvarez@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador asociado C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00003",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=a3pmOTN5NFZWSW1uY0F4TGFxMVRjZz09",
+        "crypt": "a3pmOTN5NFZWSW1uY0F4TGFxMVRjZz09"
+      },
+      "id_anterior": "DIR-0003"
+    },
+    {
+      "id": "DIR-0094",
+      "nombre": "Julieta Vargas Cuenca",
+      "nombre_busqueda": "julieta vargas cuenca",
+      "correo": "jvargas@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico titular B · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00152",
+        "nombramiento": "Técnico académico titular B",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=d2JHcGlzd2tSVTZ6TlR3NG13UlZKQT09",
+        "crypt": "d2JHcGlzd2tSVTZ6TlR3NG13UlZKQT09"
+      },
+      "id_anterior": "DIR-0152"
+    },
+    {
+      "id": "DIR-0095",
+      "nombre": "Julio César Montero Rojas",
+      "nombre_busqueda": "julio cesar montero rojas",
+      "correo": "jcmr@ib.unam.mx",
+      "telefono": "5556229105",
+      "extension": null,
+      "telefono_original": "55-56-22-91-05",
+      "telefono_e164": "+525556229105",
+      "etiqueta": "Técnico académico titular A · Secretaría Técnica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00098",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Secretaría Técnica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=bS9wWklhMDJsUEZuT3pMUXJXOENodz09",
+        "crypt": "bS9wWklhMDJsUEZuT3pMUXJXOENodz09"
+      },
+      "id_anterior": "DIR-0098"
+    },
+    {
+      "id": "DIR-0096",
+      "nombre": "Katherine Renton",
+      "nombre_busqueda": "katherine renton",
+      "correo": "krenton@ib.unam.mx",
+      "telefono": "5556226512",
+      "extension": null,
+      "telefono_original": "55-56-22-65-12",
+      "telefono_e164": "+525556226512",
+      "etiqueta": "Investigador titular C · Estación Chamela",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00130",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Estación Chamela",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=K0JWVGtBRnFPK3NzQkgxK0lWYTQzZz09",
+        "crypt": "K0JWVGtBRnFPK3NzQkgxK0lWYTQzZz09"
+      },
+      "id_anterior": "DIR-0130"
+    },
+    {
+      "id": "DIR-0097",
+      "nombre": "Laura Calvillo Canadell",
+      "nombre_busqueda": "laura calvillo canadell",
+      "correo": "laura.calvillo@ib.unam.mx",
+      "telefono": "5556229100",
+      "extension": null,
+      "telefono_original": "555-62-29100",
+      "telefono_e164": "+525556229100",
+      "etiqueta": "Técnico académico titular C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00024",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=YkJCRmszUVk0MDJ0VktWbCthRk5WZz09",
+        "crypt": "YkJCRmszUVk0MDJ0VktWbCthRk5WZz09"
+      },
+      "id_anterior": "DIR-0024"
+    },
+    {
+      "id": "DIR-0098",
+      "nombre": "Laura Margarita Márquez Valdelamar",
+      "nombre_busqueda": "laura margarita marquez valdelamar",
+      "correo": "lmarquez@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico titular C · Secretaría Técnica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00086",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Secretaría Técnica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=ajIzQjIxbWxGeXZaMGQwNmd0Zy9LUT09",
+        "crypt": "ajIzQjIxbWxGeXZaMGQwNmd0Zy9LUT09"
+      },
+      "id_anterior": "DIR-0086"
+    },
+    {
+      "id": "DIR-0099",
+      "nombre": "Laura Trejo Hernández",
+      "nombre_busqueda": "laura trejo hernandez",
+      "correo": "laura.trejo@st.ib.unam.mx",
+      "telefono": "2464611311",
+      "extension": null,
+      "telefono_original": "246-461-13-11",
+      "telefono_e164": "+522464611311",
+      "etiqueta": "Catedrático CONACyT · Laboratorio Regional de Biodiversidad y Cultivo de Tejidos Vegetales (LRByCTV) Tlaxcala",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00149",
+        "nombramiento": "Catedrático CONACyT",
+        "departamento": "Laboratorio Regional de Biodiversidad y Cultivo de Tejidos Vegetales (LRByCTV) Tlaxcala",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=ZUNrYkt2OWMrT01MTEhndjJVMlNGQT09",
+        "crypt": "ZUNrYkt2OWMrT01MTEhndjJVMlNGQT09"
+      },
+      "id_anterior": "DIR-0149"
+    },
+    {
+      "id": "DIR-0100",
+      "nombre": "Lázaro Guevara López",
+      "nombre_busqueda": "lazaro guevara lopez",
+      "correo": "llg@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador asociado C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00062",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=UTB0dHFEU3BGWTRMY2VqZkw5cHJ4Zz09",
+        "crypt": "UTB0dHFEU3BGWTRMY2VqZkw5cHJ4Zz09"
+      },
+      "id_anterior": "DIR-0062"
+    },
+    {
+      "id": "DIR-0101",
+      "nombre": "Leonardo Alejandro Beltrán Rodríguez",
+      "nombre_busqueda": "leonardo alejandro beltran rodriguez",
+      "correo": "leonardo.beltran@ib.unam.mx",
+      "telefono": "5556228985",
+      "extension": null,
+      "telefono_original": "55-562-28985",
+      "telefono_e164": "+525556228985",
+      "etiqueta": "Investigador asociado C · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00015",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=SVFaVDMvQnM0QnplQlRtaS9xb0s4Zz09",
+        "crypt": "SVFaVDMvQnM0QnplQlRtaS9xb0s4Zz09"
+      },
+      "id_anterior": "DIR-0015"
+    },
+    {
+      "id": "DIR-0102",
+      "nombre": "Lidia Irene Cabrera Martínez",
+      "nombre_busqueda": "lidia irene cabrera martinez",
+      "correo": "lcabrera@ib.unam.mx",
+      "telefono": "5556228968",
+      "extension": "46861",
+      "telefono_original": "55-56-22-89-68 Ext. 46861",
+      "telefono_e164": "+525556228968",
+      "etiqueta": "Técnico académico titular A · Secretaría Técnica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00022",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Secretaría Técnica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=QkpoV0gzSjZwdEJrcXFCcXBvVEFOdz09",
+        "crypt": "QkpoV0gzSjZwdEJrcXFCcXBvVEFOdz09"
+      },
+      "id_anterior": "DIR-0022"
+    },
+    {
+      "id": "DIR-0103",
+      "nombre": "Luis García Prieto",
+      "nombre_busqueda": "luis garcia prieto",
+      "correo": "luis.garcia@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico titular C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00048",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=YXlaU2hObVJLbnBWVzNJN0lVMEVNQT09",
+        "crypt": "YXlaU2hObVJLbnBWVzNJN0lVMEVNQT09"
+      },
+      "id_anterior": "DIR-0048"
+    },
+    {
+      "id": "DIR-0104",
+      "nombre": "Luis Gerardo Herrera Montalvo",
+      "nombre_busqueda": "luis gerardo herrera montalvo",
+      "correo": "gherrera@ib.unam.mx",
+      "telefono": "5556226512",
+      "extension": null,
+      "telefono_original": "55-56-22-65-12",
+      "telefono_e164": "+525556226512",
+      "etiqueta": "Investigador titular C · Estación Chamela",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00070",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Estación Chamela",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=S1hIUkZMTHZVcmY1ODg0VHlIZ08wUT09",
+        "crypt": "S1hIUkZMTHZVcmY1ODg0VHlIZ08wUT09"
+      },
+      "id_anterior": "DIR-0070"
+    },
+    {
+      "id": "DIR-0105",
+      "nombre": "Luis Humberto Vicente Rivera",
+      "nombre_busqueda": "luis humberto vicente rivera",
+      "correo": "luis.vicente@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico asociado C · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00156",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=RkRyWkh2Smd5N1d6Mis3aCt6SFdXUT09",
+        "crypt": "RkRyWkh2Smd5N1d6Mis3aCt6SFdXUT09"
+      },
+      "id_anterior": "DIR-0156"
+    },
+    {
+      "id": "DIR-0106",
+      "nombre": "Luis Zambrano González",
+      "nombre_busqueda": "luis zambrano gonzalez",
+      "correo": "zambrano@ib.unam.mx",
+      "telefono": "5556229148",
+      "extension": "47848",
+      "telefono_original": "55-562-29148 Ext. 47848",
+      "telefono_e164": "+525556229148",
+      "etiqueta": "Investigador titular C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00163",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=VGp5MDNEa1EzK2J4S3FVNFNtTWtFZz09",
+        "crypt": "VGp5MDNEa1EzK2J4S3FVNFNtTWtFZz09"
+      },
+      "id_anterior": "DIR-0163"
+    },
+    {
+      "id": "DIR-0107",
+      "nombre": "Magda Carvajal Moreno",
+      "nombre_busqueda": "magda carvajal moreno",
+      "correo": "magdac@ib.unam.mx",
+      "telefono": "5556229138",
+      "extension": null,
+      "telefono_original": "555-62-29138",
+      "telefono_e164": "+525556229138",
+      "etiqueta": "Investigador titular B · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00026",
+        "nombramiento": "Investigador titular B",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=cVN2SlRnd1U2ZDlLQkNGaUtkOGRyZz09",
+        "crypt": "cVN2SlRnd1U2ZDlLQkNGaUtkOGRyZz09"
+      },
+      "id_anterior": "DIR-0026"
+    },
+    {
+      "id": "DIR-0108",
+      "nombre": "Manuel Alejandro Vallejo Zamora",
+      "nombre_busqueda": "manuel alejandro vallejo zamora",
+      "correo": "vallejo@ib.unam.mx",
+      "telefono": "5556229250",
+      "extension": "47905",
+      "telefono_original": "55-56-22-92-50 Ext. 47905",
+      "telefono_e164": "+525556229250",
+      "etiqueta": "Técnico académico asociado C · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00151",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=NWY2UUNXSXc1K3pmY2Q5cU5lMUZEZz09",
+        "crypt": "NWY2UUNXSXc1K3pmY2Q5cU5lMUZEZz09"
+      },
+      "id_anterior": "DIR-0151"
+    },
+    {
+      "id": "DIR-0109",
+      "nombre": "Marcelo Rodrigo Pace",
+      "nombre_busqueda": "marcelo rodrigo pace",
+      "correo": "marcelo.pace@ib.unam.mx",
+      "telefono": "5556228000",
+      "extension": "29121",
+      "telefono_original": "555-62-28000 Ext. 29121",
+      "telefono_e164": "+525556228000",
+      "etiqueta": "Investigador titular A · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00120",
+        "nombramiento": "Investigador titular A",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=aUtUL1h4NVJRaXNVdk9ObTVtTDZGZz09",
+        "crypt": "aUtUL1h4NVJRaXNVdk9ObTVtTDZGZz09"
+      },
+      "id_anterior": "DIR-0120"
+    },
+    {
+      "id": "DIR-0110",
+      "nombre": "Margarita Araceli Zárate Aquino",
+      "nombre_busqueda": "margarita araceli zarate aquino",
+      "correo": "marzaq@ib.unam.mx",
+      "telefono": "5556229250",
+      "extension": "46884",
+      "telefono_original": "55-562-29250 Ext. 46884",
+      "telefono_e164": "+525556229250",
+      "etiqueta": "Técnico académico titular A · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00164",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=cmNSKzEzbnYvUUNPa2EwNXRJV1pqdz09",
+        "crypt": "cmNSKzEzbnYvUUNPa2EwNXRJV1pqdz09"
+      },
+      "id_anterior": "DIR-0164"
+    },
+    {
+      "id": "DIR-0111",
+      "nombre": "María Angélica de la Paz Ramírez Roa",
+      "nombre_busqueda": "maria angelica de la paz ramirez roa",
+      "correo": "aramroa@ib.unam.mx",
+      "telefono": "5556228000",
+      "extension": "47808",
+      "telefono_original": "555-62-28000 Ext. 47808",
+      "telefono_e164": "+525556228000",
+      "etiqueta": "Técnico académico titular C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00129",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=eS9FWWlwZnpCaUFzamlPeDR3c3RwZz09",
+        "crypt": "eS9FWWlwZnpCaUFzamlPeDR3c3RwZz09"
+      },
+      "id_anterior": "DIR-0129"
+    },
+    {
+      "id": "DIR-0112",
+      "nombre": "María Antonieta Arizmendi Espinosa",
+      "nombre_busqueda": "maria antonieta arizmendi espinosa",
+      "correo": "aarizmen@ib.unam.mx",
+      "telefono": "5556229164",
+      "extension": null,
+      "telefono_original": "55-56-22-91-64",
+      "telefono_e164": "+525556229164",
+      "etiqueta": "Técnico académico titular A · Secretaría Académica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00008",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Secretaría Académica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=WDZBTXlHcGhqL1FnZnB2VXpjWlFTUT09",
+        "crypt": "WDZBTXlHcGhqL1FnZnB2VXpjWlFTUT09"
+      },
+      "id_anterior": "DIR-0008"
+    },
+    {
+      "id": "DIR-0113",
+      "nombre": "María Berenit Mendoza Garfias",
+      "nombre_busqueda": "maria berenit mendoza garfias",
+      "correo": "berenit@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico titular C · Secretaría Técnica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00095",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Secretaría Técnica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=MWdVZkxYVVdiNHlPSUpmbUZKRndKdz09",
+        "crypt": "MWdVZkxYVVdiNHlPSUpmbUZKRndKdz09"
+      },
+      "id_anterior": "DIR-0095"
+    },
+    {
+      "id": "DIR-0114",
+      "nombre": "María Cristina Mayorga Martínez",
+      "nombre_busqueda": "maria cristina mayorga martinez",
+      "correo": "mayorgac@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico titular C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00091",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=ZnBoVHhzSWdCZlduY2t1Nm5QODcxdz09",
+        "crypt": "ZnBoVHhzSWdCZlduY2t1Nm5QODcxdz09"
+      },
+      "id_anterior": "DIR-0091"
+    },
+    {
+      "id": "DIR-0115",
+      "nombre": "María de los Ángeles Aída Téllez Velasco",
+      "nombre_busqueda": "maria de los angeles aida tellez velasco",
+      "correo": "atellez@ib.unam.mx",
+      "telefono": "5556228975",
+      "extension": null,
+      "telefono_original": "55-56-22-89-75",
+      "telefono_e164": "+525556228975",
+      "etiqueta": "Técnico académico titular B · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00144",
+        "nombramiento": "Técnico académico titular B",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=RkNlT2kwcWdGZTFKc1lHQ0k3Mktudz09",
+        "crypt": "RkNlT2kwcWdGZTFKc1lHQ0k3Mktudz09"
+      },
+      "id_anterior": "DIR-0144"
+    },
+    {
+      "id": "DIR-0116",
+      "nombre": "María de los Ángeles Herrera Campos",
+      "nombre_busqueda": "maria de los angeles herrera campos",
+      "correo": "mahc@ib.unam.mx",
+      "telefono": "5556229139",
+      "extension": null,
+      "telefono_original": "555-62-29139",
+      "telefono_e164": "+525556229139",
+      "etiqueta": "Investigador titular B · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00069",
+        "nombramiento": "Investigador titular B",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=QTZqTXVyWG4wamxPQkE4SER6NVExQT09",
+        "crypt": "QTZqTXVyWG4wamxPQkE4SER6NVExQT09"
+      },
+      "id_anterior": "DIR-0069"
+    },
+    {
+      "id": "DIR-0117",
+      "nombre": "María Del Carmen Auxilio González Villaseñor",
+      "nombre_busqueda": "maria del carmen auxilio gonzalez villasenor",
+      "correo": "mcgv@ib.unam.mx",
+      "telefono": "5556229136",
+      "extension": null,
+      "telefono_original": "555-62-29136",
+      "telefono_e164": "+525556229136",
+      "etiqueta": "Investigador titular B · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00059",
+        "nombramiento": "Investigador titular B",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=VFlOQlJlN1AvUkExOTI0dGlQMzF6QT09",
+        "crypt": "VFlOQlJlN1AvUkExOTI0dGlQMzF6QT09"
+      },
+      "id_anterior": "DIR-0059"
+    },
+    {
+      "id": "DIR-0118",
+      "nombre": "María del Rosario García Peña",
+      "nombre_busqueda": "maria del rosario garcia pena",
+      "correo": "mrgp@ib.unam.mx",
+      "telefono": "5556229103",
+      "extension": null,
+      "telefono_original": "555-62-29103",
+      "telefono_e164": "+525556229103",
+      "etiqueta": "Técnico académico titular C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00047",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=R2lUais0MVJWL3E1NjB1U3dGR0MyUT09",
+        "crypt": "R2lUais0MVJWL3E1NjB1U3dGR0MyUT09"
+      },
+      "id_anterior": "DIR-0047"
+    },
+    {
+      "id": "DIR-0119",
+      "nombre": "María del Socorro Tapia Tinajero",
+      "nombre_busqueda": "maria del socorro tapia tinajero",
+      "correo": "socorro.tapia@ib.unam.mx",
+      "telefono": "5556229250",
+      "extension": "47873",
+      "telefono_original": "55-56-22-92-50 Ext. 47873",
+      "telefono_e164": "+525556229250",
+      "etiqueta": "Técnico académico titular A · Biblioteca",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00143",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Biblioteca",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=UUYyeHh4Vmh1Q1Rtb29xVjlTNHVuQT09",
+        "crypt": "UUYyeHh4Vmh1Q1Rtb29xVjlTNHVuQT09"
+      },
+      "id_anterior": "DIR-0143"
+    },
+    {
+      "id": "DIR-0120",
+      "nombre": "María Gloria Andrade Murguía",
+      "nombre_busqueda": "maria gloria andrade murguia",
+      "correo": "mgam@ib.unam.mx",
+      "telefono": "5556229113",
+      "extension": null,
+      "telefono_original": "555-62-29113",
+      "telefono_e164": "+525556229113",
+      "etiqueta": "Técnico académico auxiliar C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00005",
+        "nombramiento": "Técnico académico auxiliar C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=c2prcG5nRVlCbjYxK09pQzdQVnI3Zz09",
+        "crypt": "c2prcG5nRVlCbjYxK09pQzdQVnI3Zz09"
+      },
+      "id_anterior": "DIR-0005"
+    },
+    {
+      "id": "DIR-0121",
+      "nombre": "María Hilda Flores Olvera",
+      "nombre_busqueda": "maria hilda flores olvera",
+      "correo": "mahilda@ib.unam.mx",
+      "telefono": "5556228000",
+      "extension": "47790",
+      "telefono_original": "555-62-28000 Ext. 47790",
+      "telefono_e164": "+525556228000",
+      "etiqueta": "Investigador titular B · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00041",
+        "nombramiento": "Investigador titular B",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=SHFkbUk4cThTSFpnanB6bE45c1VYUT09",
+        "crypt": "SHFkbUk4cThTSFpnanB6bE45c1VYUT09"
+      },
+      "id_anterior": "DIR-0041"
+    },
+    {
+      "id": "DIR-0122",
+      "nombre": "María Leticia Torres Colín",
+      "nombre_busqueda": "maria leticia torres colin",
+      "correo": "lety@ib.unam.mx",
+      "telefono": "5556228000",
+      "extension": "47788",
+      "telefono_original": "555-62-28000 Ext. 47788",
+      "telefono_e164": "+525556228000",
+      "etiqueta": "Técnico académico titular C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00146",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=VDl4SGE1VmhwM2lvMEt5aE9yMzNsQT09",
+        "crypt": "VDl4SGE1VmhwM2lvMEt5aE9yMzNsQT09"
+      },
+      "id_anterior": "DIR-0146"
+    },
+    {
+      "id": "DIR-0123",
+      "nombre": "Mariana Vallejo Ramos",
+      "nombre_busqueda": "mariana vallejo ramos",
+      "correo": "mariana.vallejo@ib.unam.mx",
+      "telefono": "5556229045",
+      "extension": null,
+      "telefono_original": "55-56-22-90-45",
+      "telefono_e164": "+525556229045",
+      "etiqueta": "Investigador asociado C · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00150",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=a0xUVVNoZ3NDNlBBY3A0RzdxaDJvUT09",
+        "crypt": "a0xUVVNoZ3NDNlBBY3A0RzdxaDJvUT09"
+      },
+      "id_anterior": "DIR-0150"
+    },
+    {
+      "id": "DIR-0124",
+      "nombre": "Mario García Burgos",
+      "nombre_busqueda": "mario garcia burgos",
+      "correo": "mariog@ib.unam.mx",
+      "telefono": "5556229168",
+      "extension": null,
+      "telefono_original": "55-56-22-91-68",
+      "telefono_e164": "+525556229168",
+      "etiqueta": "Técnico académico asociado C · Unidad de Sistemas y Tecnologías de la Información y Comunicación (USTIC)",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00044",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Unidad de Sistemas y Tecnologías de la Información y Comunicación (USTIC)",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=SWswMDc1WXVlUHRwZ2RmSkR3OXFCUT09",
+        "crypt": "SWswMDc1WXVlUHRwZ2RmSkR3OXFCUT09"
+      },
+      "id_anterior": "DIR-0044"
+    },
+    {
+      "id": "DIR-0125",
+      "nombre": "Mark Earl Olson",
+      "nombre_busqueda": "mark earl olson",
+      "correo": "molson@ib.unam.mx",
+      "telefono": "5531940530",
+      "extension": null,
+      "telefono_original": "553 19-40530",
+      "telefono_e164": "+525531940530",
+      "etiqueta": "Investigador titular C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00112",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=akk3a29sYmxic0thL0lldUlpaERXQT09",
+        "crypt": "akk3a29sYmxic0thL0lldUlpaERXQT09"
+      },
+      "id_anterior": "DIR-0112"
+    },
+    {
+      "id": "DIR-0126",
+      "nombre": "Martha Madora Astudillo",
+      "nombre_busqueda": "martha madora astudillo",
+      "correo": "martha.madora@ib.unam.mx",
+      "telefono": "5556228083",
+      "extension": null,
+      "telefono_original": "55-56-22-80-83",
+      "telefono_e164": "+525556228083",
+      "etiqueta": "Técnico académico titular A · Estación Los Tuxtlas",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00083",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Estación Los Tuxtlas",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=MEFDTUVCaXpvZnlkZU1sTlR2ZVJ2Zz09",
+        "crypt": "MEFDTUVCaXpvZnlkZU1sTlR2ZVJ2Zz09"
+      },
+      "id_anterior": "DIR-0083"
+    },
+    {
+      "id": "DIR-0127",
+      "nombre": "Martha Virginia Olvera García",
+      "nombre_busqueda": "martha virginia olvera garcia",
+      "correo": "mvolvera@ib.unam.mx",
+      "telefono": "5556228000",
+      "extension": "47807",
+      "telefono_original": "555-62-28000 Ext. 47807",
+      "telefono_e164": "+525556228000",
+      "etiqueta": "Técnico académico titular C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00113",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=U2VUYnN5bDZ5U1NJZGZwbE9XRkUyZz09",
+        "crypt": "U2VUYnN5bDZ5U1NJZGZwbE9XRkUyZz09"
+      },
+      "id_anterior": "DIR-0113"
+    },
+    {
+      "id": "DIR-0128",
+      "nombre": "Martin Ricker",
+      "nombre_busqueda": "martin ricker",
+      "correo": "mricker@ib.unam.mx",
+      "telefono": "5556229127",
+      "extension": null,
+      "telefono_original": "555-62-29127",
+      "telefono_e164": "+525556229127",
+      "etiqueta": "Investigador titular B · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00133",
+        "nombramiento": "Investigador titular B",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=bzEvRFdCeUh4WFdpcGpvbGN4S1lHQT09",
+        "crypt": "bzEvRFdCeUh4WFdpcGpvbGN4S1lHQT09"
+      },
+      "id_anterior": "DIR-0133"
+    },
+    {
+      "id": "DIR-0129",
+      "nombre": "Mauricio Antonio Mora Jarvio",
+      "nombre_busqueda": "mauricio antonio mora jarvio",
+      "correo": "mauricio.mora@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico asociado C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00100",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=TVlCU2NVV0tDYVlJMjBLTnRmTFNVZz09",
+        "crypt": "TVlCU2NVV0tDYVlJMjBLTnRmTFNVZz09"
+      },
+      "id_anterior": "DIR-0100"
+    },
+    {
+      "id": "DIR-0130",
+      "nombre": "Mauricio Morgado Castillo",
+      "nombre_busqueda": "mauricio morgado castillo",
+      "correo": "mauricio.morgado@ib.unam.mx",
+      "telefono": "5556229124",
+      "extension": "47801",
+      "telefono_original": "55-562-29124 Ext. 47801",
+      "telefono_e164": "+525556229124",
+      "etiqueta": "Técnico académico asociado C · Unidad de Informática para la Biodiversidad (UNIBIO)",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00102",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Unidad de Informática para la Biodiversidad (UNIBIO)",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=a0FDWnY3NUo4YU1XaElSUUVndHNGdz09",
+        "crypt": "a0FDWnY3NUo4YU1XaElSUUVndHNGdz09"
+      },
+      "id_anterior": "DIR-0102"
+    },
+    {
+      "id": "DIR-0131",
+      "nombre": "Miguel Alfonso Ortega Huerta",
+      "nombre_busqueda": "miguel alfonso ortega huerta",
+      "correo": "maoh@ib.unam.mx",
+      "telefono": "5556226512",
+      "extension": "47001",
+      "telefono_original": "55-56-22-65-12 Ext. 47001",
+      "telefono_e164": "+525556226512",
+      "etiqueta": "Investigador titular A · Estación Chamela",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00115",
+        "nombramiento": "Investigador titular A",
+        "departamento": "Estación Chamela",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=YjdlRTFuVlE2MWQzRmpKaGlPNURsdz09",
+        "crypt": "YjdlRTFuVlE2MWQzRmpKaGlPNURsdz09"
+      },
+      "id_anterior": "DIR-0115"
+    },
+    {
+      "id": "DIR-0132",
+      "nombre": "Miguel Murguía Romero",
+      "nombre_busqueda": "miguel murguia romero",
+      "correo": "miguel.murguia@ib.unam.mx",
+      "telefono": "5556229124",
+      "extension": "47801",
+      "telefono_original": "55-562-29124 Ext. 47801",
+      "telefono_e164": "+525556229124",
+      "etiqueta": "Técnico académico titular C · Unidad de Informática para la Biodiversidad (UNIBIO)",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00103",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Unidad de Informática para la Biodiversidad (UNIBIO)",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=M2xaT1NOYkZBVU5XcXR6ZythSXpFQT09",
+        "crypt": "M2xaT1NOYkZBVU5XcXR6ZythSXpFQT09"
+      },
+      "id_anterior": "DIR-0103"
+    },
+    {
+      "id": "DIR-0133",
+      "nombre": "Natalia Ivalú Cacho González",
+      "nombre_busqueda": "natalia ivalu cacho gonzalez",
+      "correo": "ivalu.cacho@ib.unam.mx",
+      "telefono": "5556228000",
+      "extension": "47803",
+      "telefono_original": "555-62-28000 Ext. 47803",
+      "telefono_e164": "+525556228000",
+      "etiqueta": "Investigador titular A · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00023",
+        "nombramiento": "Investigador titular A",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=Zkd3Rk42akh6My9sQjhUdkZSVHNMdz09",
+        "crypt": "Zkd3Rk42akh6My9sQjhUdkZSVHNMdz09"
+      },
+      "id_anterior": "DIR-0023"
+    },
+    {
+      "id": "DIR-0134",
+      "nombre": "Nelly María López Ortiz",
+      "nombre_busqueda": "nelly maria lopez ortiz",
+      "correo": "nelly.lopez@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico asociado C · Secretaría Técnica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00082",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Secretaría Técnica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=bC9kN2hwS3E4aXFCOUozMm1aTUU4UT09",
+        "crypt": "bC9kN2hwS3E4aXFCOUozMm1aTUU4UT09"
+      },
+      "id_anterior": "DIR-0082"
+    },
+    {
+      "id": "DIR-0135",
+      "nombre": "Noemí Chávez Castañeda",
+      "nombre_busqueda": "noemi chavez castaneda",
+      "correo": "noemi@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico titular B · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00030",
+        "nombramiento": "Técnico académico titular B",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=Rjl4cDY5dkN6TVlORnVzeXBFV0ozZz09",
+        "crypt": "Rjl4cDY5dkN6TVlORnVzeXBFV0ozZz09"
+      },
+      "id_anterior": "DIR-0030"
+    },
+    {
+      "id": "DIR-0136",
+      "nombre": "Omar Hernández Ordóñez",
+      "nombre_busqueda": "omar hernandez ordonez",
+      "correo": "omar.hernandez@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico asociado C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00066",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=ZzZraWhWNWhyWk95Q2VvV2VubHhTdz09",
+        "crypt": "ZzZraWhWNWhyWk95Q2VvV2VubHhTdz09"
+      },
+      "id_anterior": "DIR-0066"
+    },
+    {
+      "id": "DIR-0137",
+      "nombre": "Oscar Alberto Flores Villela",
+      "nombre_busqueda": "oscar alberto flores villela",
+      "correo": "ofvq@unam.mx",
+      "telefono": "5556224832",
+      "extension": null,
+      "telefono_original": "55-56-22-48-32",
+      "telefono_e164": "+525556224832",
+      "etiqueta": "Profesor de Carrera Titular C · Zoología, PaBio / Biología Evolutiva, Facultad de Ciencias",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00042",
+        "nombramiento": "Profesor de Carrera Titular C",
+        "departamento": "Zoología, PaBio / Biología Evolutiva, Facultad de Ciencias",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=NnQzTWxLUzEyaWdqUHNCUTlTSmJRZz09",
+        "crypt": "NnQzTWxLUzEyaWdqUHNCUTlTSmJRZz09"
+      },
+      "id_anterior": "DIR-0042"
+    },
+    {
+      "id": "DIR-0138",
+      "nombre": "Oscar Eduardo Hernández Navarro",
+      "nombre_busqueda": "oscar eduardo hernandez navarro",
+      "correo": "eduardo.hernandez@ib.unam.mx",
+      "telefono": "5556228000",
+      "extension": "47835",
+      "telefono_original": "555-62-28000 Ext. 47835",
+      "telefono_e164": "+525556228000",
+      "etiqueta": "Investigador asociado C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00065",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=dU52MzVEYmtHb2lIdUZ4SFVRQlVBQT09",
+        "crypt": "dU52MzVEYmtHb2lIdUZ4SFVRQlVBQT09"
+      },
+      "id_anterior": "DIR-0065"
+    },
+    {
+      "id": "DIR-0139",
+      "nombre": "Panuncio Jerónimo Reyes Santiago",
+      "nombre_busqueda": "panuncio jeronimo reyes santiago",
+      "correo": "jreyes@ib.unam.mx",
+      "telefono": "5556228976",
+      "extension": null,
+      "telefono_original": "55-56-22-89-76",
+      "telefono_e164": "+525556228976",
+      "etiqueta": "Técnico académico asociado C · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00131",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=eG8rajA0cWVzd2hCNkMwYlEzTW40UT09",
+        "crypt": "eG8rajA0cWVzd2hCNkMwYlEzTW40UT09"
+      },
+      "id_anterior": "DIR-0131"
+    },
+    {
+      "id": "DIR-0140",
+      "nombre": "Patricia Ester Lappe Oliveras",
+      "nombre_busqueda": "patricia ester lappe oliveras",
+      "correo": "lappe@ib.unam.mx",
+      "telefono": "5556228000",
+      "extension": "47768",
+      "telefono_original": "555-62-28000 Ext. 47768",
+      "telefono_e164": "+525556228000",
+      "etiqueta": "Técnico académico titular C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00077",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=eUZMaUFDZzlUVWhnWWdyZWJFR1BoZz09",
+        "crypt": "eUZMaUFDZzlUVWhnWWdyZWJFR1BoZz09"
+      },
+      "id_anterior": "DIR-0077"
+    },
+    {
+      "id": "DIR-0141",
+      "nombre": "Patricia Magaña Rueda",
+      "nombre_busqueda": "patricia magana rueda",
+      "correo": "patricia.maganar@ib.unam.mx",
+      "telefono": "5556229131",
+      "extension": null,
+      "telefono_original": "55-56-22-91-31",
+      "telefono_e164": "+525556229131",
+      "etiqueta": "Técnico académico titular C · Unidad de Comunicación Pública de la Biología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00085",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Unidad de Comunicación Pública de la Biología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=aXd2dVQxOXN5N2tqTGlPd0JhMUtKdz09",
+        "crypt": "aXd2dVQxOXN5N2tqTGlPd0JhMUtKdz09"
+      },
+      "id_anterior": "DIR-0085"
+    },
+    {
+      "id": "DIR-0142",
+      "nombre": "Patricia Vélez Aguilar",
+      "nombre_busqueda": "patricia velez aguilar",
+      "correo": "pvelez@ib.unam.mx",
+      "telefono": "5556229132",
+      "extension": null,
+      "telefono_original": "555-62-29132",
+      "telefono_e164": "+525556229132",
+      "etiqueta": "Investigador titular A · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00154",
+        "nombramiento": "Investigador titular A",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=UHJYR0ttZFZoRWdsa0dtOU0wTVhZZz09",
+        "crypt": "UHJYR0ttZFZoRWdsa0dtOU0wTVhZZz09"
+      },
+      "id_anterior": "DIR-0154"
+    },
+    {
+      "id": "DIR-0143",
+      "nombre": "Pedro Mercado Ruaro",
+      "nombre_busqueda": "pedro mercado ruaro",
+      "correo": "mruaro@ib.unam.mx",
+      "telefono": "5556229088",
+      "extension": null,
+      "telefono_original": "555-62-29088",
+      "telefono_e164": "+525556229088",
+      "etiqueta": "Técnico académico titular C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00096",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=TXRrbmovQVZVdFk0RjFaTUwvamxPdz09",
+        "crypt": "TXRrbmovQVZVdFk0RjFaTUwvamxPdz09"
+      },
+      "id_anterior": "DIR-0096"
+    },
+    {
+      "id": "DIR-0144",
+      "nombre": "Rafael Cristian Cervantes Salcedo",
+      "nombre_busqueda": "rafael cristian cervantes salcedo",
+      "correo": "cristian.cervantes@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico asociado C · Unidad de Síntesis en Sistemática y Evolución (UniSSE)",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00028",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Unidad de Síntesis en Sistemática y Evolución (UniSSE)",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=Yi9BdHNya3JpSkFJNDh4dlh1b3kydz09",
+        "crypt": "Yi9BdHNya3JpSkFJNDh4dlh1b3kydz09"
+      },
+      "id_anterior": "DIR-0028"
+    },
+    {
+      "id": "DIR-0145",
+      "nombre": "Rafael Enrique Barba Álvarez",
+      "nombre_busqueda": "rafael enrique barba alvarez",
+      "correo": "rbarba@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico titular B · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00013",
+        "nombramiento": "Técnico académico titular B",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=c3FGYm1TK1ZaQ1crclMwQ1h6ZEhLUT09",
+        "crypt": "c3FGYm1TK1ZaQ1crclMwQ1h6ZEhLUT09"
+      },
+      "id_anterior": "DIR-0013"
+    },
+    {
+      "id": "DIR-0146",
+      "nombre": "Rafael Torres Colín",
+      "nombre_busqueda": "rafael torres colin",
+      "correo": "rafael.torres@ib.unam.mx",
+      "telefono": "5556228000",
+      "extension": "47793",
+      "telefono_original": "555-62-28000 Ext. 47793",
+      "telefono_e164": "+525556228000",
+      "etiqueta": "Técnico académico titular C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00147",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=Z0RtSmNBSmF2b3VtaGs2RDJaOWNkZz09",
+        "crypt": "Z0RtSmNBSmF2b3VtaGs2RDJaOWNkZz09"
+      },
+      "id_anterior": "DIR-0147"
+    },
+    {
+      "id": "DIR-0147",
+      "nombre": "Ricardo Ayala Barajas",
+      "nombre_busqueda": "ricardo ayala barajas",
+      "correo": "rayala@ib.unam.mx",
+      "telefono": "5556226512",
+      "extension": null,
+      "telefono_original": "55-56-22-65-12",
+      "telefono_e164": "+525556226512",
+      "etiqueta": "Investigador titular A · Estación Chamela",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00011",
+        "nombramiento": "Investigador titular A",
+        "departamento": "Estación Chamela",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=dmNsbEhubThBaEREZHNJUnpQMnptUT09",
+        "crypt": "dmNsbEhubThBaEREZHNJUnpQMnptUT09"
+      },
+      "id_anterior": "DIR-0011"
+    },
+    {
+      "id": "DIR-0148",
+      "nombre": "Ricardo Miranda González",
+      "nombre_busqueda": "ricardo miranda gonzalez",
+      "correo": "ricardo.miranda@ib.unam.mx",
+      "telefono": "5556229137",
+      "extension": null,
+      "telefono_original": "55-562-29137",
+      "telefono_e164": "+525556229137",
+      "etiqueta": "Investigador asociado C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00097",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=K0RvU0ZRTFBBYW8xb2RDcU9xR1R5UT09",
+        "crypt": "K0RvU0ZRTFBBYW8xb2RDcU9xR1R5UT09"
+      },
+      "id_anterior": "DIR-0097"
+    },
+    {
+      "id": "DIR-0149",
+      "nombre": "Ricardo Paredes León",
+      "nombre_busqueda": "ricardo paredes leon",
+      "correo": "rparedes@ib.unam.mx",
+      "telefono": "5556229078",
+      "extension": "47854",
+      "telefono_original": "55-562-29078 Ext. 47854",
+      "telefono_e164": "+525556229078",
+      "etiqueta": "Investigador asociado C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00122",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=SHNtWVB4NHZ1RWVpUVZOWjlORFpNUT09",
+        "crypt": "SHNtWVB4NHZ1RWVpUVZOWjlORFpNUT09"
+      },
+      "id_anterior": "DIR-0122"
+    },
+    {
+      "id": "DIR-0150",
+      "nombre": "Robert Bye Boettler",
+      "nombre_busqueda": "robert bye boettler",
+      "correo": "bye.robert@gmail.com",
+      "telefono": "5556229054",
+      "extension": "47901",
+      "telefono_original": "55-56-22-90-54 Ext. 47901",
+      "telefono_e164": "+525556229054",
+      "etiqueta": "Investigador titular C · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00021",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=QzFad2NhSEQ4cVk0eElTVkpRTk1TQT09",
+        "crypt": "QzFad2NhSEQ4cVk0eElTVkpRTk1TQT09"
+      },
+      "id_anterior": "DIR-0021"
+    },
+    {
+      "id": "DIR-0151",
+      "nombre": "Roberto Garibay Orijel",
+      "nombre_busqueda": "roberto garibay orijel",
+      "correo": "rgaribay@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular B · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00050",
+        "nombramiento": "Investigador titular B",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=d09tTkhpWDhBK2lPS25NRFlSSjROQT09",
+        "crypt": "d09tTkhpWDhBK2lPS25NRFlSSjROQT09"
+      },
+      "id_anterior": "DIR-0050"
+    },
+    {
+      "id": "DIR-0152",
+      "nombre": "Rosalinda Medina Lemos",
+      "nombre_busqueda": "rosalinda medina lemos",
+      "correo": "mlemos7@gmail.com",
+      "telefono": "5556229096",
+      "extension": null,
+      "telefono_original": "555-62-29096",
+      "telefono_e164": "+525556229096",
+      "etiqueta": "Técnico académico titular A · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00092",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=VFMzQmlqS1Y1SEVjeUhyZXg5UmFzZz09",
+        "crypt": "VFMzQmlqS1Y1SEVjeUhyZXg5UmFzZz09"
+      },
+      "id_anterior": "DIR-0092"
+    },
+    {
+      "id": "DIR-0153",
+      "nombre": "Rosamond Ione Coates",
+      "nombre_busqueda": "rosamond ione coates",
+      "correo": "rcoates@ib.unam.mx",
+      "telefono": "5556228038",
+      "extension": null,
+      "telefono_original": "01-55-56-22-80-38",
+      "telefono_e164": "+525556228038",
+      "etiqueta": "Técnico académico titular B · Estación Los Tuxtlas",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00031",
+        "nombramiento": "Técnico académico titular B",
+        "departamento": "Estación Los Tuxtlas",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=VHdOUmhwd2JWZlBkUzNyVndwcThBdz09",
+        "crypt": "VHdOUmhwd2JWZlBkUzNyVndwcThBdz09"
+      },
+      "id_anterior": "DIR-0031"
+    },
+    {
+      "id": "DIR-0154",
+      "nombre": "Salma Gómez Ibarra",
+      "nombre_busqueda": "salma gomez ibarra",
+      "correo": "salma.gomez@ib.unam.mx",
+      "telefono": "5556229047",
+      "extension": null,
+      "telefono_original": "55-56-22-90-47",
+      "telefono_e164": "+525556229047",
+      "etiqueta": "Técnico académico asociado C · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00055",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=UlRibWhCbVYxdGRiUTNjRU5GWEUvdz09",
+        "crypt": "UlRibWhCbVYxdGRiUTNjRU5GWEUvdz09"
+      },
+      "id_anterior": "DIR-0055"
+    },
+    {
+      "id": "DIR-0155",
+      "nombre": "Samuel Aguilar Ogarrio",
+      "nombre_busqueda": "samuel aguilar ogarrio",
+      "correo": "ogarrio@ib.unam.mx",
+      "telefono": "5556228000",
+      "extension": "47837",
+      "telefono_original": "555-62-28000 Ext. 47837",
+      "telefono_e164": "+525556228000",
+      "etiqueta": "Técnico académico asociado B · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00001",
+        "nombramiento": "Técnico académico asociado B",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=bHV1Q3VFQi8xVlJzRlh1aVhvZXFRQT09",
+        "crypt": "bHV1Q3VFQi8xVlJzRlh1aVhvZXFRQT09"
+      },
+      "id_anterior": "DIR-0001"
+    },
+    {
+      "id": "DIR-0156",
+      "nombre": "Sandra Nayeli González Mateos",
+      "nombre_busqueda": "sandra nayeli gonzalez mateos",
+      "correo": "nayelig@ib.unam.mx",
+      "telefono": "5556229250",
+      "extension": "46885",
+      "telefono_original": "55-56-22-92-50 Ext. 46885",
+      "telefono_e164": "+525556229250",
+      "etiqueta": "Técnico académico asociado C · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00057",
+        "nombramiento": "Técnico académico asociado C",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=VHhuZzlxc3J2aURjYnB2bS9jSkJ3UT09",
+        "crypt": "VHhuZzlxc3J2aURjYnB2bS9jSkJ3UT09"
+      },
+      "id_anterior": "DIR-0057"
+    },
+    {
+      "id": "DIR-0157",
+      "nombre": "Santiago Alejandro Ramírez Barahona",
+      "nombre_busqueda": "santiago alejandro ramirez barahona",
+      "correo": "santiago.ramirez@ib.unam.mx",
+      "telefono": "5556229092",
+      "extension": null,
+      "telefono_original": "555-62-29092",
+      "telefono_e164": "+525556229092",
+      "etiqueta": "Investigador asociado C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00127",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=Z2tLdmRwZ0M3djVlajloWHZlaEpHZz09",
+        "crypt": "Z2tLdmRwZ0M3djVlajloWHZlaEpHZz09"
+      },
+      "id_anterior": "DIR-0127"
+    },
+    {
+      "id": "DIR-0158",
+      "nombre": "Santiago Jaume Schinkel",
+      "nombre_busqueda": "santiago jaume schinkel",
+      "correo": "santiago.jaume@ib.unam.mx",
+      "telefono": "5556229158",
+      "extension": null,
+      "telefono_original": "55-56-22-91-58",
+      "telefono_e164": "+525556229158",
+      "etiqueta": "Investigador asociado C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00074",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=MklQbFlpY0FuSCtqaFJ5YUlSTzI3QT09",
+        "crypt": "MklQbFlpY0FuSCtqaFJ5YUlSTzI3QT09"
+      },
+      "id_anterior": "DIR-0074"
+    },
+    {
+      "id": "DIR-0159",
+      "nombre": "Sol Cristians Niizawa",
+      "nombre_busqueda": "sol cristians niizawa",
+      "correo": "sol.cristians@ib.unam.mx",
+      "telefono": "5556229250",
+      "extension": "47901",
+      "telefono_original": "55-56-22-92-50 Ext. 47901",
+      "telefono_e164": "+525556229250",
+      "etiqueta": "Investigador asociado C · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00034",
+        "nombramiento": "Investigador asociado C",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=U1FlaXlPajE2MXdBUlhPY0k3UGNNZz09",
+        "crypt": "U1FlaXlPajE2MXdBUlhPY0k3UGNNZz09"
+      },
+      "id_anterior": "DIR-0034"
+    },
+    {
+      "id": "DIR-0160",
+      "nombre": "Teresa Margarita Terrazas Salgado",
+      "nombre_busqueda": "teresa margarita terrazas salgado",
+      "correo": "tterrazas@ib.unam.mx",
+      "telefono": "5556229116",
+      "extension": null,
+      "telefono_original": "555-62-29116",
+      "telefono_e164": "+525556229116",
+      "etiqueta": "Investigador titular C · Botánica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00145",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Botánica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=MkV2OGozSDJ6SUQ0eWNlT2RhVXE0UT09",
+        "crypt": "MkV2OGozSDJ6SUQ0eWNlT2RhVXE0UT09"
+      },
+      "id_anterior": "DIR-0145"
+    },
+    {
+      "id": "DIR-0161",
+      "nombre": "Tila María Pérez Ortiz",
+      "nombre_busqueda": "tila maria perez ortiz",
+      "correo": "tilam@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00125",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=dC9aWStDc1ZmT1FKYjdhZnAxUGNVUT09",
+        "crypt": "dC9aWStDc1ZmT1FKYjdhZnAxUGNVUT09"
+      },
+      "id_anterior": "DIR-0125"
+    },
+    {
+      "id": "DIR-0162",
+      "nombre": "Ulises Yunuén Rosas López",
+      "nombre_busqueda": "ulises yunuen rosas lopez",
+      "correo": "urosas@ib.unam.mx",
+      "telefono": "5556229051",
+      "extension": "46879",
+      "telefono_original": "55-56-22-90-51 Ext. 46879",
+      "telefono_e164": "+525556229051",
+      "etiqueta": "Investigador titular A · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00135",
+        "nombramiento": "Investigador titular A",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=UmRsNnd2eFFzUlBpYVBzUDFkcWVHZz09",
+        "crypt": "UmRsNnd2eFFzUlBpYVBzUDFkcWVHZz09"
+      },
+      "id_anterior": "DIR-0135"
+    },
+    {
+      "id": "DIR-0163",
+      "nombre": "Víctor Hugo Reynoso Rosales",
+      "nombre_busqueda": "victor hugo reynoso rosales",
+      "correo": "vreynoso@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00132",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=R254a2psSURxOTgwVGhKQkNsNW1VUT09",
+        "crypt": "R254a2psSURxOTgwVGhKQkNsNW1VUT09"
+      },
+      "id_anterior": "DIR-0132"
+    },
+    {
+      "id": "DIR-0164",
+      "nombre": "Víctor Manuel Chávez Ávila",
+      "nombre_busqueda": "victor manuel chavez avila",
+      "correo": "victorm.chavez@ib.unam.mx",
+      "telefono": "5556229048",
+      "extension": null,
+      "telefono_original": "55-56-22-90-48",
+      "telefono_e164": "+525556229048",
+      "etiqueta": "Investigador titular B · Jardín Botánico",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00029",
+        "nombramiento": "Investigador titular B",
+        "departamento": "Jardín Botánico",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=MGpjQThLUUJHM3EyMy9ROWFmVERaZz09",
+        "crypt": "MGpjQThLUUJHM3EyMy9ROWFmVERaZz09"
+      },
+      "id_anterior": "DIR-0029"
+    },
+    {
+      "id": "DIR-0165",
+      "nombre": "Víctor Manuel Guillermo Sánchez Cordero Dávila",
+      "nombre_busqueda": "victor manuel guillermo sanchez cordero davila",
+      "correo": "victor@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00140",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=Z004aTRuRk9uRnFCK3Nra2c2Y2R4QT09",
+        "crypt": "Z004aTRuRk9uRnFCK3Nra2c2Y2R4QT09"
+      },
+      "id_anterior": "DIR-0140"
+    },
+    {
+      "id": "DIR-0166",
+      "nombre": "Virginia León Règagnon",
+      "nombre_busqueda": "virginia leon regagnon",
+      "correo": "vleon@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Investigador titular C · Estación Chamela",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00078",
+        "nombramiento": "Investigador titular C",
+        "departamento": "Estación Chamela",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=Y2llNitFS3dMR3NOU1UycFVyQ3YyZz09",
+        "crypt": "Y2llNitFS3dMR3NOU1UycFVyQ3YyZz09"
+      },
+      "id_anterior": "DIR-0078"
+    },
+    {
+      "id": "DIR-0167",
+      "nombre": "Yazmín Rivera Cruz",
+      "nombre_busqueda": "yazmin rivera cruz",
+      "correo": "yazz.cruzz@ib.unam.mx",
+      "telefono": "5556229250",
+      "extension": "47783",
+      "telefono_original": "55-56-22-92-50 Ext. 47783",
+      "telefono_e164": "+525556229250",
+      "etiqueta": "Técnico académico titular A · Secretaría Académica",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00134",
+        "nombramiento": "Técnico académico titular A",
+        "departamento": "Secretaría Académica",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=OC84YmwySzFGRXhsay9wckl5MTJIUT09",
+        "crypt": "OC84YmwySzFGRXhsay9wckl5MTJIUT09"
+      },
+      "id_anterior": "DIR-0134"
+    },
+    {
+      "id": "DIR-0168",
+      "nombre": "Yolanda Hortelano Moncada",
+      "nombre_busqueda": "yolanda hortelano moncada",
+      "correo": "yolahm@ib.unam.mx",
+      "telefono": null,
+      "extension": null,
+      "telefono_original": null,
+      "telefono_e164": null,
+      "etiqueta": "Técnico académico titular C · Zoología",
+      "fuente_preferida": "directorio_academico_ib",
+      "fuentes": [
+        "directorio_academico_ib"
+      ],
+      "datos_auxiliares": {
+        "colaborador_id": "IB-PA-00072",
+        "nombramiento": "Técnico académico titular C",
+        "departamento": "Zoología",
+        "perfil_url": "https://www.ib.unam.mx/ib/directorio-del-personal-academico/perfil/index.php?crypt=RVZhcnpsWm45YXFLMHZDcUxLZnQydz09",
+        "crypt": "RVZhcnpsWm45YXFLMHZDcUxLZnQydz09"
+      },
+      "id_anterior": "DIR-0072"
+    }
+  ]
+}
