@@ -1,10 +1,21 @@
-"""Generación de copias llenas de la plantilla de solicitud única."""
+"""Generación de copias llenas de la plantilla de solicitud única.
 
+Esta versión usa openpyxl en lugar de manipular el XML a mano. openpyxl
+entiende el formato XLSX, por lo que conserva por sí mismo los dibujos
+(el logo), las imágenes, las relaciones y las celdas combinadas. Eso elimina
+la clase de errores de "archivo ilegible" que aparecían al reescribir el XML
+con la librería estándar.
+"""
+
+from copy import copy
 from io import BytesIO
 from pathlib import Path
 from typing import Dict, Iterable, Tuple, Union
-from xml.etree import ElementTree as ET
-from zipfile import ZIP_DEFLATED, ZipFile
+
+from openpyxl import load_workbook
+from openpyxl.utils import get_column_letter, range_boundaries
+from openpyxl.utils.cell import coordinate_to_tuple
+from openpyxl.worksheet.worksheet import Worksheet
 
 from app.models import Solicitud
 
@@ -14,32 +25,11 @@ RUTA_PLANTILLA_SOLICITUD = RAIZ_PROYECTO / "plantilla_solicitud_unica_servicios_
 MARCA_OPCION = "X"
 NOMBRE_ARCHIVO_SOLICITUD = "plantilla_solicitud_unica_de_servicios.xlsx"
 
-# --- Namespaces de la plantilla ---------------------------------------------
-# La hoja de cálculo declara VARIOS namespaces, no solo el principal. Si no se
-# registran TODOS con su prefijo original antes de volver a serializar, la
-# librería estándar (ElementTree) los renombra a "ns0", "ns1", "ns2"...
-# Eso rompe atributos críticos como `r:id` (la referencia al dibujo/logo) y
-# `mc:Ignorable`, dejando el archivo ilegible para Excel.
-#
-# Por eso registramos los cuatro namespaces que usa la plantilla con su prefijo
-# exacto. Si algún día se reemplaza la plantilla por otra guardada con una
-# versión distinta de Excel, conviene revisar la cabecera de
-# `xl/worksheets/sheet1.xml` y reflejar aquí cualquier namespace nuevo.
-ESPACIO_NOMBRES_HOJA = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
-ESPACIO_NOMBRES_RELACIONES = (
-    "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-)
-ESPACIO_NOMBRES_COMPATIBILIDAD = (
-    "http://schemas.openxmlformats.org/markup-compatibility/2006"
-)
-ESPACIO_NOMBRES_X14AC = "http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac"
+# Nombre de la hoja dentro de la plantilla. Si algún día se renombra la hoja en
+# Excel, hay que actualizar este valor (o usar wb.active).
+NOMBRE_HOJA = "SOL_UNICA"
 
-ET.register_namespace("", ESPACIO_NOMBRES_HOJA)
-ET.register_namespace("r", ESPACIO_NOMBRES_RELACIONES)
-ET.register_namespace("mc", ESPACIO_NOMBRES_COMPATIBILIDAD)
-ET.register_namespace("x14ac", ESPACIO_NOMBRES_X14AC)
-
-# La marca se coloca en la celda a la derecha del texto de la opción, no antes.
+# Las marcas se colocan en la celda indicada para cada opción seleccionada.
 CELDAS_OPCIONES_SERVICIO: Dict[str, Dict[str, str]] = {
     "infraestructura": {
         "albanileria": "F17",
@@ -101,71 +91,31 @@ def _opciones_seleccionadas(solicitud: Solicitud, campo: str) -> Iterable[str]:
     return getattr(solicitud, campo) or []
 
 
-def _nombre_etiqueta(nombre: str) -> str:
-    return f"{{{ESPACIO_NOMBRES_HOJA}}}{nombre}"
+def _resolver_celda_ancla(hoja: Worksheet, referencia: str) -> str:
+    """Devuelve la celda superior-izquierda del rango combinado que contiene
+    `referencia`. Si la celda no está combinada, devuelve la misma referencia.
+
+    En un rango combinado solo la celda ancla guarda el valor; escribir en
+    cualquier otra celda del rango lanza un error o se pierde. Resolver la
+    ancla aquí evita ese problema aunque a futuro se combinen más celdas en la
+    plantilla.
+    """
+    fila, columna = coordinate_to_tuple(referencia)
+    for rango in hoja.merged_cells.ranges:
+        min_col, min_fila, max_col, max_fila = range_boundaries(str(rango))
+        if min_fila <= fila <= max_fila and min_col <= columna <= max_col:
+            return f"{get_column_letter(min_col)}{min_fila}"
+    return referencia
 
 
-def _dividir_referencia_celda(referencia: str) -> Tuple[str, int]:
-    columna = "".join(caracter for caracter in referencia if caracter.isalpha())
-    fila = int("".join(caracter for caracter in referencia if caracter.isdigit()))
-    return columna, fila
-
-
-def _indice_columna(columna: str) -> int:
-    indice = 0
-    for caracter in columna:
-        indice = indice * 26 + ord(caracter.upper()) - ord("A") + 1
-    return indice
-
-
-def _orden_celda(celda: ET.Element) -> Tuple[int, int]:
-    columna, fila = _dividir_referencia_celda(celda.attrib["r"])
-    return fila, _indice_columna(columna)
-
-
-def _obtener_o_crear_fila(sheet_data: ET.Element, numero_fila: int) -> ET.Element:
-    for fila in sheet_data.findall(_nombre_etiqueta("row")):
-        if int(fila.attrib["r"]) == numero_fila:
-            return fila
-
-    fila = ET.Element(_nombre_etiqueta("row"), {"r": str(numero_fila)})
-    sheet_data.append(fila)
-    sheet_data[:] = sorted(sheet_data, key=lambda elemento: int(elemento.attrib["r"]))
-    return fila
-
-
-def _obtener_o_crear_celda(hoja: ET.Element, referencia: str) -> ET.Element:
-    sheet_data = hoja.find(_nombre_etiqueta("sheetData"))
-    if sheet_data is None:
-        sheet_data = ET.SubElement(hoja, _nombre_etiqueta("sheetData"))
-
-    columna, numero_fila = _dividir_referencia_celda(referencia)
-    fila = _obtener_o_crear_fila(sheet_data, numero_fila)
-
-    for celda in fila.findall(_nombre_etiqueta("c")):
-        if celda.attrib["r"] == referencia:
-            return celda
-
-    celda = ET.Element(_nombre_etiqueta("c"), {"r": referencia})
-    fila.append(celda)
-    fila[:] = sorted(fila, key=_orden_celda)
-    return celda
-
-
-def _asignar_valor_celda(hoja: ET.Element, referencia: str, valor: ValorCelda) -> None:
-    celda = _obtener_o_crear_celda(hoja, referencia)
-    for hijo in list(celda):
-        celda.remove(hijo)
-
-    if isinstance(valor, int):
-        celda.attrib.pop("t", None)
-        ET.SubElement(celda, _nombre_etiqueta("v")).text = str(valor)
-        return
-
-    celda.attrib["t"] = "inlineStr"
-    texto_en_linea = ET.SubElement(celda, _nombre_etiqueta("is"))
-    texto = ET.SubElement(texto_en_linea, _nombre_etiqueta("t"))
-    texto.text = valor
+def _asignar_valor_celda(hoja: Worksheet, referencia: str, valor: ValorCelda) -> None:
+    """Escribe `valor` en la celda, resolviendo la ancla si está combinada y
+    conservando el formato (fuente, bordes, relleno) que ya tenía la celda."""
+    ancla = _resolver_celda_ancla(hoja, referencia)
+    celda = hoja[ancla]
+    estilo_previo = copy(celda._style)
+    celda.value = valor
+    celda._style = estilo_previo
 
 
 def _valores_solicitud(solicitud: Solicitud) -> Dict[str, ValorCelda]:
@@ -178,7 +128,10 @@ def _valores_solicitud(solicitud: Solicitud) -> Dict[str, ValorCelda]:
         "AF9": solicitud.fecha.year,
         "I11": solicitud.responsable_area_solicitante or solicitud.nombre_usuario,
         "AC11": solicitud.telefono,
-        "B38": solicitud.descripcion_servicio,
+        # La descripción cae en el bloque combinado B37:AF41; _asignar_valor_celda
+        # resuelve la ancla automáticamente, así que tanto "B37" como "B38"
+        # terminan escribiendo en B37. Se deja "B37" por claridad.
+        "B37": solicitud.descripcion_servicio,
         "U56": solicitud.nombre_usuario,
     }
 
@@ -194,17 +147,14 @@ def _valores_solicitud(solicitud: Solicitud) -> Dict[str, ValorCelda]:
 
 def generar_plantilla_solicitud(solicitud: Solicitud) -> bytes:
     """Devuelve una copia XLSX de la plantilla llena con los datos de la solicitud."""
-    with ZipFile(RUTA_PLANTILLA_SOLICITUD, "r") as plantilla:
-        hoja = ET.fromstring(plantilla.read("xl/worksheets/sheet1.xml"))
+    libro = load_workbook(RUTA_PLANTILLA_SOLICITUD)
+    hoja = libro[NOMBRE_HOJA]
 
-        for referencia, valor in _valores_solicitud(solicitud).items():
-            _asignar_valor_celda(hoja, referencia, valor)
+    for referencia, valor in _valores_solicitud(solicitud).items():
+        if valor is None:
+            continue
+        _asignar_valor_celda(hoja, referencia, valor)
 
-        hoja_serializada = ET.tostring(hoja, encoding="utf-8", xml_declaration=True)
-        salida = BytesIO()
-        with ZipFile(salida, "w", ZIP_DEFLATED) as copia:
-            for elemento in plantilla.infolist():
-                contenido = hoja_serializada if elemento.filename == "xl/worksheets/sheet1.xml" else plantilla.read(elemento.filename)
-                copia.writestr(elemento, contenido)
-
+    salida = BytesIO()
+    libro.save(salida)
     return salida.getvalue()
