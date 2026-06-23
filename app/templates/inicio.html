@@ -1,31 +1,21 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
-    <link rel="stylesheet" href="/static/css/museo.css">
-</head>
-<body>
-    <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
-    <main id="contenido-principal" class="container">
-        <header>
-            <h1>Pabellón Nacional de la Biodiversidad</h1>
-            <p>Bienvenido, {{ usuario.nombre }}</p>
-        </header>
-        <nav aria-label="Áreas de trabajo">
-            <ul>
-                {% if usuario.rol in ["biologo", "admin", "desarrollador"] %}
-                <li><a class="button" href="/solicitud">Nueva solicitud de mantenimiento</a></li>
-                {% endif %}
-                {% if usuario.rol in ["seguridad", "admin", "desarrollador"] %}
-                <li><a class="button" href="/visitantes">Registrar visitantes</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-        <footer>
-            <a href="/logout">Cerrar sesión</a>
-        </footer>
-    </main>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<header>
+  <h1>Pabellón Nacional de la Biodiversidad</h1>
+  <p>Bienvenido, {{ usuario.nombre }}</p>
+</header>
+
+<section aria-labelledby="areas-trabajo">
+  <h2 id="areas-trabajo">Áreas de trabajo</h2>
+  <ul class="action-list">
+    {% if usuario.rol in ["biologo", "admin", "desarrollador"] %}
+    <li><a class="button" href="/solicitud">Nueva solicitud de mantenimiento</a></li>
+    {% endif %}
+    {% if usuario.rol in ["seguridad", "admin", "desarrollador"] %}
+    <li><a class="button" href="/visitantes">Registrar visitantes</a></li>
+    {% endif %}
+  </ul>
+</section>
+{% endblock %}
