@@ -475,3 +475,143 @@ footer {
   font-size: clamp(1.45rem, 4vw, 2.25rem);
   font-weight: 820;
 }
+
+.print-header h1 {
+  max-width: 16ch;
+}
+
+.print-kicker {
+  margin-bottom: var(--space-2);
+  color: var(--color-ink);
+  font-weight: 760;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.print-sheet {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: #fff;
+  padding: var(--space-4);
+}
+
+.request-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--space-3);
+  margin: 0 0 var(--space-4);
+}
+
+.request-summary-grid div {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.request-summary-grid dt {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  font-weight: 760;
+}
+
+.request-summary-grid dd {
+  margin: var(--space-1) 0 0;
+  color: var(--color-ink);
+  font-weight: 650;
+}
+
+.print-section,
+.signature-grid {
+  break-inside: avoid;
+}
+
+.preserve-lines {
+  white-space: pre-wrap;
+}
+
+.signature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.signature-grid h3 {
+  grid-column: 1 / -1;
+  text-align: left;
+}
+
+@media print {
+  @page {
+    margin: 1.5cm;
+  }
+
+  html,
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  body {
+    min-height: auto;
+  }
+
+  .skip-link,
+  .main-nav,
+  .no-print {
+    display: none !important;
+  }
+
+  main.container,
+  .print-sheet,
+  section,
+  fieldset {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .print-container {
+    width: 100%;
+  }
+
+  .print-header {
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    max-width: none;
+    font-size: 1.6rem;
+    letter-spacing: normal;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  h3,
+  legend {
+    font-size: 1rem;
+  }
+
+  a {
+    color: #000;
+  }
+
+  .request-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .request-summary-grid div {
+    border-color: #777;
+    padding: 0.5rem;
+  }
+
+  .signature-grid {
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 2rem;
+  }
+}

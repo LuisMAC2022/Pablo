@@ -10,7 +10,12 @@ from app.database import get_db
 from app.models import Solicitud
 from app.dependencies import get_usuario_actual
 from app.permissions import ROLES_SOLICITUDES, puede_editar_datos_solicitante, usuario_tiene_rol
-from app.services.catalogo_solicitudes import AREAS_SOLICITUD_ACTIVAS, CATALOGO_SERVICIOS
+from app.services.catalogo_solicitudes import (
+    AREAS_SOLICITUD_ACTIVAS,
+    CATALOGO_SERVICIOS,
+    CAMPOS_OPCIONES_SERVICIO,
+    SUBCATEGORIAS_SERVICIO,
+)
 from app.services.plantilla_solicitud import (
     NOMBRE_ARCHIVO_SOLICITUD,
     generar_plantilla_solicitud,
@@ -62,6 +67,27 @@ def contexto_formulario(usuario: dict, **valores) -> dict:
     }
 
 
+def opciones_servicio_solicitud(solicitud: Solicitud) -> list[dict[str, object]]:
+    """Devuelve las opciones seleccionadas con etiquetas legibles para impresión."""
+    opciones = []
+
+    for campo in CAMPOS_OPCIONES_SERVICIO:
+        valores = getattr(solicitud, campo) or []
+        if not valores:
+            continue
+
+        subcategoria = SUBCATEGORIAS_SERVICIO[campo]
+        etiquetas = {opcion["valor"]: opcion["etiqueta"] for opcion in subcategoria["opciones"]}
+        opciones.append(
+            {
+                "categoria": subcategoria["nombre"],
+                "selecciones": [etiquetas.get(valor, valor) for valor in valores],
+            }
+        )
+
+    return opciones
+
+
 @router.get("/solicitud", response_class=HTMLResponse)
 async def mostrar_formulario(
     request: Request,
@@ -97,6 +123,35 @@ async def descargar_plantilla_solicitud(
         content=contenido,
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         headers={"Content-Disposition": f'attachment; filename="{nombre_descarga}"'},
+    )
+
+
+@router.get("/solicitud/{folio}/imprimir", response_class=HTMLResponse)
+async def imprimir_solicitud(
+    request: Request,
+    folio: str,
+    db: Session = Depends(get_db),
+    usuario: dict = Depends(get_usuario_actual),
+):
+    if not usuario_tiene_rol(usuario, ROLES_SOLICITUDES):
+        return RedirectResponse(url="/login", status_code=302)
+
+    solicitud = db.query(Solicitud).filter(Solicitud.folio == folio).first()
+    if solicitud is None:
+        return RedirectResponse(url="/solicitud", status_code=302)
+
+    templates = request.app.state.templates
+    return templates.TemplateResponse(
+        request=request,
+        name="solicitud_imprimir.html",
+        context={
+            "solicitud": solicitud,
+            "fecha": solicitud.fecha.strftime("%d/%m/%Y"),
+            "opciones_servicio": opciones_servicio_solicitud(solicitud),
+            "url_descarga_plantilla": f"/solicitud/{solicitud.folio}/plantilla",
+            "url_imprimir_solicitud": f"/solicitud/{solicitud.folio}/imprimir",
+            "usuario": usuario,
+        },
     )
 
 
@@ -181,6 +236,7 @@ async def recibir_formulario(
             "telefono": solicitud.telefono,
             "area_solicitante": solicitud.area_solicitante,
             "url_descarga_plantilla": f"/solicitud/{solicitud.folio}/plantilla",
+            "url_imprimir_solicitud": f"/solicitud/{solicitud.folio}/imprimir",
             "usuario": usuario,
         },
     )
