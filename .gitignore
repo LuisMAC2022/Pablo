@@ -6,3 +6,4 @@ credentials.json
 alembic.ini
 directorio_personal.json
 logs/
+~$*.xlsx
