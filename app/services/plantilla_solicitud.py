@@ -14,8 +14,30 @@ RUTA_PLANTILLA_SOLICITUD = RAIZ_PROYECTO / "plantilla_solicitud_unica_servicios_
 MARCA_OPCION = "X"
 NOMBRE_ARCHIVO_SOLICITUD = "plantilla_solicitud_unica_de_servicios.xlsx"
 
+# --- Namespaces de la plantilla ---------------------------------------------
+# La hoja de cálculo declara VARIOS namespaces, no solo el principal. Si no se
+# registran TODOS con su prefijo original antes de volver a serializar, la
+# librería estándar (ElementTree) los renombra a "ns0", "ns1", "ns2"...
+# Eso rompe atributos críticos como `r:id` (la referencia al dibujo/logo) y
+# `mc:Ignorable`, dejando el archivo ilegible para Excel.
+#
+# Por eso registramos los cuatro namespaces que usa la plantilla con su prefijo
+# exacto. Si algún día se reemplaza la plantilla por otra guardada con una
+# versión distinta de Excel, conviene revisar la cabecera de
+# `xl/worksheets/sheet1.xml` y reflejar aquí cualquier namespace nuevo.
 ESPACIO_NOMBRES_HOJA = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+ESPACIO_NOMBRES_RELACIONES = (
+    "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+)
+ESPACIO_NOMBRES_COMPATIBILIDAD = (
+    "http://schemas.openxmlformats.org/markup-compatibility/2006"
+)
+ESPACIO_NOMBRES_X14AC = "http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac"
+
 ET.register_namespace("", ESPACIO_NOMBRES_HOJA)
+ET.register_namespace("r", ESPACIO_NOMBRES_RELACIONES)
+ET.register_namespace("mc", ESPACIO_NOMBRES_COMPATIBILIDAD)
+ET.register_namespace("x14ac", ESPACIO_NOMBRES_X14AC)
 
 # La marca se coloca en la celda a la derecha del texto de la opción, no antes.
 CELDAS_OPCIONES_SERVICIO: Dict[str, Dict[str, str]] = {
