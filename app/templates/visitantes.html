@@ -1,23 +1,19 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport"  content="width=device-width, initial-scale=1.0" >
-	<title> Registro de Visitantes </title>
-	<link rel="stylesheet" href="/static/css/museo.css">
-</head>
-<body>
-    <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
-	<main id="contenido-principal" class="container">
-		<header>
-			<h1> Registro de Visitantes </h1>
-			<p> Pabellón Nacional de la Biodiversidad UNAM </p>
-		</header>
-		<form method="post" action="/visitantes">
-			<label for="cantidad"> Número de visitantes</label>
-			<input type="number" id ="cantidad"  name="cantidad" min="0" required>
-			<button type= "submit" > Registrar </button>
-		</form>
-	</main>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Registro de Visitantes{% endblock %}
+
+{% block content %}
+<header>
+  <h1>Registro de Visitantes</h1>
+  <p>Pabellón Nacional de la Biodiversidad UNAM</p>
+</header>
+
+{% if error %}
+<p role="alert" class="error-message">{{ error }}</p>
+{% endif %}
+
+<form method="post" action="/visitantes">
+  <label for="cantidad">Número de visitantes</label>
+  <input type="number" id="cantidad" name="cantidad" min="1" required>
+  <button type="submit">Registrar</button>
+</form>
+{% endblock %}

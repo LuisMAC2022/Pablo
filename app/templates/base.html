@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Pabellón Nacional de la Biodiversidad{% endblock %}</title>
+  <link rel="stylesheet" href="/static/css/museo.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+
+  {% if usuario %}
+  <nav class="main-nav" aria-label="Navegación principal">
+    <ul class="main-nav__list">
+      <li><a href="/inicio"{% if request.url.path == "/inicio" %} aria-current="page"{% endif %}>Inicio</a></li>
+      {% if usuario.rol in ["biologo", "admin", "desarrollador"] %}
+      <li><a href="/solicitud"{% if request.url.path == "/solicitud" %} aria-current="page"{% endif %}>Nueva solicitud de mantenimiento</a></li>
+      {% endif %}
+      {% if usuario.rol in ["seguridad", "admin", "desarrollador"] %}
+      <li><a href="/visitantes"{% if request.url.path == "/visitantes" %} aria-current="page"{% endif %}>Registrar visitantes</a></li>
+      {% endif %}
+      <li class="main-nav__logout"><a href="/logout">Cerrar sesión</a></li>
+    </ul>
+  </nav>
+  {% endif %}
+
+  <main id="contenido-principal" class="{% block main_class %}container{% endblock %}">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

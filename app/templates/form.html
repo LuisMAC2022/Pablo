@@ -1,21 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Solicitud Única de Servicios</title>
-  <link rel="stylesheet" href="/static/css/museo.css">
-</head>
-<body>
-  <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+{% extends "base.html" %}
+{% block title %}Solicitud Única de Servicios{% endblock %}
+{% block main_class %}container{% endblock %}
 
-  <header>
-    <h1>Universidad Nacional Autónoma de México</h1>
-    <p>Secretarías y Unidades Administrativas - SGC</p>
-  </header>
-
-  <main id="contenido-principal">
-    <h2>Solicitud Única de Servicios</h2>
+{% block content %}
+    <h1>Solicitud Única de Servicios</h1>
 
     {% if error %}
       <p role="alert" class="error-message">{{ error }}</p>
@@ -183,9 +171,10 @@
 
       <button type="submit">Enviar solicitud</button>
     </form>
-  </main>
+  {% endblock %}
 
-  <script>
+{% block scripts %}
+<script>
     const areaSelect = document.querySelector('#area_solicitante');
     const areaSections = document.querySelectorAll('[data-area-section]');
 
@@ -230,5 +219,4 @@
     });
     updateAreaSections();
   </script>
-</body>
-</html>
+{% endblock %}

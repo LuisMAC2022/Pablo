@@ -21,7 +21,7 @@ async def mostrar_visitantes(
     return templates.TemplateResponse(
         request=request,
         name="visitantes.html",
-        context={},
+        context={"usuario": usuario},
     )
 
 
@@ -42,6 +42,7 @@ async def recibir_visitantes(
             name="visitantes.html",
             context={
                 "error": "La cantidad de visitantes debe ser mayor que cero.",
+                "usuario": usuario,
             },
             status_code=400,
         )
@@ -53,5 +54,6 @@ async def recibir_visitantes(
         name="visitantes_confirmacion.html",
         context={
             "cantidad": cantidad,
+            "usuario": usuario,
         },
     )

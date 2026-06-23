@@ -48,6 +48,7 @@ def cargar_personas_autocomplete() -> list[dict[str, str]]:
 def contexto_formulario(usuario: dict, **valores) -> dict:
     puede_editar = puede_editar_datos_solicitante(usuario)
     return {
+        "usuario": usuario,
         "areas": AREAS_SOLICITUD_ACTIVAS,
         "catalogo_servicios": CATALOGO_SERVICIOS,
         "nombre_usuario": valores.get("nombre_usuario", usuario.get("nombre", "")),
@@ -180,5 +181,6 @@ async def recibir_formulario(
             "telefono": solicitud.telefono,
             "area_solicitante": solicitud.area_solicitante,
             "url_descarga_plantilla": f"/solicitud/{solicitud.folio}/plantilla",
+            "usuario": usuario,
         },
     )

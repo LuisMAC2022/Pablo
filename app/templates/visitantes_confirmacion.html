@@ -1,17 +1,11 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport"  content="width=device-width, initial-scale=1.0" >
-	<title> Registro exitoso </title>
-	<link rel="stylesheet" href="/static/css/museo.css">
-</head>
-<body>
-    <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
-	<main id="contenido-principal" class="container">
-			<h1> Registro exitoso </h1>
-			<p> Se registraron <strong>{{cantidad }} </strong>  visitantes.</p>
-		<a href="/visitantes"> Nuevo registro	</a>
-	</main>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Registro exitoso{% endblock %}
+
+{% block content %}
+<h1>Registro exitoso</h1>
+<p role="status">Se registraron <strong>{{ cantidad }}</strong> visitantes.</p>
+<section aria-labelledby="acciones-visitantes">
+  <h2 id="acciones-visitantes">Acciones de visitantes</h2>
+  <a class="button" href="/visitantes">Nuevo registro</a>
+</section>
+{% endblock %}
