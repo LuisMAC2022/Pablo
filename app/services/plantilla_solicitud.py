@@ -149,14 +149,13 @@ def _asignar_valor_celda(hoja: ET.Element, referencia: str, valor: ValorCelda) -
 def _valores_solicitud(solicitud: Solicitud) -> Dict[str, ValorCelda]:
     valores: Dict[str, ValorCelda] = {
         "H7": solicitud.area_solicitante,
-        "AC7": solicitud.folio,
         "L9": solicitud.nombre_usuario,
         "AD9": solicitud.fecha.day,
         "AE9": solicitud.fecha.month,
         "AF9": solicitud.fecha.year,
         "I11": solicitud.responsable_area_solicitante or solicitud.nombre_usuario,
         "AC11": solicitud.telefono,
-        "B38": solicitud.descripcion_servicio,
+        "B37": solicitud.descripcion_servicio,
         "U56": solicitud.nombre_usuario,
     }
 
