@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Solicitud enviada{% endblock %}
 
+{% block scripts %}
+<script src="/static/js/confirmacion.js" defer></script>
+{% endblock %}
+
 {% block content %}
 <h1>Solicitud enviada</h1>
 <p role="status">Tu solicitud fue registrada correctamente.</p>
@@ -24,6 +28,11 @@
       <a class="button" href="{{ url_descarga_plantilla }}" download>
         Descargar copia de la plantilla llena
       </a>
+    </li>
+    <li>
+      <button class="button" type="button" id="imprimir-solicitud">
+        Imprimir solicitud
+      </button>
     </li>
     <li><a class="button" href="/solicitud">Nueva solicitud</a></li>
   </ul>
