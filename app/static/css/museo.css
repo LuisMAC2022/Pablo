@@ -475,3 +475,38 @@ footer {
   font-size: clamp(1.45rem, 4vw, 2.25rem);
   font-weight: 820;
 }
+
+@media print {
+  .skip-link,
+  .main-nav,
+  #acciones-solicitud,
+  .button {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 12pt;
+  }
+
+  main.container,
+  .page-card {
+    max-width: none;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  section,
+  fieldset,
+  [role="status"],
+  .status-message {
+    border-color: #000;
+    background: #fff;
+    color: #000;
+  }
+}
