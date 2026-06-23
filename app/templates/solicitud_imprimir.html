@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Imprimir solicitud {{ solicitud.folio }}{% endblock %}
+{% block main_class %}container print-container{% endblock %}
+
+{% block content %}
+<header class="print-header">
+  <p class="print-kicker">Solicitud Única de Servicios</p>
+  <h1>Formato para impresión</h1>
+  <p>Revise los datos antes de imprimir. También puede descargar la plantilla en Excel si necesita conservar una copia editable.</p>
+</header>
+
+<section class="print-actions no-print" aria-labelledby="acciones-impresion">
+  <h2 id="acciones-impresion">Acciones</h2>
+  <ul class="action-list">
+    <li><button type="button" data-print-button>Imprimir formato</button></li>
+    <li><a class="button" href="{{ url_descarga_plantilla }}" download>Descargar plantilla llena</a></li>
+    <li><a class="button" href="/solicitud">Nueva solicitud</a></li>
+  </ul>
+</section>
+
+<article class="print-sheet" aria-labelledby="titulo-formato-solicitud">
+  <h2 id="titulo-formato-solicitud">Solicitud de servicios</h2>
+
+  <dl class="request-summary-grid">
+    <div>
+      <dt>Folio</dt>
+      <dd>{{ solicitud.folio }}</dd>
+    </div>
+    <div>
+      <dt>Fecha</dt>
+      <dd>{{ fecha }}</dd>
+    </div>
+    <div>
+      <dt>Área solicitante</dt>
+      <dd>{{ solicitud.area_solicitante }}</dd>
+    </div>
+    <div>
+      <dt>Nombre del usuario</dt>
+      <dd>{{ solicitud.nombre_usuario }}</dd>
+    </div>
+    <div>
+      <dt>Responsable del área solicitante</dt>
+      <dd>{{ solicitud.responsable_area_solicitante or solicitud.nombre_usuario }}</dd>
+    </div>
+    <div>
+      <dt>Teléfono</dt>
+      <dd>{{ solicitud.telefono }}</dd>
+    </div>
+  </dl>
+
+  <section class="print-section" aria-labelledby="servicios-seleccionados">
+    <h3 id="servicios-seleccionados">Servicios seleccionados</h3>
+    {% if opciones_servicio %}
+      <ul>
+        {% for grupo in opciones_servicio %}
+          <li><strong>{{ grupo.categoria }}:</strong> {{ grupo.selecciones|join(", ") }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No se registraron opciones de servicio.</p>
+    {% endif %}
+  </section>
+
+  <section class="print-section" aria-labelledby="descripcion-impresion">
+    <h3 id="descripcion-impresion">Descripción del servicio</h3>
+    <p class="preserve-lines">{{ solicitud.descripcion_servicio }}</p>
+  </section>
+
+  <section class="signature-grid" aria-labelledby="firmas-solicitud">
+    <h3 id="firmas-solicitud">Firmas</h3>
+    <div>
+      <p aria-hidden="true">______________________________</p>
+      <p>Solicitante</p>
+    </div>
+    <div>
+      <p aria-hidden="true">______________________________</p>
+      <p>Recepción de servicios</p>
+    </div>
+  </section>
+</article>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const printButton = document.querySelector('[data-print-button]');
+
+  printButton.addEventListener('click', () => {
+    window.print();
+  });
+</script>
+{% endblock %}
