@@ -6,14 +6,15 @@
 <header class="print-header">
   <p class="print-kicker">Solicitud Única de Servicios</p>
   <h1>Formato para impresión</h1>
-  <p>Revise los datos antes de imprimir. También puede descargar la plantilla en Excel si necesita conservar una copia editable.</p>
+  <p>Use el botón de impresión para generar una copia PDF de la plantilla XLSX llena y enviarla a impresión.</p>
 </header>
 
 <section class="print-actions no-print" aria-labelledby="acciones-impresion">
   <h2 id="acciones-impresion">Acciones</h2>
   <ul class="action-list">
-    <li><button type="button" data-print-button>Imprimir formato</button></li>
-    <li><a class="button" href="{{ url_descarga_plantilla }}" download>Descargar plantilla llena</a></li>
+    <li><button type="button" data-print-pdf-button data-pdf-url="{{ url_pdf_plantilla }}">Generar PDF e imprimir</button></li>
+    <li><a class="button" href="{{ url_pdf_plantilla }}" target="_blank" rel="noopener">Abrir PDF de la plantilla llena</a></li>
+    <li><a class="button" href="{{ url_descarga_plantilla }}" download>Descargar plantilla XLSX llena</a></li>
     <li><a class="button" href="/solicitud">Nueva solicitud</a></li>
   </ul>
 </section>
@@ -82,10 +83,20 @@
 
 {% block scripts %}
 <script>
-  const printButton = document.querySelector('[data-print-button]');
+  const printButton = document.querySelector('[data-print-pdf-button]');
 
   printButton.addEventListener('click', () => {
-    window.print();
+    const pdfWindow = window.open(printButton.dataset.pdfUrl, '_blank');
+
+    if (!pdfWindow) {
+      window.location.href = printButton.dataset.pdfUrl;
+      return;
+    }
+
+    pdfWindow.addEventListener('load', () => {
+      pdfWindow.focus();
+      pdfWindow.print();
+    });
   });
 </script>
 {% endblock %}

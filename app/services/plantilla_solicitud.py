@@ -1,7 +1,10 @@
 """Generación de copias llenas de la plantilla de solicitud única."""
 
+import shutil
+import subprocess
 from io import BytesIO
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import Dict, Iterable, Tuple, Union
 from xml.etree import ElementTree as ET
 from zipfile import ZIP_DEFLATED, ZipFile
@@ -13,6 +16,7 @@ RUTA_PLANTILLA_SOLICITUD = RAIZ_PROYECTO / "plantilla_solicitud_unica_servicios_
 
 MARCA_OPCION = "X"
 NOMBRE_ARCHIVO_SOLICITUD = "plantilla_solicitud_unica_de_servicios.xlsx"
+NOMBRE_ARCHIVO_SOLICITUD_PDF = "plantilla_solicitud_unica_de_servicios.pdf"
 
 ESPACIO_NOMBRES_HOJA = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 ET.register_namespace("", ESPACIO_NOMBRES_HOJA)
@@ -186,3 +190,44 @@ def generar_plantilla_solicitud(solicitud: Solicitud) -> bytes:
                 copia.writestr(elemento, contenido)
 
     return salida.getvalue()
+
+
+class ConversorPDFNoDisponible(RuntimeError):
+    """Indica que no se encontró LibreOffice para convertir la plantilla a PDF."""
+
+
+def generar_pdf_plantilla_solicitud(solicitud: Solicitud) -> bytes:
+    """Devuelve una copia PDF de la plantilla XLSX llena con los datos de la solicitud."""
+    ejecutable = shutil.which("libreoffice") or shutil.which("soffice")
+    if ejecutable is None:
+        raise ConversorPDFNoDisponible(
+            "No se encontró LibreOffice/soffice para convertir la plantilla XLSX a PDF."
+        )
+
+    contenido_xlsx = generar_plantilla_solicitud(solicitud)
+
+    with TemporaryDirectory() as directorio_temporal:
+        carpeta_temporal = Path(directorio_temporal)
+        ruta_xlsx = carpeta_temporal / NOMBRE_ARCHIVO_SOLICITUD
+        ruta_xlsx.write_bytes(contenido_xlsx)
+
+        proceso = subprocess.run(
+            [
+                ejecutable,
+                "--headless",
+                "--convert-to",
+                "pdf",
+                "--outdir",
+                str(carpeta_temporal),
+                str(ruta_xlsx),
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        ruta_pdf = ruta_xlsx.with_suffix(".pdf")
+        if proceso.returncode != 0 or not ruta_pdf.exists():
+            detalle = (proceso.stderr or proceso.stdout or "Error desconocido").strip()
+            raise RuntimeError(f"No se pudo convertir la plantilla a PDF: {detalle}")
+
+        return ruta_pdf.read_bytes()
