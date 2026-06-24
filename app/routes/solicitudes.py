@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, Form, Request
-from fastapi.responses import HTMLResponse, RedirectResponse, Response
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse, Response
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -14,6 +14,12 @@ from app.services.catalogo_solicitudes import AREAS_SOLICITUD_ACTIVAS, CATALOGO_
 from app.services.plantilla_solicitud import (
     NOMBRE_ARCHIVO_SOLICITUD,
     generar_plantilla_solicitud,
+)
+from app.services.solicitudes_pdf import (
+    CARPETA_SOLICITUDES,
+    ErrorConversionSolicitudPDF,
+    guardar_solicitud_pdf,
+    listar_solicitudes_pdf,
 )
 from app.services.solicitudes import (
     AreaSolicitanteInvalida,
@@ -179,6 +185,94 @@ async def recibir_formulario(
             "responsable_area_solicitante": solicitud.responsable_area_solicitante,
             "telefono": solicitud.telefono,
             "area_solicitante": solicitud.area_solicitante,
-            "url_descarga_plantilla": f"/solicitud/{solicitud.folio}/plantilla",
         },
+    )
+
+
+@router.post("/solicitud/{folio}/confirmar", response_class=HTMLResponse)
+async def confirmar_solicitud(
+    request: Request,
+    folio: str,
+    db: Session = Depends(get_db),
+    usuario: dict = Depends(get_usuario_actual),
+):
+    if not usuario_tiene_rol(usuario, ROLES_SOLICITUDES):
+        return RedirectResponse(url="/login", status_code=302)
+
+    solicitud = db.query(Solicitud).filter(Solicitud.folio == folio).first()
+    if solicitud is None:
+        return RedirectResponse(url="/solicitud", status_code=302)
+
+    templates = request.app.state.templates
+    try:
+        ruta_pdf = guardar_solicitud_pdf(solicitud)
+    except ErrorConversionSolicitudPDF as exc:
+        return templates.TemplateResponse(
+            request=request,
+            name="confirmacion.html",
+            context={
+                "folio": solicitud.folio,
+                "fecha": solicitud.fecha.strftime("%d/%m/%Y"),
+                "nombre_usuario": solicitud.nombre_usuario,
+                "responsable_area_solicitante": solicitud.responsable_area_solicitante,
+                "telefono": solicitud.telefono,
+                "area_solicitante": solicitud.area_solicitante,
+                "error": str(exc),
+            },
+            status_code=500,
+        )
+
+    return templates.TemplateResponse(
+        request=request,
+        name="confirmacion.html",
+        context={
+            "folio": solicitud.folio,
+            "fecha": solicitud.fecha.strftime("%d/%m/%Y"),
+            "nombre_usuario": solicitud.nombre_usuario,
+            "responsable_area_solicitante": solicitud.responsable_area_solicitante,
+            "telefono": solicitud.telefono,
+            "area_solicitante": solicitud.area_solicitante,
+            "mensaje_exito": "Solicitud confirmada y guardada como PDF.",
+            "url_pdf": f"/solicitudes/{ruta_pdf.name}",
+        },
+    )
+
+
+@router.get("/solicitudes", response_class=HTMLResponse)
+async def solicitudes_guardadas(
+    request: Request,
+    usuario: dict = Depends(get_usuario_actual),
+):
+    if not usuario_tiene_rol(usuario, ROLES_SOLICITUDES):
+        return RedirectResponse(url="/login", status_code=302)
+
+    templates = request.app.state.templates
+    archivos = [
+        {"nombre": ruta.name, "url": f"/solicitudes/{ruta.name}"}
+        for ruta in listar_solicitudes_pdf()
+    ]
+    return templates.TemplateResponse(
+        request=request,
+        name="solicitudes_guardadas.html",
+        context={"archivos": archivos},
+    )
+
+
+@router.get("/solicitudes/{nombre_archivo}")
+async def descargar_solicitud_guardada(
+    nombre_archivo: str,
+    usuario: dict = Depends(get_usuario_actual),
+):
+    if not usuario_tiene_rol(usuario, ROLES_SOLICITUDES):
+        return RedirectResponse(url="/login", status_code=302)
+
+    ruta = CARPETA_SOLICITUDES / nombre_archivo
+    if ruta.name != nombre_archivo or ruta.suffix.lower() != ".pdf" or not ruta.exists():
+        return RedirectResponse(url="/solicitudes", status_code=302)
+
+    return FileResponse(
+        ruta,
+        media_type="application/pdf",
+        filename=nombre_archivo,
+        headers={"Content-Disposition": f'inline; filename="{nombre_archivo}"'},
     )

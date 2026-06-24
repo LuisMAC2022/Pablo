@@ -11,7 +11,17 @@
 
   <main id="contenido-principal" class="container">
     <h1>Solicitud enviada</h1>
-    <p role="status">Tu solicitud fue registrada correctamente.</p>
+
+    {% if error %}
+      <p role="alert" class="error-message">{{ error }}</p>
+    {% elif mensaje_exito %}
+      <p role="status">{{ mensaje_exito }}</p>
+      {% if url_pdf %}
+        <p><a href="{{ url_pdf }}">Ver PDF guardado de la solicitud {{ folio }}</a></p>
+      {% endif %}
+    {% else %}
+      <p role="status">Tu solicitud fue registrada correctamente. Confirma la solicitud para guardarla como PDF.</p>
+    {% endif %}
 
     <section aria-labelledby="resumen-solicitud">
       <h2 id="resumen-solicitud">Resumen de la solicitud</h2>
@@ -28,10 +38,11 @@
     <nav aria-label="Acciones de la solicitud">
       <ul>
         <li>
-          <a href="{{ url_descarga_plantilla }}" role="button" download>
-            Descargar copia de la plantilla llena
-          </a>
+          <form action="/solicitud/{{ folio }}/confirmar" method="post">
+            <button type="submit">Confirmar solicitud</button>
+          </form>
         </li>
+        <li><a href="/solicitudes">Ver solicitudes guardadas</a></li>
         <li><a href="/solicitud">Nueva solicitud</a></li>
       </ul>
     </nav>
