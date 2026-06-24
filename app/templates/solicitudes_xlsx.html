@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitudes XLSX guardadas</title>
+  <link rel="stylesheet" href="/static/css/museo.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+
+  <main id="contenido-principal" class="container">
+    <header>
+      <h1>Solicitudes XLSX guardadas</h1>
+      <p>Consulta los documentos generados en el directorio <code>app/solicitudes</code>.</p>
+    </header>
+
+    {% if error %}
+      <p role="alert">{{ error }}</p>
+    {% endif %}
+
+    <section aria-labelledby="lista-archivos">
+      <h2 id="lista-archivos">Documentos disponibles</h2>
+      {% if archivos %}
+        <div class="table-scroll" tabindex="0" aria-label="Tabla de documentos XLSX disponibles">
+          <table>
+            <caption>Archivos XLSX disponibles para visualización</caption>
+            <thead>
+              <tr>
+                <th scope="col">Archivo</th>
+                <th scope="col">Tamaño</th>
+                <th scope="col">Última modificación</th>
+                <th scope="col">Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for archivo in archivos %}
+                <tr>
+                  <td>{{ archivo.nombre }}</td>
+                  <td>{{ archivo.tamano_kb }} KB</td>
+                  <td>{{ archivo.modificado }}</td>
+                  <td><a href="/solicitudes/{{ archivo.nombre | urlencode }}">Ver documento</a></td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p role="status">Aún no hay documentos XLSX guardados.</p>
+      {% endif %}
+    </section>
+
+    <nav aria-label="Acciones generales">
+      <ul>
+        <li><a href="/inicio">Volver al inicio</a></li>
+        <li><a href="/solicitud">Nueva solicitud</a></li>
+      </ul>
+    </nav>
+  </main>
+</body>
+</html>

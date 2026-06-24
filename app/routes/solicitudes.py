@@ -1,9 +1,13 @@
+from datetime import datetime
 import json
 from pathlib import Path
 from typing import List, Optional
+from urllib.parse import quote
 
 from fastapi import APIRouter, Depends, Form, Request
-from fastapi.responses import HTMLResponse, RedirectResponse, Response
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse, Response
+from openpyxl import load_workbook
+from openpyxl.utils import get_column_letter
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -28,6 +32,71 @@ router = APIRouter()
 
 TELEFONO_JEFE_MANTENIMIENTO = "5556228222 ext. 82581"
 RUTA_DIRECTORIO_AUTOCOMPLETE = Path(__file__).resolve().parents[2] / "dir_autocomplete.json"
+RUTA_SOLICITUDES = Path(__file__).resolve().parents[1] / "solicitudes"
+
+
+def listar_archivos_xlsx() -> list[dict[str, str]]:
+    RUTA_SOLICITUDES.mkdir(parents=True, exist_ok=True)
+    archivos = []
+    for ruta in sorted(
+        RUTA_SOLICITUDES.glob("*.xlsx"),
+        key=lambda item: item.stat().st_mtime,
+        reverse=True,
+    ):
+        estadisticas = ruta.stat()
+        archivos.append(
+            {
+                "nombre": ruta.name,
+                "tamano_kb": f"{estadisticas.st_size / 1024:.1f}",
+                "modificado": datetime.fromtimestamp(estadisticas.st_mtime).strftime(
+                    "%d/%m/%Y %H:%M"
+                ),
+            }
+        )
+    return archivos
+
+
+def ruta_xlsx_segura(nombre_archivo: str) -> Path | None:
+    if Path(nombre_archivo).name != nombre_archivo or not nombre_archivo.lower().endswith(
+        ".xlsx"
+    ):
+        return None
+
+    ruta = (RUTA_SOLICITUDES / nombre_archivo).resolve()
+    try:
+        ruta.relative_to(RUTA_SOLICITUDES.resolve())
+    except ValueError:
+        return None
+
+    if not ruta.is_file():
+        return None
+    return ruta
+
+
+def leer_libro_xlsx(ruta_archivo: Path) -> list[dict[str, object]]:
+    libro = load_workbook(ruta_archivo, read_only=True, data_only=True)
+    hojas = []
+    try:
+        for hoja in libro.worksheets:
+            filas = []
+            for fila in hoja.iter_rows(values_only=True):
+                filas.append(["" if celda is None else str(celda) for celda in fila])
+
+            max_columnas = max((len(fila) for fila in filas), default=0)
+            hojas.append(
+                {
+                    "nombre": hoja.title,
+                    "encabezados": [
+                        get_column_letter(indice)
+                        for indice in range(1, max_columnas + 1)
+                    ],
+                    "filas": filas,
+                }
+            )
+    finally:
+        libro.close()
+
+    return hojas
 
 
 def cargar_personas_autocomplete() -> list[dict[str, str]]:
@@ -73,6 +142,74 @@ def contexto_confirmacion(solicitud: Solicitud, **valores) -> dict:
         "url_guardar_plantilla": f"/solicitud/{solicitud.folio}/plantilla/guardar",
         **valores,
     }
+
+
+@router.get("/solicitudes", response_class=HTMLResponse)
+async def listar_solicitudes_guardadas(
+    request: Request,
+    usuario: dict = Depends(get_usuario_actual),
+):
+    if not usuario_tiene_rol(usuario, ROLES_SOLICITUDES):
+        return RedirectResponse(url="/login", status_code=302)
+
+    templates = request.app.state.templates
+    return templates.TemplateResponse(
+        request=request,
+        name="solicitudes_xlsx.html",
+        context={"archivos": listar_archivos_xlsx()},
+    )
+
+
+@router.get("/solicitudes/{nombre_archivo}", response_class=HTMLResponse)
+async def ver_solicitud_guardada(
+    nombre_archivo: str,
+    request: Request,
+    usuario: dict = Depends(get_usuario_actual),
+):
+    if not usuario_tiene_rol(usuario, ROLES_SOLICITUDES):
+        return RedirectResponse(url="/login", status_code=302)
+
+    ruta_archivo = ruta_xlsx_segura(nombre_archivo)
+    templates = request.app.state.templates
+    if ruta_archivo is None:
+        return templates.TemplateResponse(
+            request=request,
+            name="solicitudes_xlsx.html",
+            context={
+                "archivos": listar_archivos_xlsx(),
+                "error": "No se encontró el archivo XLSX solicitado.",
+            },
+            status_code=404,
+        )
+
+    return templates.TemplateResponse(
+        request=request,
+        name="visor_xlsx.html",
+        context={
+            "archivo": ruta_archivo.name,
+            "hojas": leer_libro_xlsx(ruta_archivo),
+            "url_descarga": f"/solicitudes/{quote(ruta_archivo.name)}/descargar",
+        },
+    )
+
+
+@router.get("/solicitudes/{nombre_archivo}/descargar")
+async def descargar_solicitud_guardada(
+    nombre_archivo: str,
+    usuario: dict = Depends(get_usuario_actual),
+):
+    if not usuario_tiene_rol(usuario, ROLES_SOLICITUDES):
+        return RedirectResponse(url="/login", status_code=302)
+
+    ruta_archivo = ruta_xlsx_segura(nombre_archivo)
+    if ruta_archivo is None:
+        return RedirectResponse(url="/solicitudes", status_code=302)
+
+    return FileResponse(
+        path=ruta_archivo,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        filename=ruta_archivo.name,
+    )
 
 
 @router.get("/solicitud", response_class=HTMLResponse)

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visor XLSX - {{ archivo }}</title>
+  <link rel="stylesheet" href="/static/css/museo.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+
+  <main id="contenido-principal" class="container container-wide">
+    <header>
+      <h1>Visor XLSX</h1>
+      <p><strong>Archivo:</strong> {{ archivo }}</p>
+    </header>
+
+    <nav aria-label="Acciones del documento">
+      <ul class="action-list">
+        <li><a class="button" href="{{ url_descarga }}">Descargar XLSX</a></li>
+        <li><a href="/solicitudes">Volver a solicitudes guardadas</a></li>
+      </ul>
+    </nav>
+
+    {% for hoja in hojas %}
+      <section aria-labelledby="hoja-{{ loop.index }}">
+        <h2 id="hoja-{{ loop.index }}">Hoja: {{ hoja.nombre }}</h2>
+        {% if hoja.filas %}
+          <div class="table-scroll" tabindex="0" aria-label="Contenido de la hoja {{ hoja.nombre }}">
+            <table>
+              <caption>Contenido de la hoja {{ hoja.nombre }}</caption>
+              <thead>
+                <tr>
+                  {% for encabezado in hoja.encabezados %}
+                    <th scope="col">{{ encabezado }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for fila in hoja.filas %}
+                  <tr>
+                    {% for celda in fila %}
+                      <td>{{ celda }}</td>
+                    {% endfor %}
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <p role="status">Esta hoja no contiene datos.</p>
+        {% endif %}
+      </section>
+    {% endfor %}
+  </main>
+</body>
+</html>
