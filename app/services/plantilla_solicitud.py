@@ -33,6 +33,8 @@ RUTA_PLANTILLA_SOLICITUD = RAIZ_PROYECTO / "plantilla_solicitud_unica_servicios_
 
 MARCA_OPCION = "X"
 NOMBRE_ARCHIVO_SOLICITUD = "plantilla_solicitud_unica_de_servicios.xlsx"
+RUTA_SOLICITUDES_GENERADAS = RAIZ_PROYECTO / "app" / "solicitudes"
+
 
 # Ruta interna del XML de la hoja dentro del paquete .xlsx.
 RUTA_HOJA_XML = "xl/worksheets/sheet1.xml"
@@ -241,3 +243,18 @@ def generar_plantilla_solicitud(solicitud: Solicitud) -> bytes:
                     resultado.writestr(nombre, plantilla.read(nombre))
 
     return salida.getvalue()
+
+
+def nombre_archivo_solicitud_generada(solicitud: Solicitud) -> str:
+    """Devuelve el nombre del archivo XLSX generado para una solicitud."""
+    return f"{solicitud.folio}_{NOMBRE_ARCHIVO_SOLICITUD}"
+
+
+def guardar_plantilla_solicitud(solicitud: Solicitud) -> Path:
+    """Genera y guarda la plantilla XLSX en la carpeta interna de solicitudes."""
+    RUTA_SOLICITUDES_GENERADAS.mkdir(parents=True, exist_ok=True)
+    ruta_archivo = (
+        RUTA_SOLICITUDES_GENERADAS / nombre_archivo_solicitud_generada(solicitud)
+    )
+    ruta_archivo.write_bytes(generar_plantilla_solicitud(solicitud))
+    return ruta_archivo

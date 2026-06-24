@@ -25,12 +25,16 @@
       </ul>
     </section>
 
+    {% if archivo_guardado %}
+      <p role="status">La plantilla XLSX se guardó en <code>{{ archivo_guardado }}</code>.</p>
+    {% endif %}
+
     <nav aria-label="Acciones de la solicitud">
       <ul>
         <li>
-          <a href="{{ url_descarga_plantilla }}" role="button" download>
-            Descargar copia de la plantilla llena
-          </a>
+          <form action="{{ url_guardar_plantilla }}" method="post">
+            <button type="submit">Guardar plantilla XLSX en solicitudes</button>
+          </form>
         </li>
         <li><a href="/solicitud">Nueva solicitud</a></li>
       </ul>
