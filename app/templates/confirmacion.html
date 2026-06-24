@@ -13,6 +13,14 @@
     <h1>Solicitud enviada</h1>
     <p role="status">Tu solicitud fue registrada correctamente.</p>
 
+    {% if mensaje_confirmacion %}
+      <p role="status" class="alerta-exito">{{ mensaje_confirmacion }}</p>
+    {% endif %}
+
+    {% if error_confirmacion %}
+      <p role="status" class="alerta-error">{{ error_confirmacion }}</p>
+    {% endif %}
+
     <section aria-labelledby="resumen-solicitud">
       <h2 id="resumen-solicitud">Resumen de la solicitud</h2>
       <ul>
@@ -25,16 +33,23 @@
       </ul>
     </section>
 
-    <nav aria-label="Acciones de la solicitud">
-      <ul>
-        <li>
-          <a href="{{ url_descarga_plantilla }}" role="button" download>
-            Descargar copia de la plantilla llena
-          </a>
-        </li>
-        <li><a href="/solicitud">Nueva solicitud</a></li>
-      </ul>
-    </nav>
+    <section aria-labelledby="acciones-solicitud">
+      <h2 id="acciones-solicitud">Acciones disponibles</h2>
+      <form action="/solicitud/{{ folio }}/confirmar" method="post" aria-describedby="ayuda-confirmacion">
+        <p id="ayuda-confirmacion">
+          Confirma la solicitud para generar y guardar una copia PDF en el repositorio.
+        </p>
+        <button type="submit">Confirmar solicitud</button>
+      </form>
+
+      {% if archivo_guardado %}
+        <p role="status">Archivo guardado: {{ archivo_guardado }}</p>
+      {% endif %}
+
+      <nav aria-label="Navegación secundaria">
+        <a href="/solicitud">Nueva solicitud</a>
+      </nav>
+    </section>
   </main>
 </body>
 </html>
