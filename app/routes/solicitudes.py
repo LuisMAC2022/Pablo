@@ -1,4 +1,7 @@
 import json
+import shutil
+import subprocess
+import tempfile
 from pathlib import Path
 from typing import List, Optional
 
@@ -27,6 +30,9 @@ router = APIRouter()
 
 TELEFONO_JEFE_MANTENIMIENTO = "5556228222 ext. 82581"
 RUTA_DIRECTORIO_AUTOCOMPLETE = Path(__file__).resolve().parents[2] / "dir_autocomplete.json"
+RAIZ_PROYECTO = Path(__file__).resolve().parents[2]
+RUTA_SOLICITUDES_GUARDADAS = RAIZ_PROYECTO / "solicitudes"
+
 
 
 def cargar_personas_autocomplete() -> list[dict[str, str]]:
@@ -43,6 +49,53 @@ def cargar_personas_autocomplete() -> list[dict[str, str]]:
         personas.append({"nombre": nombre, "etiqueta": etiqueta})
 
     return personas
+
+
+def convertir_xlsx_a_pdf(contenido_xlsx: bytes, folio: str) -> bytes:
+    """Convierte el XLSX generado en memoria a PDF con LibreOffice/soffice."""
+    ejecutable = shutil.which("libreoffice") or shutil.which("soffice")
+    if ejecutable is None:
+        raise RuntimeError(
+            "No se encontró LibreOffice o soffice para convertir la solicitud a PDF."
+        )
+
+    with tempfile.TemporaryDirectory() as directorio_temporal:
+        temporal = Path(directorio_temporal)
+        ruta_xlsx = temporal / f"{folio}.xlsx"
+        ruta_xlsx.write_bytes(contenido_xlsx)
+
+        resultado = subprocess.run(
+            [
+                ejecutable,
+                "--headless",
+                "--convert-to",
+                "pdf",
+                "--outdir",
+                str(temporal),
+                str(ruta_xlsx),
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        ruta_pdf = ruta_xlsx.with_suffix(".pdf")
+        if resultado.returncode != 0 or not ruta_pdf.exists():
+            detalle = (resultado.stderr or resultado.stdout or "Error desconocido").strip()
+            raise RuntimeError(f"No se pudo convertir la solicitud a PDF: {detalle}")
+
+        return ruta_pdf.read_bytes()
+
+
+def contexto_confirmacion(solicitud: Solicitud, **valores) -> dict:
+    return {
+        "folio": solicitud.folio,
+        "fecha": solicitud.fecha.strftime("%d/%m/%Y"),
+        "nombre_usuario": solicitud.nombre_usuario,
+        "responsable_area_solicitante": solicitud.responsable_area_solicitante,
+        "telefono": solicitud.telefono,
+        "area_solicitante": solicitud.area_solicitante,
+        **valores,
+    }
 
 
 def contexto_formulario(usuario: dict, **valores) -> dict:
@@ -96,6 +149,51 @@ async def descargar_plantilla_solicitud(
         content=contenido,
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         headers={"Content-Disposition": f'attachment; filename="{nombre_descarga}"'},
+    )
+
+
+@router.post("/solicitud/{folio}/confirmar", response_class=HTMLResponse)
+async def confirmar_solicitud(
+    folio: str,
+    request: Request,
+    db: Session = Depends(get_db),
+    usuario: dict = Depends(get_usuario_actual),
+):
+    if not usuario_tiene_rol(usuario, ROLES_SOLICITUDES):
+        return RedirectResponse(url="/login", status_code=302)
+
+    solicitud = db.query(Solicitud).filter(Solicitud.folio == folio).first()
+    if solicitud is None:
+        return RedirectResponse(url="/solicitud", status_code=302)
+
+    templates = request.app.state.templates
+    contenido_xlsx = generar_plantilla_solicitud(solicitud)
+
+    try:
+        contenido_pdf = convertir_xlsx_a_pdf(contenido_xlsx, solicitud.folio)
+    except RuntimeError as exc:
+        return templates.TemplateResponse(
+            request=request,
+            name="confirmacion.html",
+            context=contexto_confirmacion(solicitud, error_confirmacion=str(exc)),
+            status_code=500,
+        )
+
+    RUTA_SOLICITUDES_GUARDADAS.mkdir(parents=True, exist_ok=True)
+    nombre_pdf = f"{solicitud.folio}_solicitud.pdf"
+    ruta_pdf = RUTA_SOLICITUDES_GUARDADAS / nombre_pdf
+    ruta_pdf.write_bytes(contenido_pdf)
+
+    return templates.TemplateResponse(
+        request=request,
+        name="confirmacion.html",
+        context=contexto_confirmacion(
+            solicitud,
+            mensaje_confirmacion=(
+                "Solicitud confirmada y guardada correctamente en formato PDF."
+            ),
+            archivo_guardado=nombre_pdf,
+        ),
     )
 
 
@@ -172,13 +270,5 @@ async def recibir_formulario(
     return templates.TemplateResponse(
         request=request,
         name="confirmacion.html",
-        context={
-            "folio": solicitud.folio,
-            "fecha": solicitud.fecha.strftime("%d/%m/%Y"),
-            "nombre_usuario": solicitud.nombre_usuario,
-            "responsable_area_solicitante": solicitud.responsable_area_solicitante,
-            "telefono": solicitud.telefono,
-            "area_solicitante": solicitud.area_solicitante,
-            "url_descarga_plantilla": f"/solicitud/{solicitud.folio}/plantilla",
-        },
+        context=contexto_confirmacion(solicitud),
     )
