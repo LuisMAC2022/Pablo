@@ -12,8 +12,9 @@ from app.dependencies import get_usuario_actual
 from app.permissions import ROLES_SOLICITUDES, puede_editar_datos_solicitante, usuario_tiene_rol
 from app.services.catalogo_solicitudes import AREAS_SOLICITUD_ACTIVAS, CATALOGO_SERVICIOS
 from app.services.plantilla_solicitud import (
-    NOMBRE_ARCHIVO_SOLICITUD,
     generar_plantilla_solicitud,
+    guardar_plantilla_solicitud,
+    nombre_archivo_solicitud_generada,
 )
 from app.services.solicitudes import (
     AreaSolicitanteInvalida,
@@ -61,6 +62,19 @@ def contexto_formulario(usuario: dict, **valores) -> dict:
     }
 
 
+def contexto_confirmacion(solicitud: Solicitud, **valores) -> dict:
+    return {
+        "folio": solicitud.folio,
+        "fecha": solicitud.fecha.strftime("%d/%m/%Y"),
+        "nombre_usuario": solicitud.nombre_usuario,
+        "responsable_area_solicitante": solicitud.responsable_area_solicitante,
+        "telefono": solicitud.telefono,
+        "area_solicitante": solicitud.area_solicitante,
+        "url_guardar_plantilla": f"/solicitud/{solicitud.folio}/plantilla/guardar",
+        **valores,
+    }
+
+
 @router.get("/solicitud", response_class=HTMLResponse)
 async def mostrar_formulario(
     request: Request,
@@ -91,11 +105,39 @@ async def descargar_plantilla_solicitud(
         return RedirectResponse(url="/solicitud", status_code=302)
 
     contenido = generar_plantilla_solicitud(solicitud)
-    nombre_descarga = f"{solicitud.folio}_{NOMBRE_ARCHIVO_SOLICITUD}"
+    nombre_descarga = nombre_archivo_solicitud_generada(solicitud)
     return Response(
         content=contenido,
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         headers={"Content-Disposition": f'attachment; filename="{nombre_descarga}"'},
+    )
+
+
+@router.post("/solicitud/{folio}/plantilla/guardar", response_class=HTMLResponse)
+async def guardar_plantilla_solicitud_en_servidor(
+    folio: str,
+    request: Request,
+    db: Session = Depends(get_db),
+    usuario: dict = Depends(get_usuario_actual),
+):
+    if not usuario_tiene_rol(usuario, ROLES_SOLICITUDES):
+        return RedirectResponse(url="/login", status_code=302)
+
+    solicitud = db.query(Solicitud).filter(Solicitud.folio == folio).first()
+    if solicitud is None:
+        return RedirectResponse(url="/solicitud", status_code=302)
+
+    ruta_archivo = guardar_plantilla_solicitud(solicitud)
+    templates = request.app.state.templates
+    return templates.TemplateResponse(
+        request=request,
+        name="confirmacion.html",
+        context=contexto_confirmacion(
+            solicitud,
+            archivo_guardado=ruta_archivo.relative_to(
+                Path(__file__).resolve().parents[2]
+            ),
+        ),
     )
 
 
@@ -172,13 +214,5 @@ async def recibir_formulario(
     return templates.TemplateResponse(
         request=request,
         name="confirmacion.html",
-        context={
-            "folio": solicitud.folio,
-            "fecha": solicitud.fecha.strftime("%d/%m/%Y"),
-            "nombre_usuario": solicitud.nombre_usuario,
-            "responsable_area_solicitante": solicitud.responsable_area_solicitante,
-            "telefono": solicitud.telefono,
-            "area_solicitante": solicitud.area_solicitante,
-            "url_descarga_plantilla": f"/solicitud/{solicitud.folio}/plantilla",
-        },
+        context=contexto_confirmacion(solicitud),
     )

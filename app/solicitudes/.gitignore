@@ -1,0 +1,2 @@
+# Los XLSX se generan en tiempo de ejecución y no deben versionarse.
+*.xlsx
