@@ -17,6 +17,7 @@
             <ul>
                 {% if usuario.rol in ["biologo", "admin", "desarrollador"] %}
                 <li><a class="button" href="/solicitud">Nueva solicitud de mantenimiento</a></li>
+                <li><a class="button" href="/solicitudes">Ver solicitudes XLSX guardadas</a></li>
                 {% endif %}
                 {% if usuario.rol in ["seguridad", "admin", "desarrollador"] %}
                 <li><a class="button" href="/visitantes">Registrar visitantes</a></li>
