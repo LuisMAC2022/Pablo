@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitudes guardadas</title>
+  <link rel="stylesheet" href="/static/css/museo.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+
+  <main id="contenido-principal" class="container">
+    <h1>Solicitudes guardadas</h1>
+
+    {% if archivos %}
+      <ul>
+        {% for archivo in archivos %}
+          <li><a href="{{ archivo.url }}">Ver PDF guardado {{ archivo.nombre }}</a></li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p role="status">No hay solicitudes guardadas todavía.</p>
+    {% endif %}
+
+    <nav aria-label="Navegación secundaria">
+      <ul>
+        <li><a href="/solicitud">Nueva solicitud</a></li>
+        <li><a href="/inicio">Inicio</a></li>
+      </ul>
+    </nav>
+  </main>
+</body>
+</html>
