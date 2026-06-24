@@ -1,10 +1,30 @@
-"""Generación de copias llenas de la plantilla de solicitud única."""
+"""Generación de copias llenas de la plantilla de solicitud única.
 
+Enfoque: edición directa del XML de la hoja, sin regenerar el archivo.
+
+A diferencia de usar openpyxl para escribir (que regenera la hoja y, al hacerlo,
+altera o descarta los dibujos: imágenes y autoformas como las líneas doradas),
+aquí se edita el `sheet1.xml` original reemplazando solo el contenido de las
+celdas necesarias, y se vuelve a empaquetar el .xlsx copiando TODO lo demás byte
+a byte. Así el dibujo de la plantilla (imágenes y líneas) queda intacto, porque
+nunca se reescribe.
+
+Las celdas se escriben como `inlineStr`, que guardan el texto dentro de la
+propia celda y no dependen de la tabla de cadenas compartidas
+(`sharedStrings.xml`). El estilo de cada celda (fuente, bordes, relleno) se
+conserva leyendo su atributo `s` del XML original.
+"""
+
+import re
+import zipfile
 from io import BytesIO
 from pathlib import Path
 from typing import Dict, Iterable, Tuple, Union
-from xml.etree import ElementTree as ET
-from zipfile import ZIP_DEFLATED, ZipFile
+from xml.sax.saxutils import escape
+
+from openpyxl import load_workbook
+from openpyxl.utils import get_column_letter, range_boundaries
+from openpyxl.utils.cell import coordinate_to_tuple
 
 from app.models import Solicitud
 
@@ -14,10 +34,27 @@ RUTA_PLANTILLA_SOLICITUD = RAIZ_PROYECTO / "plantilla_solicitud_unica_servicios_
 MARCA_OPCION = "X"
 NOMBRE_ARCHIVO_SOLICITUD = "plantilla_solicitud_unica_de_servicios.xlsx"
 
-ESPACIO_NOMBRES_HOJA = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
-ET.register_namespace("", ESPACIO_NOMBRES_HOJA)
+# Ruta interna del XML de la hoja dentro del paquete .xlsx.
+RUTA_HOJA_XML = "xl/worksheets/sheet1.xml"
 
-# La marca se coloca en la celda a la derecha del texto de la opción, no antes.
+# Ruta interna de los estilos. Se ajusta para centrar verticalmente la
+# descripción del servicio (celda B37).
+RUTA_ESTILOS_XML = "xl/styles.xml"
+
+# El estilo de la celda de descripción (B37) ya viene centrado horizontalmente
+# pero alineado arriba. Para centrarlo también en vertical se cambia, solo en
+# ese estilo, vertical="top" por vertical="center". Se busca la firma completa
+# del estilo para no afectar a ningún otro.
+FIRMA_ESTILO_DESCRIPCION = (
+    '<xf numFmtId="0" fontId="11" fillId="0" borderId="22" xfId="0" '
+    'applyFont="1" applyBorder="1" applyAlignment="1">'
+    '<alignment horizontal="center" vertical="top"/>'
+)
+FIRMA_ESTILO_DESCRIPCION_CENTRADO = FIRMA_ESTILO_DESCRIPCION.replace(
+    'vertical="top"', 'vertical="center"'
+)
+
+# Las marcas se colocan en la celda indicada para cada opción seleccionada.
 CELDAS_OPCIONES_SERVICIO: Dict[str, Dict[str, str]] = {
     "infraestructura": {
         "albanileria": "F17",
@@ -79,110 +116,128 @@ def _opciones_seleccionadas(solicitud: Solicitud, campo: str) -> Iterable[str]:
     return getattr(solicitud, campo) or []
 
 
-def _nombre_etiqueta(nombre: str) -> str:
-    return f"{{{ESPACIO_NOMBRES_HOJA}}}{nombre}"
+def _resolver_celda_ancla(hoja, referencia: str) -> str:
+    """Devuelve la celda superior-izquierda del rango combinado que contiene
+    `referencia`. Si la celda no está combinada, devuelve la misma referencia.
+
+    En un rango combinado solo la celda ancla guarda el valor; escribir en otra
+    celda del rango lo pierde. Resolver la ancla aquí mantiene el código
+    correcto aunque a futuro se combinen más celdas.
+    """
+    fila, columna = coordinate_to_tuple(referencia)
+    for rango in hoja.merged_cells.ranges:
+        min_col, min_fila, max_col, max_fila = range_boundaries(str(rango))
+        if min_fila <= fila <= max_fila and min_col <= columna <= max_col:
+            return f"{get_column_letter(min_col)}{min_fila}"
+    return referencia
 
 
-def _dividir_referencia_celda(referencia: str) -> Tuple[str, int]:
-    columna = "".join(caracter for caracter in referencia if caracter.isalpha())
-    fila = int("".join(caracter for caracter in referencia if caracter.isdigit()))
-    return columna, fila
+def _mapa_valores(solicitud: Solicitud) -> Dict[str, ValorCelda]:
+    """Construye el diccionario celda -> valor con las referencias ya resueltas
+    a su celda ancla (por si alguna cae en un rango combinado)."""
+    # Se abre la plantilla solo para conocer los rangos combinados y resolver
+    # anclas; no se usa openpyxl para escribir.
+    libro = load_workbook(RUTA_PLANTILLA_SOLICITUD)
+    hoja = libro[libro.sheetnames[0]]
 
-
-def _indice_columna(columna: str) -> int:
-    indice = 0
-    for caracter in columna:
-        indice = indice * 26 + ord(caracter.upper()) - ord("A") + 1
-    return indice
-
-
-def _orden_celda(celda: ET.Element) -> Tuple[int, int]:
-    columna, fila = _dividir_referencia_celda(celda.attrib["r"])
-    return fila, _indice_columna(columna)
-
-
-def _obtener_o_crear_fila(sheet_data: ET.Element, numero_fila: int) -> ET.Element:
-    for fila in sheet_data.findall(_nombre_etiqueta("row")):
-        if int(fila.attrib["r"]) == numero_fila:
-            return fila
-
-    fila = ET.Element(_nombre_etiqueta("row"), {"r": str(numero_fila)})
-    sheet_data.append(fila)
-    sheet_data[:] = sorted(sheet_data, key=lambda elemento: int(elemento.attrib["r"]))
-    return fila
-
-
-def _obtener_o_crear_celda(hoja: ET.Element, referencia: str) -> ET.Element:
-    sheet_data = hoja.find(_nombre_etiqueta("sheetData"))
-    if sheet_data is None:
-        sheet_data = ET.SubElement(hoja, _nombre_etiqueta("sheetData"))
-
-    columna, numero_fila = _dividir_referencia_celda(referencia)
-    fila = _obtener_o_crear_fila(sheet_data, numero_fila)
-
-    for celda in fila.findall(_nombre_etiqueta("c")):
-        if celda.attrib["r"] == referencia:
-            return celda
-
-    celda = ET.Element(_nombre_etiqueta("c"), {"r": referencia})
-    fila.append(celda)
-    fila[:] = sorted(fila, key=_orden_celda)
-    return celda
-
-
-def _asignar_valor_celda(hoja: ET.Element, referencia: str, valor: ValorCelda) -> None:
-    celda = _obtener_o_crear_celda(hoja, referencia)
-    for hijo in list(celda):
-        celda.remove(hijo)
-
-    if isinstance(valor, int):
-        celda.attrib.pop("t", None)
-        ET.SubElement(celda, _nombre_etiqueta("v")).text = str(valor)
-        return
-
-    celda.attrib["t"] = "inlineStr"
-    texto_en_linea = ET.SubElement(celda, _nombre_etiqueta("is"))
-    texto = ET.SubElement(texto_en_linea, _nombre_etiqueta("t"))
-    texto.text = valor
-
-
-def _valores_solicitud(solicitud: Solicitud) -> Dict[str, ValorCelda]:
-    valores: Dict[str, ValorCelda] = {
+    crudos: Dict[str, ValorCelda] = {
         "H7": solicitud.area_solicitante,
-        "AC7": solicitud.folio,
         "L9": solicitud.nombre_usuario,
         "AD9": solicitud.fecha.day,
         "AE9": solicitud.fecha.month,
-        "AF9": solicitud.fecha.year,
+        # El año se muestra con dos dígitos (p. ej. 26 en lugar de 2026).
+        "AF9": solicitud.fecha.year % 100,
         "I11": solicitud.responsable_area_solicitante or solicitud.nombre_usuario,
         "AC11": solicitud.telefono,
-        "B38": solicitud.descripcion_servicio,
+        # La descripción cae en el bloque combinado B37:AF41; la ancla es B37.
+        "B37": solicitud.descripcion_servicio,
         "U56": solicitud.nombre_usuario,
     }
+    # El folio (AC7) se deja vacío a propósito: lo asigna un departamento externo
+    # a la aplicación, así que la plantilla no debe rellenarlo.
 
     for campo in CAMPOS_OPCIONES:
         celdas_por_opcion = CELDAS_OPCIONES_SERVICIO[campo]
         for opcion in _opciones_seleccionadas(solicitud, campo):
             celda = celdas_por_opcion.get(opcion)
             if celda:
-                valores[celda] = MARCA_OPCION
+                crudos[celda] = MARCA_OPCION
+
+    # Resolver anclas y descartar valores None.
+    valores: Dict[str, ValorCelda] = {}
+    for referencia, valor in crudos.items():
+        if valor is None:
+            continue
+        ancla = _resolver_celda_ancla(hoja, referencia)
+        valores[ancla] = valor
 
     return valores
 
 
+def _estilo_celda(hoja_xml: str, referencia: str) -> Union[str, None]:
+    """Devuelve el índice de estilo (atributo s) de la celda en el XML, o None."""
+    coincidencia = re.search(rf'<c r="{referencia}"(?:\s+s="(\d+)")?', hoja_xml)
+    if coincidencia and coincidencia.group(1):
+        return coincidencia.group(1)
+    return None
+
+
+def _xml_celda(referencia: str, estilo: Union[str, None], valor: ValorCelda) -> str:
+    """Construye el XML de una celda, conservando su estilo. Los números se
+    escriben como valor numérico; el texto, como cadena en línea (inlineStr)."""
+    atributo_estilo = f' s="{estilo}"' if estilo else ""
+    if isinstance(valor, int):
+        return f'<c r="{referencia}"{atributo_estilo}><v>{valor}</v></c>'
+    texto = escape(str(valor))
+    return (
+        f'<c r="{referencia}"{atributo_estilo} t="inlineStr">'
+        f'<is><t xml:space="preserve">{texto}</t></is></c>'
+    )
+
+
+def _reemplazar_celda(hoja_xml: str, referencia: str, valor: ValorCelda) -> str:
+    """Reemplaza la celda `referencia` en el XML por una con el nuevo valor,
+    conservando su estilo. Todas las celdas destino existen en la plantilla, así
+    que siempre se reemplaza (no se inserta)."""
+    estilo = _estilo_celda(hoja_xml, referencia)
+    nueva_celda = _xml_celda(referencia, estilo, valor)
+    patron = rf'<c r="{referencia}"[^>]*?/>|<c r="{referencia}"[^>]*?>.*?</c>'
+    if re.search(patron, hoja_xml):
+        return re.sub(patron, nueva_celda, hoja_xml, count=1)
+    return hoja_xml
+
+
+def _centrar_descripcion(estilos_xml: str) -> str:
+    """Centra verticalmente el texto de la celda de descripción (B37) ajustando
+    su estilo en styles.xml. El centrado horizontal ya viene de la plantilla."""
+    return estilos_xml.replace(
+        FIRMA_ESTILO_DESCRIPCION, FIRMA_ESTILO_DESCRIPCION_CENTRADO
+    )
+
+
 def generar_plantilla_solicitud(solicitud: Solicitud) -> bytes:
-    """Devuelve una copia XLSX de la plantilla llena con los datos de la solicitud."""
-    with ZipFile(RUTA_PLANTILLA_SOLICITUD, "r") as plantilla:
-        hoja = ET.fromstring(plantilla.read("xl/worksheets/sheet1.xml"))
+    """Devuelve una copia XLSX de la plantilla llena con los datos de la
+    solicitud, conservando intactos los dibujos (imágenes y líneas)."""
+    valores = _mapa_valores(solicitud)
 
-        for referencia, valor in _valores_solicitud(solicitud).items():
-            _asignar_valor_celda(hoja, referencia, valor)
+    with zipfile.ZipFile(RUTA_PLANTILLA_SOLICITUD, "r") as plantilla:
+        hoja_xml = plantilla.read(RUTA_HOJA_XML).decode("utf-8")
+        for referencia, valor in valores.items():
+            hoja_xml = _reemplazar_celda(hoja_xml, referencia, valor)
 
-        hoja_serializada = ET.tostring(hoja, encoding="utf-8", xml_declaration=True)
+        estilos_xml = plantilla.read(RUTA_ESTILOS_XML).decode("utf-8")
+        estilos_xml = _centrar_descripcion(estilos_xml)
+
         salida = BytesIO()
-        with ZipFile(salida, "w", ZIP_DEFLATED) as copia:
-            for elemento in plantilla.infolist():
-                contenido = hoja_serializada if elemento.filename == "xl/worksheets/sheet1.xml" else plantilla.read(elemento.filename)
-                copia.writestr(elemento, contenido)
+        with zipfile.ZipFile(salida, "w", zipfile.ZIP_DEFLATED) as resultado:
+            for nombre in plantilla.namelist():
+                if nombre == RUTA_HOJA_XML:
+                    resultado.writestr(nombre, hoja_xml.encode("utf-8"))
+                elif nombre == RUTA_ESTILOS_XML:
+                    resultado.writestr(nombre, estilos_xml.encode("utf-8"))
+                else:
+                    # Todo lo demás (dibujos, imágenes, relaciones) se copia sin
+                    # modificar, preservando el diseño original.
+                    resultado.writestr(nombre, plantilla.read(nombre))
 
     return salida.getvalue()

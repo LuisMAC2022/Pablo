@@ -194,3 +194,115 @@ INFO:     100.83.45.49:49905 - "GET /favicon.ico HTTP/1.1" 404 Not Found
 INFO:     100.83.45.49:49908 - "POST /login HTTP/1.1" 302 Found
 INFO:     100.83.45.49:49908 - "GET /inicio HTTP/1.1" 200 OK
 INFO:     100.83.45.49:49908 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.1.57:50496 - "GET /visitantes HTTP/1.1" 302 Found
+INFO:     192.168.1.57:50496 - "GET /login HTTP/1.1" 200 OK
+INFO:     192.168.1.57:50496 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     192.168.1.57:50500 - "POST /login HTTP/1.1" 302 Found
+INFO:     192.168.1.57:50500 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     192.168.1.57:50500 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.1.57:50502 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.101.86:37814 - "GET /solicitud HTTP/1.1" 302 Found
+INFO:     192.168.101.86:37814 - "GET /login HTTP/1.1" 200 OK
+INFO:     192.168.101.86:37814 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     192.168.101.86:37814 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     192.168.101.86:37824 - "POST /login HTTP/1.1" 302 Found
+INFO:     192.168.101.86:37824 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     192.168.101.86:59252 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.102.75:50957 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     192.168.102.75:50959 - "GET /visitantes HTTP/1.1" 302 Found
+INFO:     192.168.102.75:50959 - "GET /login HTTP/1.1" 200 OK
+INFO:     192.168.102.75:50959 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     192.168.102.75:50959 - "POST /login HTTP/1.1" 302 Found
+INFO:     192.168.102.75:50959 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     192.168.102.75:50959 - "POST /login HTTP/1.1" 302 Found
+INFO:     192.168.102.75:50959 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     192.168.102.75:50959 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59065 - "GET / HTTP/1.1" 302 Found
+INFO:     127.0.0.1:59065 - "GET /inicio HTTP/1.1" 302 Found
+INFO:     127.0.0.1:59065 - "GET /login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59065 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59065 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59066 - "POST /login HTTP/1.1" 302 Found
+INFO:     127.0.0.1:59066 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59066 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59114 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59114 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59136 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59204 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59204 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59401 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59402 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59402 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59407 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59407 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59407 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59407 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59445 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59445 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59445 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59445 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     192.168.102.75:50975 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.102.75:50975 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.102.75:50976 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.102.75:50978 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.102.75:50980 - "GET / HTTP/1.1" 302 Found
+INFO:     192.168.102.75:50980 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     192.168.102.75:50981 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.102.75:50983 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61463 - "POST /solicitud HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:61463 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61464 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61464 - "GET /static/js/confirmacion.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61484 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:61759 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61759 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:61760 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61760 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:61799 - "GET /static/js/confirmacion.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:62600 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62600 - "POST /solicitud HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:62600 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62601 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62601 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:62601 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62601 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     192.168.102.75:50990 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.102.75:50991 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.102.75:50991 - "GET /static/js/confirmacion.js HTTP/1.1" 200 OK
+INFO:     192.168.102.75:50994 - "GET /solicitud/029/plantilla HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65087 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65087 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65088 - "GET /static/js/confirmacion.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65110 - "GET /solicitud/030/plantilla HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65243 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65244 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65244 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51177 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51177 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:51180 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51214 - "GET /solicitud/032/plantilla HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52496 - "GET /solicitud/032/plantilla HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52514 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52514 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52515 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52515 - "GET /solicitud/033/plantilla HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52860 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52860 - "POST /solicitud HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52861 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52861 - "GET /solicitud/034/plantilla HTTP/1.1" 200 OK
+INFO:     192.168.1.57:55189 - "GET /visitantes HTTP/1.1" 302 Found
+INFO:     192.168.1.57:55189 - "GET /login HTTP/1.1" 200 OK
+INFO:     192.168.1.57:55189 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     192.168.1.57:55189 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     192.168.1.57:55189 - "POST /login HTTP/1.1" 302 Found
+INFO:     192.168.1.57:55189 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     192.168.1.57:55189 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     192.168.1.57:55189 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.1.57:55237 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.1.57:55237 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     192.168.1.57:55237 - "GET /solicitud/035/plantilla HTTP/1.1" 200 OK
+INFO:     192.168.1.57:55707 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.1.57:55707 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     192.168.1.57:56332 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.1.57:56332 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     192.168.1.57:56332 - "GET /solicitud/036/plantilla HTTP/1.1" 200 OK
