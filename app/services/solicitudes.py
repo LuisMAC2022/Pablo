@@ -12,8 +12,8 @@ from app.services.catalogo_solicitudes import (
     SUBCATEGORIAS_POR_AREA,
 )
 
-# Áreas existentes reservadas para uso futuro: Servicios Educativos,
-# Exposiciones Museográficas, Delegación Administrativa.
+# Áreas reconocidas por operación pero excluidas del catálogo activo. No moverlas
+# a AREAS_SOLICITUD_ACTIVAS sin definir subcategorías y reglas de validación.
 AREAS_SOLICITUD_INACTIVAS = [
     "Servicios Educativos",
     "Exposiciones Museográficas",
