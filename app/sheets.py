@@ -7,7 +7,10 @@ SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets",
 ]
 
+# Hoja operativa donde se replica cada solicitud creada. Cambiar este ID
+# redirige la salida de `agregar_solicitud`.
 SPREADSHEET_ID = "1wdxl0iwjJC6kh5KBt46BsEcan-tK3K0nQCZMElD51cg"
+
 
 def get_sheet():
     creds = Credentials.from_service_account_file(
@@ -17,6 +20,7 @@ def get_sheet():
     client = gspread.authorize(creds)
     spreadsheet = client.open_by_key(SPREADSHEET_ID)
     return spreadsheet.sheet1
+
 
 def agregar_solicitud(solicitud):
     sheet = get_sheet()
