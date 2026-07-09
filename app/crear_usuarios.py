@@ -10,11 +10,17 @@ from app.auth import hashear_password
 
 ROL_USUARIO = "biologo"
 
-# Define PASSWORD_TEMPORAL_BIOLOGOS en .env local o en variables de entorno seguras.
+# La contraseña inicial se obtiene de configuración segura; no debe codificarse
+# aquí porque este script puede ejecutarse contra entornos compartidos.
 PASSWORD_TEMPORAL = get_settings().password_temporal_biologos.get_secret_value()
 
 
 def cargar_registros(ruta_json: Path):
+    """Carga registros desde JSON.
+
+    Acepta una lista directa o un objeto con clave `registros` para soportar
+    tanto exportaciones manuales como archivos generados por otros sistemas.
+    """
     with ruta_json.open("r", encoding="utf-8") as archivo:
         data = json.load(archivo)
 
@@ -40,6 +46,11 @@ def construir_nombre_completo(registro: dict) -> str:
 
 
 def crear_usuarios(ruta_json: str = "directorio_personal.json"):
+    """Crea cuentas de biólogo a partir del directorio de personal.
+
+    Omite registros sin email y duplicados sin abortar la carga; cualquier otro
+    error revierte la transacción completa para evitar altas parciales.
+    """
     db = SessionLocal()
 
     try:
