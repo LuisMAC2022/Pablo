@@ -12,8 +12,8 @@ from app.services.catalogo_solicitudes import (
     SUBCATEGORIAS_POR_AREA,
 )
 
-# Áreas existentes reservadas para uso futuro: Servicios Educativos,
-# Exposiciones Museográficas, Delegación Administrativa.
+# These names are not accepted by validation yet; keep them explicit so future
+# form, database, and Sheet changes can activate them deliberately.
 AREAS_SOLICITUD_INACTIVAS = [
     "Servicios Educativos",
     "Exposiciones Museográficas",
