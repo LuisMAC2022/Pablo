@@ -8,41 +8,26 @@ from app.config import get_settings
 from app.models import Base
 
 
-# this is the Alembic Config object, which provides
-# access to the values within the .ini file in use.
 config = context.config
 
 settings = get_settings()
+# Alembic debe usar la misma URL de base de datos que la aplicación, no un
+# valor duplicado en alembic.ini.
 config.set_main_option("sqlalchemy.url", settings.database_url)
 
-# Interpret the config file for Python logging.
-# This line sets up loggers basically.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# add your model's MetaData object here
-# for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
-target_metadata = Base.metadata 
-
-# other values from the config, defined by the needs of env.py,
-# can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
-# ... etc.
+# Base.metadata es el contrato que usa Alembic para comparar los modelos ORM
+# contra el esquema real durante `alembic revision --autogenerate`.
+target_metadata = Base.metadata
 
 
 def run_migrations_offline() -> None:
-    """Run migrations in 'offline' mode.
+    """Ejecuta migraciones sin abrir una conexión DBAPI.
 
-    This configures the context with just a URL
-    and not an Engine, though an Engine is acceptable
-    here as well.  By skipping the Engine creation
-    we don't even need a DBAPI to be available.
-
-    Calls to context.execute() here emit the given string to the
-    script output.
-
+    Alembic emite SQL usando la URL configurada; esto permite revisar o generar
+    scripts en entornos donde no se debe conectar directamente a la base de datos.
     """
 
     context.configure(
@@ -57,12 +42,7 @@ def run_migrations_offline() -> None:
 
 
 def run_migrations_online() -> None:
-    """Run migrations in 'online' mode.
-
-    In this scenario we need to create an Engine
-    and associate a connection with the context.
-
-    """
+    """Ejecuta migraciones con una conexión real a la base de datos."""
     connectable = engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
