@@ -33,4 +33,5 @@ class Usuario(Base):
     nombre = Column(String(100), nullable=False)
     email = Column(String(100), unique=True, nullable=False)
     password_hash = Column(String(200), nullable=False)
-    rol = Column(String(20), nullable=False)  # admin, biologo, desarrollador, seguridad
+    # Keep accepted role values synchronized with app.permissions and seed scripts.
+    rol = Column(String(20), nullable=False)
