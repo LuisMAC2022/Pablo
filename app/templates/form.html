@@ -1,143 +1,160 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Solicitud Única de Servicios</title>
-  <link rel="stylesheet" href="/static/css/museo.css">
-</head>
-<body>
-  <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+{% extends "base.html" %}
 
-  <header>
-    <h1>Universidad Nacional Autónoma de México</h1>
-    <p>Secretarías y Unidades Administrativas - SGC</p>
+{% block title %}Solicitud Única de Servicios | Pabellón Nacional de la Biodiversidad{% endblock %}
+
+{% macro opciones_servicio(subcategoria) %}
+  <fieldset
+    class="service-fieldset"
+    data-subcategory-options="{{ subcategoria.id }}"
+    {% if subcategoria_servicio|default('') != subcategoria.id %}hidden disabled{% endif %}
+  >
+    <legend>{{ subcategoria.nombre }}</legend>
+
+    <div class="option-grid">
+      {% for opcion in subcategoria.opciones %}
+        {% set opcion_id = subcategoria.id ~ '-' ~ opcion.valor %}
+        <div class="option">
+          <input
+            type="radio"
+            id="{{ opcion_id }}"
+            name="{{ subcategoria.id }}"
+            value="{{ opcion.valor }}"
+            required
+          >
+          <label for="{{ opcion_id }}">{{ opcion.etiqueta }}</label>
+        </div>
+      {% endfor %}
+    </div>
+  </fieldset>
+{% endmacro %}
+
+{% macro area_servicio(area) %}
+  {% set area_activa = area.nombre == area_solicitante %}
+  {% set select_id = 'subcategoria_servicio-' ~ area.slug %}
+  <fieldset
+    class="area-fieldset"
+    data-area-section="{{ area.nombre }}"
+    {% if not area_activa %}hidden disabled{% endif %}
+  >
+    <legend>{{ area.nombre }}</legend>
+
+    <div class="field">
+      <label for="{{ select_id }}">Subcategoría del servicio</label>
+      <select
+        id="{{ select_id }}"
+        name="subcategoria_servicio"
+        data-subcategory-select
+        {% if not area_activa %}disabled{% endif %}
+        {% if area_activa %}required{% endif %}
+      >
+        <option value="">Seleccione una subcategoría</option>
+        {% for subcategoria in area.subcategorias %}
+          <option
+            value="{{ subcategoria.id }}"
+            {% if subcategoria_servicio|default('') == subcategoria.id %}selected{% endif %}
+          >
+            {{ subcategoria.nombre }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    {% for subcategoria in area.subcategorias %}
+      {{ opciones_servicio(subcategoria) }}
+    {% endfor %}
+  </fieldset>
+{% endmacro %}
+
+{% block body %}
+<main id="contenido-principal" class="shell shell--prose page-main">
+  <a class="back-link" href="/inicio">Inicio</a>
+
+  <header class="page-header">
+    <p class="eyebrow">Universidad Nacional Autónoma de México · Secretarías y Unidades Administrativas · SGC</p>
+    <h1 class="page-header__title">Solicitud Única de Servicios</h1>
+    <p class="page-header__lede">
+      Registra los datos de la solicitud y selecciona el servicio correspondiente al área solicitante.
+    </p>
   </header>
 
-  <main id="contenido-principal">
-    <h2>Solicitud Única de Servicios</h2>
+  {% if error %}
+    <p role="alert" class="alert alert--error">{{ error }}</p>
+  {% endif %}
 
-    {% if error %}
-      <p role="alert" class="error-message">{{ error }}</p>
-    {% endif %}
+  <form class="form-layout" action="/solicitud" method="post">
+    <section class="form-section" aria-labelledby="datos-solicitud">
+      <div class="form-section__heading">
+        <span class="form-section__index" aria-hidden="true">01</span>
+        <h2 id="datos-solicitud" class="form-section__title">Datos de la solicitud</h2>
+      </div>
 
-    {% macro opciones_servicio(subcategoria) %}
-      <fieldset
-        data-subcategory-options="{{ subcategoria.id }}"
-        {% if subcategoria_servicio|default('') != subcategoria.id %}hidden disabled{% endif %}
-      >
-        <legend>{{ subcategoria.nombre }}</legend>
+      <div class="form-card">
+        <div class="field">
+          <label for="area_solicitante">Área solicitante</label>
+          <select id="area_solicitante" name="area_solicitante" required>
+            <option value="">Seleccione un área</option>
+            {% for area in areas %}
+              <option value="{{ area }}"{% if area == area_solicitante %} selected{% endif %}>{{ area }}</option>
+            {% endfor %}
+          </select>
+        </div>
 
-        {% for opcion in subcategoria.opciones %}
-          {% set opcion_id = subcategoria.id ~ '-' ~ opcion.valor %}
-          <div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="nombre_usuario">Nombre del usuario</label>
             <input
-              type="radio"
-              id="{{ opcion_id }}"
-              name="{{ subcategoria.id }}"
-              value="{{ opcion.valor }}"
+              type="text"
+              id="nombre_usuario"
+              name="nombre_usuario"
+              value="{{ nombre_usuario }}"
+              list="personas-autocomplete"
               required
+              {% if not puede_editar_datos_solicitante %}readonly{% endif %}
+              aria-describedby="nombre-usuario-ayuda"
             >
-            <label for="{{ opcion_id }}">{{ opcion.etiqueta }}</label>
+            <small id="nombre-usuario-ayuda" class="field-help">
+              {% if puede_editar_datos_solicitante %}
+                Escriba el nombre y seleccione una sugerencia si aparece.
+              {% else %}
+                Este dato se toma de su sesión.
+              {% endif %}
+            </small>
           </div>
-        {% endfor %}
-      </fieldset>
-    {% endmacro %}
 
-    {% macro area_servicio(area) %}
-      {% set area_activa = area.nombre == area_solicitante %}
-      {% set select_id = 'subcategoria_servicio-' ~ area.slug %}
-      <fieldset
-        data-area-section="{{ area.nombre }}"
-        {% if not area_activa %}hidden disabled{% endif %}
-      >
-        <legend>{{ area.nombre }}</legend>
-
-        <label for="{{ select_id }}">Subcategoría del servicio:</label>
-        <select
-          id="{{ select_id }}"
-          name="subcategoria_servicio"
-          data-subcategory-select
-          {% if not area_activa %}disabled{% endif %}
-          {% if area_activa %}required{% endif %}
-        >
-          <option value="">Seleccione una subcategoría</option>
-          {% for subcategoria in area.subcategorias %}
-            <option
-              value="{{ subcategoria.id }}"
-              {% if subcategoria_servicio|default('') == subcategoria.id %}selected{% endif %}
+          <div class="field">
+            <label for="responsable_area_solicitante">Responsable del área solicitante</label>
+            <input
+              type="text"
+              id="responsable_area_solicitante"
+              name="responsable_area_solicitante"
+              value="{{ responsable_area_solicitante }}"
+              list="responsables-autocomplete"
+              required
+              {% if not puede_editar_datos_solicitante %}readonly{% endif %}
+              aria-describedby="responsable-area-ayuda"
             >
-              {{ subcategoria.nombre }}
-            </option>
-          {% endfor %}
-        </select>
+            <small id="responsable-area-ayuda" class="field-help">
+              {% if puede_editar_datos_solicitante %}
+                Escriba el nombre del responsable y seleccione una sugerencia si aparece.
+              {% else %}
+                Este dato se valida con la política del servidor.
+              {% endif %}
+            </small>
+          </div>
+        </div>
 
-        {% for subcategoria in area.subcategorias %}
-          {{ opciones_servicio(subcategoria) }}
-        {% endfor %}
-      </fieldset>
-    {% endmacro %}
-
-    <form action="/solicitud" method="post">
-      <section aria-labelledby="datos-solicitud">
-        <h3 id="datos-solicitud">Datos de la solicitud</h3>
-
-        <label for="area_solicitante">Área solicitante:</label>
-        <select id="area_solicitante" name="area_solicitante" required>
-          <option value="">Seleccione un área</option>
-          {% for area in areas %}
-            <option value="{{ area }}"{% if area == area_solicitante %} selected{% endif %}>{{ area }}</option>
-          {% endfor %}
-        </select>
-
-        <label for="nombre_usuario">Nombre del usuario:</label>
-        <input
-          type="text"
-          id="nombre_usuario"
-          name="nombre_usuario"
-          value="{{ nombre_usuario }}"
-          list="personas-autocomplete"
-          required
-          {% if not puede_editar_datos_solicitante %}readonly{% endif %}
-          aria-describedby="nombre-usuario-ayuda"
-        >
-        <small id="nombre-usuario-ayuda">
-          {% if puede_editar_datos_solicitante %}
-            Escriba el nombre y seleccione una sugerencia si aparece.
-          {% else %}
-            Este dato se toma de su sesión.
-          {% endif %}
-        </small>
-
-        <label for="responsable_area_solicitante">Responsable del área solicitante:</label>
-        <input
-          type="text"
-          id="responsable_area_solicitante"
-          name="responsable_area_solicitante"
-          value="{{ responsable_area_solicitante }}"
-          list="responsables-autocomplete"
-          required
-          {% if not puede_editar_datos_solicitante %}readonly{% endif %}
-          aria-describedby="responsable-area-ayuda"
-        >
-        <small id="responsable-area-ayuda">
-          {% if puede_editar_datos_solicitante %}
-            Escriba el nombre del responsable y seleccione una sugerencia si aparece.
-          {% else %}
-            Este dato se valida con la política del servidor.
-          {% endif %}
-        </small>
-
-        <label for="telefono">Teléfono:</label>
-        <input
-          type="tel"
-          id="telefono"
-          name="telefono"
-          value="{{ telefono or '5556228222 ext. 82581' }}"
-          required
-          aria-describedby="telefono-ayuda"
-        >
-        <small id="telefono-ayuda">Por ahora se usa el teléfono del jefe de mantenimiento, pero puede editarse.</small>
+        <div class="field">
+          <label for="telefono">Teléfono</label>
+          <input
+            type="tel"
+            id="telefono"
+            name="telefono"
+            value="{{ telefono or '5556228222 ext. 82581' }}"
+            required
+            aria-describedby="telefono-ayuda"
+          >
+          <small id="telefono-ayuda" class="field-help">Por ahora se usa el teléfono del jefe de mantenimiento, pero puede editarse.</small>
+        </div>
 
         <datalist id="personas-autocomplete">
           {% for persona in personas_autocomplete %}
@@ -150,85 +167,53 @@
             <option value="{{ persona.nombre }}" label="{{ persona.etiqueta }}"></option>
           {% endfor %}
         </datalist>
-      </section>
+      </div>
+    </section>
 
-      <section aria-labelledby="tipo-servicio">
-        <h3 id="tipo-servicio">Tipo de servicio</h3>
+    <section class="form-section" aria-labelledby="tipo-servicio">
+      <div class="form-section__heading">
+        <span class="form-section__index" aria-hidden="true">02</span>
+        <h2 id="tipo-servicio" class="form-section__title">Tipo de servicio</h2>
+      </div>
 
+      <div class="form-card">
+        <p class="alert alert--info">Seleccione el área solicitante para mostrar sus subcategorías y opciones de servicio.</p>
         {% for area in catalogo_servicios %}
           {{ area_servicio(area) }}
         {% endfor %}
-      </section>
+      </div>
+    </section>
 
-      <section aria-labelledby="descripcion-servicio-titulo">
-        <h3 id="descripcion-servicio-titulo">Descripción del servicio</h3>
+    <section class="form-section" aria-labelledby="descripcion-servicio-titulo">
+      <div class="form-section__heading">
+        <span class="form-section__index" aria-hidden="true">03</span>
+        <h2 id="descripcion-servicio-titulo" class="form-section__title">Descripción del servicio</h2>
+      </div>
 
-        <label for="descripcion_servicio">
-          Descripción del servicio
-          <br>
-          <small id="descripcion-servicio-ayuda">Especificar claramente fecha y hora del servicio requerido</small>
-        </label>
+      <div class="form-card">
+        <div class="field">
+          <label for="descripcion_servicio">Descripción del servicio</label>
+          <textarea
+            id="descripcion_servicio"
+            name="descripcion_servicio"
+            rows="8"
+            cols="80"
+            required
+            aria-describedby="descripcion-servicio-ayuda"
+          >{{ descripcion_servicio|default('') }}</textarea>
+          <small id="descripcion-servicio-ayuda" class="field-help">Especificar claramente fecha y hora del servicio requerido.</small>
+        </div>
+      </div>
+    </section>
 
-        <br>
+    <div class="form-actions">
+      <button class="btn btn--lg" type="submit">Enviar solicitud</button>
+      <a class="btn btn--ghost btn--lg" href="/inicio">Cancelar</a>
+    </div>
+  </form>
+</main>
+{% endblock %}
 
-        <textarea
-          id="descripcion_servicio"
-          name="descripcion_servicio"
-          rows="8"
-          cols="80"
-          required
-          aria-describedby="descripcion-servicio-ayuda"
-        >{{ descripcion_servicio|default('') }}</textarea>
-      </section>
-
-      <button type="submit">Enviar solicitud</button>
-    </form>
-  </main>
-
-  <script>
-    const areaSelect = document.querySelector('#area_solicitante');
-    const areaSections = document.querySelectorAll('[data-area-section]');
-
-    function setFieldsetState(fieldset, isActive) {
-      fieldset.hidden = !isActive;
-      fieldset.disabled = !isActive;
-    }
-
-    function updateSubcategoryOptions(areaSection) {
-      const subcategorySelect = areaSection.querySelector('[data-subcategory-select]');
-      const selectedSubcategory = subcategorySelect.value;
-      const optionFieldsets = areaSection.querySelectorAll('[data-subcategory-options]');
-
-      optionFieldsets.forEach((fieldset) => {
-        setFieldsetState(fieldset, fieldset.dataset.subcategoryOptions === selectedSubcategory);
-      });
-    }
-
-    function updateAreaSections() {
-      const selectedArea = areaSelect.value;
-
-      areaSections.forEach((section) => {
-        const isActive = section.dataset.areaSection === selectedArea;
-        const subcategorySelect = section.querySelector('[data-subcategory-select]');
-
-        setFieldsetState(section, isActive);
-        subcategorySelect.disabled = !isActive;
-        subcategorySelect.required = isActive;
-
-        if (!isActive) {
-          subcategorySelect.value = '';
-        }
-
-        updateSubcategoryOptions(section);
-      });
-    }
-
-    areaSelect.addEventListener('change', updateAreaSections);
-    areaSections.forEach((section) => {
-      const subcategorySelect = section.querySelector('[data-subcategory-select]');
-      subcategorySelect.addEventListener('change', () => updateSubcategoryOptions(section));
-    });
-    updateAreaSections();
-  </script>
-</body>
-</html>
+{% block scripts %}
+<script src="/static/js/solicitud.js" defer></script>
+{% endblock %}
