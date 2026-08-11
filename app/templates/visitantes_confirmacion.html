@@ -3,15 +3,38 @@
 {% block title %}Registro exitoso | Pabellón Nacional de la Biodiversidad{% endblock %}
 
 {% block body %}
-<main id="contenido-principal" class="confirmation-panel confirmation-panel--compact page-main">
-  <div class="success-mark" aria-hidden="true">✓</div>
-  <p class="eyebrow">Visitantes</p>
-  <h1>Registro exitoso</h1>
-  <p role="status" class="alert">Se registraron <strong class="mono">{{ cantidad }}</strong> visitantes.</p>
+<header class="topbar">
+  <div class="shell topbar__inner">
+    <a class="brand" href="/inicio" aria-label="Ir al inicio">
+      <span class="brand__mark" aria-hidden="true"></span>
+      <span>
+        <span class="brand__name">Pabellón Nacional<br>de la Biodiversidad</span>
+        <span class="brand__meta">UNAM · Sistema interno</span>
+      </span>
+    </a>
+    <div class="topbar__session">
+      <a class="topbar__logout" href="/logout">Cerrar sesión</a>
+    </div>
+  </div>
+</header>
 
-  <nav class="confirmation-actions" aria-label="Acciones del registro">
-    <a class="btn" href="/visitantes">Nuevo registro</a>
-    <a class="btn btn--ghost" href="/inicio">Inicio</a>
-  </nav>
+<main id="contenido-principal">
+  <header class="page-banner">
+    <div class="shell confirmation-panel confirmation-panel--compact page-banner__inner">
+      <p class="eyebrow">Visitantes · Registro confirmado</p>
+      <h1>Registro exitoso</h1>
+      <p>El conteo de acceso quedó incorporado al registro operativo del Pabellón.</p>
+    </div>
+  </header>
+
+  <div class="confirmation-panel confirmation-panel--compact task-surface">
+    <div class="success-mark" aria-hidden="true">✓</div>
+    <p role="status" class="alert">Se registraron <strong class="mono">{{ cantidad }}</strong> visitantes.</p>
+
+    <nav class="confirmation-actions" aria-label="Acciones del registro">
+      <a class="btn" href="/visitantes">Nuevo registro</a>
+      <a class="btn btn--ghost" href="/inicio">Inicio</a>
+    </nav>
+  </div>
 </main>
 {% endblock %}
