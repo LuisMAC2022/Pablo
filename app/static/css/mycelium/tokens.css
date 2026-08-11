@@ -1,0 +1,168 @@
+:root {
+  color-scheme: light;
+
+  /* Mycelium — substrate */
+  --forest-950: #0f1a14;
+  --forest-900: #13211a;
+  --forest-850: #182a20;
+  --forest-800: #1e3528;
+  --forest-700: #244031;
+  --forest-600: #2b4d3b;
+
+  /* Mycelium — chlorophyll */
+  --green-700: #1e5240;
+  --green-600: #2d6a4f;
+  --green-500: #40916c;
+  --green-400: #52b788;
+  --green-300: #74c69d;
+
+  /* Mycelium — bioluminescence */
+  --lime-400: #74c69d;
+  --lime-300: #95d5b2;
+  --lime-200: #b7e4c7;
+  --lime-100: #d8f3dc;
+
+  /* Mycelium — genomic accents */
+  --amber-500: #c68b5a;
+  --amber-400: #d4a373;
+  --amber-200: #e8cdb0;
+  --violet-500: #6a5d8c;
+  --violet-400: #7c6f9e;
+  --violet-200: #c9c2d9;
+
+  /* Mycelium — warm neutrals */
+  --bone-50: #fbfaf4;
+  --parchment: #f4f1de;
+  --sand-200: #ede7d3;
+  --sand-300: #e2dac1;
+  --sand-400: #d3c9ac;
+
+  /* Mycelium — ink */
+  --ink-900: #14201a;
+  --ink-700: #1f2a23;
+  --ink-500: #4a5750;
+  --ink-400: #6b7770;
+
+  /* Status */
+  --danger-600: #9b3024;
+  --danger-100: #fbedea;
+  --warn-500: #c68b5a;
+  --ok-500: #40916c;
+
+  /* Semantic surfaces */
+  --surface-canvas: var(--parchment);
+  --surface-card: var(--bone-50);
+  --surface-sunken: var(--sand-200);
+  --surface-deep: var(--forest-950);
+  --surface-deep-raised: var(--forest-850);
+  --surface-accent: var(--green-600);
+
+  /* Semantic text */
+  --text-strong: var(--ink-900);
+  --text-body: var(--ink-700);
+  --text-muted: var(--ink-500);
+  --text-faint: var(--ink-400);
+  --text-on-deep: var(--lime-100);
+  --text-on-deep-muted: #8fa89a;
+  --text-on-accent: var(--bone-50);
+  --text-link: var(--green-600);
+  --text-link-hover: var(--green-700);
+
+  /* Semantic accents */
+  --accent: var(--green-600);
+  --accent-strong: var(--green-700);
+  --accent-soft: var(--lime-100);
+  --signal: var(--lime-300);
+  --signal-bright: var(--lime-200);
+  --accent-amber: var(--amber-400);
+  --accent-violet: var(--violet-400);
+
+  /* Borders */
+  --border-soft: #ddd6c2;
+  --border-strong: #c7bd9f;
+  --border-deep: #2b4d3b;
+  --hairline: rgba(20, 32, 26, 0.1);
+
+  /* Focus */
+  --focus-ring: var(--green-400);
+  --glow-signal: rgba(149, 213, 178, 0.45);
+
+  /* Typography. The preferred Mycelium families remain optional: the app
+     works fully with system fallbacks when they are not installed. */
+  --font-serif: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-sans: "IBM Plex Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-black: 900;
+
+  --text-display: clamp(2.75rem, 1.6rem + 5vw, 5rem);
+  --text-h1: clamp(2rem, 1.3rem + 3vw, 3.25rem);
+  --text-h2: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+  --text-h3: 1.375rem;
+  --text-h4: 1.125rem;
+  --text-lead: 1.1875rem;
+  --text-body-size: 1rem;
+  --text-sm: 0.875rem;
+  --text-xs: 0.75rem;
+  --text-mono-sm: 0.8125rem;
+
+  --lh-tight: 1.08;
+  --lh-snug: 1.2;
+  --lh-normal: 1.55;
+  --lh-relaxed: 1.7;
+
+  --ls-display: -0.03em;
+  --ls-tight: -0.015em;
+  --ls-normal: 0;
+  --ls-eyebrow: 0.16em;
+  --ls-mono: 0.01em;
+
+  /* Spacing — 8px-rooted Mycelium rhythm */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+
+  --container: 72rem;
+  --container-prose: 42rem;
+  --container-wide: 84rem;
+
+  --radius-xs: 0.375rem;
+  --radius-sm: 0.625rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
+  --radius-pill: 999px;
+  --radius-organic: 1.5rem 0.625rem 1.5rem 0.625rem;
+  --radius-organic-alt: 0.625rem 1.5rem 0.625rem 1.5rem;
+
+  /* Effects */
+  --shadow-xs: 0 1px 2px rgba(20, 32, 26, 0.06);
+  --shadow-sm: 0 2px 8px rgba(20, 32, 26, 0.07);
+  --shadow-card: 0 18px 45px rgba(20, 32, 26, 0.09);
+  --shadow-lg: 0 28px 70px rgba(20, 32, 26, 0.14);
+  --shadow-deep: 0 24px 60px rgba(5, 12, 8, 0.45);
+  --shadow-inset: inset 0 1px 2px rgba(20, 32, 26, 0.06);
+  --bloom: 0 0 0 4px rgba(149, 213, 178, 0.3), 0 8px 24px rgba(45, 106, 79, 0.22);
+  --bloom-soft: 0 0 24px rgba(149, 213, 178, 0.35);
+
+  --ease-unfurl: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 140ms;
+  --dur-base: 240ms;
+  --dur-slow: 420ms;
+  --dur-bloom: 600ms;
+
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}

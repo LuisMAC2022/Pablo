@@ -1,16 +1,22 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pabellón de la Biodiversidad</title>
-    <link rel="stylesheet" href="/static/css/museo.css">
-</head>
-<body>
-    <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
-    <main id="contenido-principal" class="container">
-        <h1>Sistema de Mantenimiento</h1>
-        <p>Pabellón Nacional de la Biodiversidad</p>
-    </main>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Pabellón Nacional de la Biodiversidad{% endblock %}
+
+{% block body %}
+<main id="contenido-principal" class="shell shell--prose page-main">
+  <div class="card card--deep card--organic card--grain">
+    <div class="brand">
+      <span class="brand__mark" aria-hidden="true"></span>
+      <span>
+        <span class="brand__name">Pabellón Nacional<br>de la Biodiversidad</span>
+        <span class="brand__meta">UNAM · Sistema interno</span>
+      </span>
+    </div>
+
+    <hr class="sequence-rule" aria-hidden="true">
+    <p class="eyebrow" style="color: var(--lime-300);">Sistema interno</p>
+    <h1 style="color: var(--bone-50);">Sistema de Mantenimiento</h1>
+    <p style="color: var(--text-on-deep-muted);">Pabellón Nacional de la Biodiversidad</p>
+  </div>
+</main>
+{% endblock %}
