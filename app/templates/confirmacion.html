@@ -1,40 +1,77 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Solicitud enviada</title>
-  <link rel="stylesheet" href="/static/css/museo.css">
-</head>
-<body>
-  <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
+{% extends "base.html" %}
 
-  <main id="contenido-principal" class="container">
-    <h1>Solicitud enviada</h1>
-    <p role="status">Tu solicitud fue registrada correctamente.</p>
+{% block title %}Solicitud enviada | Pabellón Nacional de la Biodiversidad{% endblock %}
 
-    <section aria-labelledby="resumen-solicitud">
-      <h2 id="resumen-solicitud">Resumen de la solicitud</h2>
-      <ul>
-        <li><strong>Folio:</strong> {{ folio }}</li>
-        <li><strong>Fecha:</strong> {{ fecha }}</li>
-        <li><strong>Nombre:</strong> {{ nombre_usuario }}</li>
-        <li><strong>Responsable del área solicitante:</strong> {{ responsable_area_solicitante or "Sin especificar" }}</li>
-        <li><strong>Teléfono:</strong> {{ telefono }}</li>
-        <li><strong>Área:</strong> {{ area_solicitante }}</li>
-      </ul>
+{% block body %}
+<header class="topbar">
+  <div class="shell topbar__inner">
+    <a class="brand" href="/inicio" aria-label="Ir al inicio">
+      <span class="brand__mark" aria-hidden="true"></span>
+      <span>
+        <span class="brand__name">Pabellón Nacional<br>de la Biodiversidad</span>
+        <span class="brand__meta">UNAM · Sistema interno</span>
+      </span>
+    </a>
+    <div class="topbar__session">
+      <a class="topbar__logout" href="/logout">Cerrar sesión</a>
+    </div>
+  </div>
+</header>
+
+<main id="contenido-principal">
+  <header class="page-banner">
+    <div class="shell confirmation-panel page-banner__inner">
+      <a class="back-link" href="/inicio">Inicio</a>
+      <p class="eyebrow">Confirmación · Solicitud recibida</p>
+      <h1>Solicitud enviada</h1>
+      <p>El registro fue procesado correctamente y ya cuenta con un folio de seguimiento.</p>
+      <hr class="sequence-rule" aria-hidden="true" style="width:min(17rem,100%);margin:1.5rem 0 0;">
+    </div>
+  </header>
+
+  <div class="confirmation-panel task-surface">
+    <div class="success-mark" aria-hidden="true">✓</div>
+    <p role="status" class="alert">Tu solicitud fue registrada correctamente.</p>
+
+    <section class="summary-card" aria-labelledby="resumen-solicitud">
+      <div class="summary-card__header">
+        <h2 id="resumen-solicitud">Resumen de la solicitud</h2>
+        <span class="badge badge--ok badge--dot">Recibida</span>
+      </div>
+
+      <dl class="summary-list">
+        <div class="summary-row summary-row--folio">
+          <dt>Folio</dt>
+          <dd>{{ folio }}</dd>
+        </div>
+        <div class="summary-row">
+          <dt>Fecha</dt>
+          <dd>{{ fecha }}</dd>
+        </div>
+        <div class="summary-row">
+          <dt>Nombre</dt>
+          <dd>{{ nombre_usuario }}</dd>
+        </div>
+        <div class="summary-row">
+          <dt>Responsable del área solicitante</dt>
+          <dd>{{ responsable_area_solicitante or "Sin especificar" }}</dd>
+        </div>
+        <div class="summary-row">
+          <dt>Teléfono</dt>
+          <dd>{{ telefono }}</dd>
+        </div>
+        <div class="summary-row">
+          <dt>Área</dt>
+          <dd>{{ area_solicitante }}</dd>
+        </div>
+      </dl>
     </section>
 
-    <nav aria-label="Acciones de la solicitud">
-      <ul>
-        <li>
-          <a href="{{ url_descarga_plantilla }}" role="button" download>
-            Descargar copia de la plantilla llena
-          </a>
-        </li>
-        <li><a href="/solicitud">Nueva solicitud</a></li>
-      </ul>
+    <nav class="confirmation-actions" aria-label="Acciones de la solicitud">
+      <a class="btn" href="{{ url_descarga_plantilla }}" download>Descargar copia de la plantilla llena</a>
+      <a class="btn btn--secondary" href="/solicitud">Nueva solicitud</a>
+      <a class="btn btn--ghost" href="/inicio">Inicio</a>
     </nav>
-  </main>
-</body>
-</html>
+  </div>
+</main>
+{% endblock %}
