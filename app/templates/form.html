@@ -66,151 +66,168 @@
 {% endmacro %}
 
 {% block body %}
-<main id="contenido-principal" class="shell shell--prose page-main">
-  <a class="back-link" href="/inicio">Inicio</a>
+<header class="topbar">
+  <div class="shell topbar__inner">
+    <a class="brand" href="/inicio" aria-label="Ir al inicio">
+      <span class="brand__mark" aria-hidden="true"></span>
+      <span>
+        <span class="brand__name">Pabellón Nacional<br>de la Biodiversidad</span>
+        <span class="brand__meta">UNAM · Sistema interno</span>
+      </span>
+    </a>
+    <div class="topbar__session">
+      <a class="topbar__logout" href="/logout">Cerrar sesión</a>
+    </div>
+  </div>
+</header>
 
-  <header class="page-header">
-    <p class="eyebrow">Universidad Nacional Autónoma de México · Secretarías y Unidades Administrativas · SGC</p>
-    <h1 class="page-header__title">Solicitud Única de Servicios</h1>
-    <p class="page-header__lede">
-      Registra los datos de la solicitud y selecciona el servicio correspondiente al área solicitante.
-    </p>
+<main id="contenido-principal">
+  <header class="page-banner">
+    <div class="shell shell--prose page-banner__inner">
+      <a class="back-link" href="/inicio">Inicio</a>
+      <p class="eyebrow">Universidad Nacional Autónoma de México · Secretarías y Unidades Administrativas · SGC</p>
+      <h1>Solicitud Única de Servicios</h1>
+      <p>Registra los datos de la solicitud y selecciona el servicio correspondiente al área solicitante.</p>
+      <hr class="sequence-rule" aria-hidden="true" style="width:min(18rem,100%);margin:1.5rem 0 0;">
+    </div>
   </header>
 
-  {% if error %}
-    <p role="alert" class="alert alert--error">{{ error }}</p>
-  {% endif %}
+  <div class="shell shell--prose task-surface">
+    {% if error %}
+      <p role="alert" class="alert alert--error">{{ error }}</p>
+    {% endif %}
 
-  <form class="form-layout" action="/solicitud" method="post">
-    <section class="form-section" aria-labelledby="datos-solicitud">
-      <div class="form-section__heading">
-        <span class="form-section__index" aria-hidden="true">01</span>
-        <h2 id="datos-solicitud" class="form-section__title">Datos de la solicitud</h2>
-      </div>
+    <form class="form-layout" action="/solicitud" method="post">
+      <section class="form-section" aria-labelledby="datos-solicitud">
+        <div class="form-section__heading">
+          <span class="form-section__index" aria-hidden="true">01</span>
+          <h2 id="datos-solicitud" class="form-section__title">Datos de la solicitud</h2>
+        </div>
 
-      <div class="form-card">
-        <div class="field">
-          <label for="area_solicitante">Área solicitante</label>
-          <select id="area_solicitante" name="area_solicitante" required>
-            <option value="">Seleccione un área</option>
-            {% for area in areas %}
-              <option value="{{ area }}"{% if area == area_solicitante %} selected{% endif %}>{{ area }}</option>
+        <div class="form-card">
+          <div class="field">
+            <label for="area_solicitante">Área solicitante</label>
+            <select id="area_solicitante" name="area_solicitante" required>
+              <option value="">Seleccione un área</option>
+              {% for area in areas %}
+                <option value="{{ area }}"{% if area == area_solicitante %} selected{% endif %}>{{ area }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="nombre_usuario">Nombre del usuario</label>
+              <input
+                type="text"
+                id="nombre_usuario"
+                name="nombre_usuario"
+                value="{{ nombre_usuario }}"
+                list="personas-autocomplete"
+                required
+                {% if not puede_editar_datos_solicitante %}readonly{% endif %}
+                aria-describedby="nombre-usuario-ayuda"
+              >
+              <small id="nombre-usuario-ayuda" class="field-help">
+                {% if puede_editar_datos_solicitante %}
+                  Escriba el nombre y seleccione una sugerencia si aparece.
+                {% else %}
+                  Este dato se toma de su sesión.
+                {% endif %}
+              </small>
+            </div>
+
+            <div class="field">
+              <label for="responsable_area_solicitante">Responsable del área solicitante</label>
+              <input
+                type="text"
+                id="responsable_area_solicitante"
+                name="responsable_area_solicitante"
+                value="{{ responsable_area_solicitante }}"
+                list="responsables-autocomplete"
+                required
+                {% if not puede_editar_datos_solicitante %}readonly{% endif %}
+                aria-describedby="responsable-area-ayuda"
+              >
+              <small id="responsable-area-ayuda" class="field-help">
+                {% if puede_editar_datos_solicitante %}
+                  Escriba el nombre del responsable y seleccione una sugerencia si aparece.
+                {% else %}
+                  Este dato se valida con la política del servidor.
+                {% endif %}
+              </small>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="telefono">Teléfono</label>
+            <input
+              type="tel"
+              id="telefono"
+              name="telefono"
+              value="{{ telefono or '5556228222 ext. 82581' }}"
+              required
+              aria-describedby="telefono-ayuda"
+            >
+            <small id="telefono-ayuda" class="field-help">Por ahora se usa el teléfono del jefe de mantenimiento, pero puede editarse.</small>
+          </div>
+
+          <datalist id="personas-autocomplete">
+            {% for persona in personas_autocomplete %}
+              <option value="{{ persona.nombre }}" label="{{ persona.etiqueta }}"></option>
             {% endfor %}
-          </select>
+          </datalist>
+
+          <datalist id="responsables-autocomplete">
+            {% for persona in personas_autocomplete %}
+              <option value="{{ persona.nombre }}" label="{{ persona.etiqueta }}"></option>
+            {% endfor %}
+          </datalist>
+        </div>
+      </section>
+
+      <section class="form-section" aria-labelledby="tipo-servicio">
+        <div class="form-section__heading">
+          <span class="form-section__index" aria-hidden="true">02</span>
+          <h2 id="tipo-servicio" class="form-section__title">Tipo de servicio</h2>
         </div>
 
-        <div class="form-grid">
-          <div class="field">
-            <label for="nombre_usuario">Nombre del usuario</label>
-            <input
-              type="text"
-              id="nombre_usuario"
-              name="nombre_usuario"
-              value="{{ nombre_usuario }}"
-              list="personas-autocomplete"
-              required
-              {% if not puede_editar_datos_solicitante %}readonly{% endif %}
-              aria-describedby="nombre-usuario-ayuda"
-            >
-            <small id="nombre-usuario-ayuda" class="field-help">
-              {% if puede_editar_datos_solicitante %}
-                Escriba el nombre y seleccione una sugerencia si aparece.
-              {% else %}
-                Este dato se toma de su sesión.
-              {% endif %}
-            </small>
-          </div>
+        <div class="form-card">
+          <p class="alert alert--info">Seleccione el área solicitante para mostrar sus subcategorías y opciones de servicio.</p>
+          {% for area in catalogo_servicios %}
+            {{ area_servicio(area) }}
+          {% endfor %}
+        </div>
+      </section>
 
+      <section class="form-section" aria-labelledby="descripcion-servicio-titulo">
+        <div class="form-section__heading">
+          <span class="form-section__index" aria-hidden="true">03</span>
+          <h2 id="descripcion-servicio-titulo" class="form-section__title">Descripción del servicio</h2>
+        </div>
+
+        <div class="form-card">
           <div class="field">
-            <label for="responsable_area_solicitante">Responsable del área solicitante</label>
-            <input
-              type="text"
-              id="responsable_area_solicitante"
-              name="responsable_area_solicitante"
-              value="{{ responsable_area_solicitante }}"
-              list="responsables-autocomplete"
+            <label for="descripcion_servicio">Descripción del servicio</label>
+            <textarea
+              id="descripcion_servicio"
+              name="descripcion_servicio"
+              rows="8"
+              cols="80"
               required
-              {% if not puede_editar_datos_solicitante %}readonly{% endif %}
-              aria-describedby="responsable-area-ayuda"
-            >
-            <small id="responsable-area-ayuda" class="field-help">
-              {% if puede_editar_datos_solicitante %}
-                Escriba el nombre del responsable y seleccione una sugerencia si aparece.
-              {% else %}
-                Este dato se valida con la política del servidor.
-              {% endif %}
-            </small>
+              aria-describedby="descripcion-servicio-ayuda"
+            >{{ descripcion_servicio|default('') }}</textarea>
+            <small id="descripcion-servicio-ayuda" class="field-help">Especificar claramente fecha y hora del servicio requerido.</small>
           </div>
         </div>
+      </section>
 
-        <div class="field">
-          <label for="telefono">Teléfono</label>
-          <input
-            type="tel"
-            id="telefono"
-            name="telefono"
-            value="{{ telefono or '5556228222 ext. 82581' }}"
-            required
-            aria-describedby="telefono-ayuda"
-          >
-          <small id="telefono-ayuda" class="field-help">Por ahora se usa el teléfono del jefe de mantenimiento, pero puede editarse.</small>
-        </div>
-
-        <datalist id="personas-autocomplete">
-          {% for persona in personas_autocomplete %}
-            <option value="{{ persona.nombre }}" label="{{ persona.etiqueta }}"></option>
-          {% endfor %}
-        </datalist>
-
-        <datalist id="responsables-autocomplete">
-          {% for persona in personas_autocomplete %}
-            <option value="{{ persona.nombre }}" label="{{ persona.etiqueta }}"></option>
-          {% endfor %}
-        </datalist>
+      <div class="form-actions">
+        <button class="btn btn--lg" type="submit">Enviar solicitud</button>
+        <a class="btn btn--ghost btn--lg" href="/inicio">Cancelar</a>
       </div>
-    </section>
-
-    <section class="form-section" aria-labelledby="tipo-servicio">
-      <div class="form-section__heading">
-        <span class="form-section__index" aria-hidden="true">02</span>
-        <h2 id="tipo-servicio" class="form-section__title">Tipo de servicio</h2>
-      </div>
-
-      <div class="form-card">
-        <p class="alert alert--info">Seleccione el área solicitante para mostrar sus subcategorías y opciones de servicio.</p>
-        {% for area in catalogo_servicios %}
-          {{ area_servicio(area) }}
-        {% endfor %}
-      </div>
-    </section>
-
-    <section class="form-section" aria-labelledby="descripcion-servicio-titulo">
-      <div class="form-section__heading">
-        <span class="form-section__index" aria-hidden="true">03</span>
-        <h2 id="descripcion-servicio-titulo" class="form-section__title">Descripción del servicio</h2>
-      </div>
-
-      <div class="form-card">
-        <div class="field">
-          <label for="descripcion_servicio">Descripción del servicio</label>
-          <textarea
-            id="descripcion_servicio"
-            name="descripcion_servicio"
-            rows="8"
-            cols="80"
-            required
-            aria-describedby="descripcion-servicio-ayuda"
-          >{{ descripcion_servicio|default('') }}</textarea>
-          <small id="descripcion-servicio-ayuda" class="field-help">Especificar claramente fecha y hora del servicio requerido.</small>
-        </div>
-      </div>
-    </section>
-
-    <div class="form-actions">
-      <button class="btn btn--lg" type="submit">Enviar solicitud</button>
-      <a class="btn btn--ghost btn--lg" href="/inicio">Cancelar</a>
-    </div>
-  </form>
+    </form>
+  </div>
 </main>
 {% endblock %}
 
