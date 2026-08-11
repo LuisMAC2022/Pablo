@@ -1,11 +1,12 @@
+@import url("./mycelium/fonts.css");
 @import url("./mycelium/tokens.css");
 @import url("./mycelium/base.css");
 @import url("./mycelium/layout.css");
 @import url("./mycelium/components.css");
 @import url("./mycelium/forms.css");
 
-/* Compatibility layer for any template not yet migrated to the explicit
-   Mycelium component classes. museo.css remains the stable public entrypoint. */
+/* Compatibility layer for templates/selectors that still use the original
+   public stylesheet entrypoint. No build step or frontend dependency needed. */
 .container {
   width: min(100% - clamp(2rem, 6vw, 5rem), var(--container));
   margin-inline: auto;
