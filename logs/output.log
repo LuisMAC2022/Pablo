@@ -521,3 +521,163 @@ INFO:     100.83.45.49:51014 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modi
 INFO:     100.83.45.49:51101 - "POST /solicitud HTTP/1.1" 200 OK
 INFO:     100.83.45.49:51101 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
 INFO:     100.83.45.49:51101 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     100.83.45.49:51243 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     100.83.45.49:51243 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     100.83.45.49:51243 - "GET /static/css/mycelium/fonts.css HTTP/1.1" 200 OK
+INFO:     100.83.45.49:51244 - "GET /static/css/mycelium/tokens.css HTTP/1.1" 200 OK
+INFO:     100.83.45.49:51248 - "GET /static/css/mycelium/base.css HTTP/1.1" 200 OK
+INFO:     100.83.45.49:51250 - "GET /static/css/mycelium/components.css HTTP/1.1" 200 OK
+INFO:     100.83.45.49:51251 - "GET /static/css/mycelium/forms.css HTTP/1.1" 200 OK
+INFO:     100.83.45.49:51249 - "GET /static/css/mycelium/layout.css HTTP/1.1" 200 OK
+INFO:     100.83.45.49:51255 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     100.83.45.49:51265 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     100.83.45.49:51265 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51265 - "GET /static/js/solicitud.js HTTP/1.1" 200 OK
+INFO:     100.83.45.49:51266 - "GET /static/css/mycelium/fonts.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51268 - "GET /static/css/mycelium/layout.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51267 - "GET /static/css/mycelium/components.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51269 - "GET /static/css/mycelium/base.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51270 - "GET /static/css/mycelium/tokens.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51265 - "GET /static/css/mycelium/forms.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51278 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     100.83.45.49:51278 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51278 - "GET /static/css/mycelium/fonts.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51280 - "GET /static/css/mycelium/tokens.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51283 - "GET /static/css/mycelium/base.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51278 - "GET /static/css/mycelium/layout.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51284 - "GET /static/css/mycelium/components.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51285 - "GET /static/css/mycelium/forms.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51285 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     100.83.45.49:51286 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51305 - "GET /static/css/mycelium/fonts.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51306 - "GET /static/css/mycelium/tokens.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51307 - "GET /static/css/mycelium/base.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51308 - "GET /static/css/mycelium/layout.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51286 - "GET /static/css/mycelium/forms.css HTTP/1.1" 304 Not Modified
+INFO:     100.83.45.49:51309 - "GET /static/css/mycelium/components.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:51734 - "GET / HTTP/1.1" 302 Found
+INFO:     127.0.0.1:51734 - "GET /inicio HTTP/1.1" 302 Found
+INFO:     127.0.0.1:51734 - "GET /login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51734 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51734 - "GET /static/css/mycelium/fonts.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51734 - "GET /static/css/mycelium/tokens.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51734 - "GET /static/css/mycelium/base.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51734 - "GET /static/css/mycelium/layout.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51734 - "GET /static/css/mycelium/components.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51734 - "GET /static/css/mycelium/forms.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51734 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51741 - "GET /solicitud/067/plantilla HTTP/1.1" 302 Found
+INFO:     127.0.0.1:51741 - "GET /login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51745 - "POST /login HTTP/1.1" 302 Found
+INFO:     127.0.0.1:51745 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51745 - "GET /solicitud/067/plantilla HTTP/1.1" 302 Found
+INFO:     127.0.0.1:51745 - "GET /login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51744 - "POST /login HTTP/1.1" 302 Found
+INFO:     127.0.0.1:51744 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51744 - "GET /solicitud/067/plantilla HTTP/1.1" 200 OK
+INFO:     192.168.102.75:56094 - "GET /solicitud HTTP/1.1" 302 Found
+INFO:     192.168.102.75:56096 - "GET /login HTTP/1.1" 200 OK
+INFO:     192.168.102.75:56103 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     192.168.102.75:56103 - "GET /static/css/mycelium/fonts.css HTTP/1.1" 200 OK
+INFO:     192.168.102.75:56104 - "GET /static/css/mycelium/tokens.css HTTP/1.1" 200 OK
+INFO:     192.168.102.75:56106 - "GET /static/css/mycelium/base.css HTTP/1.1" 200 OK
+INFO:     192.168.102.75:56107 - "GET /static/css/mycelium/layout.css HTTP/1.1" 200 OK
+INFO:     192.168.102.75:56108 - "GET /static/css/mycelium/components.css HTTP/1.1" 200 OK
+INFO:     192.168.102.75:56103 - "GET /static/css/mycelium/forms.css HTTP/1.1" 200 OK
+INFO:     192.168.106.11:50542 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     192.168.106.11:50570 - "GET /inicio HTTP/1.1" 302 Found
+INFO:     192.168.106.11:50570 - "GET /login HTTP/1.1" 200 OK
+INFO:     192.168.102.75:56109 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     192.168.106.11:50570 - "GET /login HTTP/1.1" 200 OK
+INFO:     192.168.106.11:33032 - "GET /inicio HTTP/1.1" 302 Found
+INFO:     192.168.106.11:33032 - "GET /login HTTP/1.1" 200 OK
+INFO:     192.168.106.11:33032 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     192.168.106.11:33032 - "GET /static/css/mycelium/fonts.css HTTP/1.1" 200 OK
+INFO:     192.168.106.11:33044 - "GET /static/css/mycelium/base.css HTTP/1.1" 200 OK
+INFO:     192.168.106.11:33072 - "GET /static/css/mycelium/layout.css HTTP/1.1" 200 OK
+INFO:     192.168.106.11:33062 - "GET /static/css/mycelium/forms.css HTTP/1.1" 200 OK
+INFO:     192.168.106.11:33038 - "GET /static/css/mycelium/components.css HTTP/1.1" 200 OK
+INFO:     192.168.106.11:33048 - "GET /static/css/mycelium/tokens.css HTTP/1.1" 200 OK
+INFO:     192.168.102.75:56114 - "POST /login HTTP/1.1" 302 Found
+INFO:     192.168.102.75:56115 - "POST /login HTTP/1.1" 302 Found
+INFO:     192.168.102.75:56115 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     192.168.102.75:56116 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.102.75:56116 - "GET /static/js/solicitud.js HTTP/1.1" 200 OK
+INFO:     192.168.102.75:56125 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.102.75:56126 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.102.75:56127 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     100.83.45.49:51958 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     100.83.45.49:52046 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     100.83.45.49:52046 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     100.83.45.49:52047 - "GET /static/js/solicitud.js HTTP/1.1" 200 OK
+INFO:     100.83.45.49:52047 - "GET /static/css/mycelium/tokens.css HTTP/1.1" 200 OK
+INFO:     100.83.45.49:52046 - "GET /static/css/mycelium/fonts.css HTTP/1.1" 200 OK
+INFO:     100.83.45.49:52048 - "GET /static/css/mycelium/base.css HTTP/1.1" 200 OK
+INFO:     100.83.45.49:52051 - "GET /static/css/mycelium/forms.css HTTP/1.1" 200 OK
+INFO:     100.83.45.49:52049 - "GET /static/css/mycelium/layout.css HTTP/1.1" 200 OK
+INFO:     100.83.45.49:52050 - "GET /static/css/mycelium/components.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52166 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52166 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52166 - "GET /static/js/solicitud.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52166 - "GET /static/css/mycelium/fonts.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52166 - "GET /static/css/mycelium/tokens.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52166 - "GET /static/css/mycelium/base.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52166 - "GET /static/css/mycelium/layout.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52166 - "GET /static/css/mycelium/components.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52166 - "GET /static/css/mycelium/forms.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52239 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52296 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52296 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52296 - "GET /static/js/solicitud.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52296 - "GET /static/css/mycelium/fonts.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52296 - "GET /static/css/mycelium/tokens.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52296 - "GET /static/css/mycelium/base.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52296 - "GET /static/css/mycelium/layout.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52296 - "GET /static/css/mycelium/components.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52296 - "GET /static/css/mycelium/forms.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:52886 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52886 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52886 - "GET /static/js/solicitud.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52886 - "GET /static/css/mycelium/fonts.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52891 - "GET /static/css/mycelium/tokens.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52891 - "GET /static/css/mycelium/base.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52886 - "GET /static/css/mycelium/layout.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52886 - "GET /static/css/mycelium/components.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52891 - "GET /static/css/mycelium/forms.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52931 - "POST /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52931 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52933 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52975 - "GET /solicitud/070/plantilla HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52976 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52976 - "GET /static/js/solicitud.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53019 - "POST /solicitud HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:53019 - "GET /static/js/solicitud.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53020 - "POST /solicitud HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:53037 - "POST /solicitud HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:53037 - "GET /static/js/solicitud.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53038 - "POST /solicitud HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:53038 - "GET /static/js/solicitud.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53038 - "POST /solicitud HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:53038 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53038 - "GET /static/js/solicitud.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53038 - "GET /static/css/mycelium/fonts.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53038 - "GET /static/css/mycelium/tokens.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53038 - "GET /static/css/mycelium/base.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53038 - "GET /static/css/mycelium/layout.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53038 - "GET /static/css/mycelium/components.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53038 - "GET /static/css/mycelium/forms.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53075 - "POST /solicitud HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:53074 - "GET /logout HTTP/1.1" 302 Found
+INFO:     127.0.0.1:53074 - "GET /login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53387 - "GET /login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53387 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53387 - "GET /static/css/mycelium/fonts.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53388 - "GET /static/css/mycelium/tokens.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53388 - "GET /static/css/mycelium/base.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53388 - "GET /static/css/mycelium/layout.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53387 - "GET /static/css/mycelium/components.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53394 - "GET /static/css/mycelium/forms.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53395 - "POST /login HTTP/1.1" 302 Found
+INFO:     127.0.0.1:53395 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53395 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53395 - "GET /static/js/solicitud.js HTTP/1.1" 200 OK
