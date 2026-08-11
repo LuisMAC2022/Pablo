@@ -8,3 +8,4 @@ directorio_personal.json
 logs/
 ~$*.xlsx
 
+app/solicitudes/

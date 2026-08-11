@@ -306,3 +306,62 @@ INFO:     192.168.1.57:55707 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modi
 INFO:     192.168.1.57:56332 - "POST /solicitud HTTP/1.1" 200 OK
 INFO:     192.168.1.57:56332 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
 INFO:     192.168.1.57:56332 - "GET /solicitud/036/plantilla HTTP/1.1" 200 OK
+INFO:     192.168.106.11:51063 - "GET /solicitud/056/plantilla/guardar HTTP/1.1" 405 Method Not Allowed
+INFO:     192.168.106.11:51064 - "GET / HTTP/1.1" 302 Found
+INFO:     192.168.106.11:51064 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     192.168.106.3:51914 - "GET /solicitud HTTP/1.1" 302 Found
+INFO:     192.168.106.3:51914 - "GET /login HTTP/1.1" 200 OK
+INFO:     192.168.106.3:51914 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     192.168.106.3:65421 - "GET / HTTP/1.1" 302 Found
+INFO:     192.168.106.3:65421 - "GET /inicio HTTP/1.1" 302 Found
+INFO:     192.168.106.3:65421 - "GET /login HTTP/1.1" 200 OK
+INFO:     192.168.106.3:65421 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     192.168.106.3:52800 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     192.168.106.3:51922 - "POST /login HTTP/1.1" 302 Found
+INFO:     192.168.106.3:51922 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     192.168.106.3:51922 - "GET /solicitudes HTTP/1.1" 200 OK
+INFO:     192.168.106.3:42578 - "GET /solicitudes/056_plantilla_solicitud_unica_de_servicios.xlsx HTTP/1.1" 200 OK
+INFO:     192.168.106.3:65438 - "GET /login HTTP/1.1" 200 OK
+INFO:     192.168.106.3:65499 - "GET /login HTTP/1.1" 200 OK
+INFO:     192.168.106.3:65506 - "POST /login HTTP/1.1" 302 Found
+INFO:     192.168.106.3:65506 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     192.168.106.3:65508 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     192.168.106.3:65509 - "POST /login HTTP/1.1" 302 Found
+INFO:     192.168.106.3:65509 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     192.168.106.3:65512 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.106.3:34094 - "GET /solicitudes/056_plantilla_solicitud_unica_de_servicios.xlsx HTTP/1.1" 200 OK
+INFO:     192.168.106.3:34094 - "GET /solicitudes HTTP/1.1" 200 OK
+INFO:     192.168.106.3:34104 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     192.168.106.3:64542 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     192.168.106.3:64542 - "GET /static/css/museo.css HTTP/1.1" 304 Not Modified
+INFO:     192.168.106.3:64542 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.106.3:59738 - "GET /solicitudes HTTP/1.1" 200 OK
+INFO:     192.168.106.11:59976 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     192.168.102.75:51292 - "GET /logout HTTP/1.1" 302 Found
+INFO:     192.168.102.75:51292 - "GET /login HTTP/1.1" 200 OK
+INFO:     192.168.102.75:51292 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     192.168.102.75:51292 - "POST /login HTTP/1.1" 302 Found
+INFO:     192.168.102.75:51292 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     192.168.102.75:51292 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     100.83.45.49:50142 - "GET /solicitud HTTP/1.1" 302 Found
+INFO:     100.83.45.49:50142 - "GET /login HTTP/1.1" 200 OK
+INFO:     100.83.45.49:50142 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     100.83.45.49:50142 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     192.168.106.11:48260 - "GET / HTTP/1.1" 302 Found
+INFO:     192.168.106.11:48260 - "GET /inicio HTTP/1.1" 302 Found
+INFO:     192.168.106.11:48260 - "GET /login HTTP/1.1" 200 OK
+INFO:     192.168.106.11:48260 - "GET /static/css/museo.css HTTP/1.1" 200 OK
+INFO:     192.168.106.11:48260 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     100.83.45.49:50397 - "GET /login HTTP/1.1" 200 OK
+INFO:     100.83.45.49:50398 - "POST /login HTTP/1.1" 400 Bad Request
+INFO:     100.83.45.49:50410 - "POST /login HTTP/1.1" 302 Found
+INFO:     100.83.45.49:50410 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     100.83.45.49:50415 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     100.83.45.49:50415 - "GET /static/js/solicitud.js HTTP/1.1" 200 OK
+INFO:     192.168.106.11:34300 - "GET /login HTTP/1.1" 200 OK
+INFO:     192.168.106.11:34310 - "POST /login HTTP/1.1" 302 Found
+INFO:     192.168.106.11:34310 - "GET /inicio HTTP/1.1" 200 OK
+INFO:     192.168.106.11:51150 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.106.11:51150 - "GET /static/js/solicitud.js HTTP/1.1" 200 OK
+INFO:     192.168.106.11:32942 - "GET /solicitud HTTP/1.1" 200 OK
+INFO:     192.168.106.11:32942 - "GET /visitantes HTTP/1.1" 200 OK
