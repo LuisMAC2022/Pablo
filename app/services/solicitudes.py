@@ -33,6 +33,10 @@ class OpcionServicioInvalida(ValueError):
     """Se lanza cuando una opción no pertenece a la subcategoría seleccionada."""
 
 
+class ModoSeleccionServicioInvalido(ValueError):
+    """Se lanza cuando el modo de selección de opciones no está permitido."""
+
+
 def generar_folio(db: Session) -> str:
     total = db.query(Solicitud).count()
     return str(total + 1).zfill(3)
@@ -41,6 +45,7 @@ def generar_folio(db: Session) -> str:
 def _normalizar_opciones_servicio(
     area_solicitante: str,
     subcategoria_servicio: Optional[str],
+    modo_seleccion_servicio: str,
     opciones_por_campo: Dict[str, Optional[List[str]]],
 ) -> Dict[str, Optional[List[str]]]:
     if area_solicitante not in AREAS_SOLICITUD_ACTIVAS:
@@ -50,15 +55,30 @@ def _normalizar_opciones_servicio(
     if subcategoria_servicio not in subcategorias:
         raise SubcategoriaServicioInvalida("Seleccione una subcategoría válida para el área solicitante.")
 
+    if modo_seleccion_servicio not in {"radio", "checkbox"}:
+        raise ModoSeleccionServicioInvalido("Seleccione un modo válido para las opciones de servicio.")
+
     subcategoria = subcategorias[subcategoria_servicio]
     valores_validos = {opcion["valor"] for opcion in subcategoria["opciones"]}
-    opciones_seleccionadas = opciones_por_campo.get(subcategoria_servicio) or []
+    opciones_seleccionadas = list(opciones_por_campo.get(subcategoria_servicio) or [])
 
-    if len(opciones_seleccionadas) != 1:
+    if any(
+        opciones
+        for campo, opciones in opciones_por_campo.items()
+        if campo != subcategoria_servicio
+    ):
+        raise OpcionServicioInvalida(
+            "Solo puede seleccionar opciones de la subcategoría elegida."
+        )
+
+    if modo_seleccion_servicio == "radio" and len(opciones_seleccionadas) != 1:
         raise OpcionServicioInvalida("Seleccione exactamente una opción para la subcategoría elegida.")
 
+    if modo_seleccion_servicio == "checkbox" and not opciones_seleccionadas:
+        raise OpcionServicioInvalida("Seleccione al menos una opción para la subcategoría elegida.")
+
     if any(opcion not in valores_validos for opcion in opciones_seleccionadas):
-        raise OpcionServicioInvalida("Seleccione una opción válida para la subcategoría elegida.")
+        raise OpcionServicioInvalida("Seleccione opciones válidas para la subcategoría elegida.")
 
     return {
         campo: opciones_seleccionadas if campo == subcategoria_servicio else None
@@ -74,6 +94,7 @@ def crear_solicitud(
     responsable_area_solicitante: Optional[str],
     area_solicitante: str,
     descripcion_servicio: str,
+    modo_seleccion_servicio: str,
     subcategoria_servicio: Optional[str] = None,
     infraestructura: Optional[List[str]] = None,
     equipo_parque_vehicular: Optional[List[str]] = None,
@@ -87,6 +108,7 @@ def crear_solicitud(
     opciones_servicio = _normalizar_opciones_servicio(
         area_solicitante,
         subcategoria_servicio,
+        modo_seleccion_servicio,
         {
             "infraestructura": infraestructura,
             "equipo_parque_vehicular": equipo_parque_vehicular,

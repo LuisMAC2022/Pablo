@@ -17,6 +17,7 @@ from app.services.plantilla_solicitud import (
 )
 from app.services.solicitudes import (
     AreaSolicitanteInvalida,
+    ModoSeleccionServicioInvalido,
     OpcionServicioInvalida,
     SubcategoriaServicioInvalida,
     crear_solicitud,
@@ -55,6 +56,7 @@ def contexto_formulario(usuario: dict, **valores) -> dict:
         "telefono": valores.get("telefono", TELEFONO_JEFE_MANTENIMIENTO),
         "area_solicitante": valores.get("area_solicitante", ""),
         "subcategoria_servicio": valores.get("subcategoria_servicio", ""),
+        "modo_seleccion_servicio": valores.get("modo_seleccion_servicio", "radio"),
         "descripcion_servicio": valores.get("descripcion_servicio", ""),
         "personas_autocomplete": cargar_personas_autocomplete(),
         "puede_editar_datos_solicitante": puede_editar,
@@ -77,7 +79,10 @@ async def mostrar_formulario(
     )
 
 
-@router.get("/solicitud/{folio}/plantilla")
+@router.get(
+    "/solicitud/{folio}/plantilla",
+    name="descargar_plantilla_solicitud",
+)
 async def descargar_plantilla_solicitud(
     folio: str,
     db: Session = Depends(get_db),
@@ -109,6 +114,7 @@ async def recibir_formulario(
     responsable_area_solicitante: str = Form(...),
     telefono: str = Form(TELEFONO_JEFE_MANTENIMIENTO),
     descripcion_servicio: str = Form(...),
+    modo_seleccion_servicio: str = Form(...),
     subcategoria_servicio: Optional[str] = Form(None),
     infraestructura: Optional[List[str]] = Form(None),
     equipo_parque_vehicular: Optional[List[str]] = Form(None),
@@ -140,6 +146,7 @@ async def recibir_formulario(
             responsable_area_solicitante=responsable_area_solicitante,
             area_solicitante=area_solicitante,
             descripcion_servicio=descripcion_servicio,
+            modo_seleccion_servicio=modo_seleccion_servicio,
             subcategoria_servicio=subcategoria_servicio,
             infraestructura=infraestructura,
             equipo_parque_vehicular=equipo_parque_vehicular,
@@ -150,7 +157,12 @@ async def recibir_formulario(
             correspondencia_paqueteria=correspondencia_paqueteria,
             reproduccion_engargolado=reproduccion_engargolado,
         )
-    except (AreaSolicitanteInvalida, SubcategoriaServicioInvalida, OpcionServicioInvalida) as exc:
+    except (
+        AreaSolicitanteInvalida,
+        SubcategoriaServicioInvalida,
+        ModoSeleccionServicioInvalido,
+        OpcionServicioInvalida,
+    ) as exc:
         return templates.TemplateResponse(
             request=request,
             name="form.html",
@@ -162,6 +174,7 @@ async def recibir_formulario(
                     telefono=telefono,
                     area_solicitante=area_solicitante,
                     subcategoria_servicio=subcategoria_servicio,
+                    modo_seleccion_servicio=modo_seleccion_servicio,
                     descripcion_servicio=descripcion_servicio,
                 ),
                 "error": str(exc),
@@ -179,6 +192,11 @@ async def recibir_formulario(
             "responsable_area_solicitante": solicitud.responsable_area_solicitante,
             "telefono": solicitud.telefono,
             "area_solicitante": solicitud.area_solicitante,
-            "url_descarga_plantilla": f"/solicitud/{solicitud.folio}/plantilla",
+            "url_descarga_plantilla": str(
+                request.url_for(
+                    "descargar_plantilla_solicitud",
+                    folio=solicitud.folio,
+                )
+            ),
         },
     )

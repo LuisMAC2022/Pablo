@@ -2,6 +2,8 @@
 
 {% block title %}Solicitud Única de Servicios | Pabellón Nacional de la Biodiversidad{% endblock %}
 
+{% set modo_seleccion = modo_seleccion_servicio|default('radio') %}
+
 {% macro opciones_servicio(subcategoria) %}
   <fieldset
     class="service-fieldset"
@@ -117,27 +119,6 @@
 
           <div class="form-grid">
             <div class="field">
-              <label for="nombre_usuario">Nombre del usuario</label>
-              <input
-                type="text"
-                id="nombre_usuario"
-                name="nombre_usuario"
-                value="{{ nombre_usuario }}"
-                list="personas-autocomplete"
-                required
-                {% if not puede_editar_datos_solicitante %}readonly{% endif %}
-                aria-describedby="nombre-usuario-ayuda"
-              >
-              <small id="nombre-usuario-ayuda" class="field-help">
-                {% if puede_editar_datos_solicitante %}
-                  Escriba el nombre y seleccione una sugerencia si aparece.
-                {% else %}
-                  Este dato se toma de su sesión.
-                {% endif %}
-              </small>
-            </div>
-
-            <div class="field">
               <label for="responsable_area_solicitante">Responsable del área solicitante</label>
               <input
                 type="text"
@@ -154,6 +135,27 @@
                   Escriba el nombre del responsable y seleccione una sugerencia si aparece.
                 {% else %}
                   Este dato se valida con la política del servidor.
+                {% endif %}
+              </small>
+            </div>
+
+            <div class="field">
+              <label for="nombre_usuario">Nombre del usuario</label>
+              <input
+                type="text"
+                id="nombre_usuario"
+                name="nombre_usuario"
+                value="{{ nombre_usuario }}"
+                list="personas-autocomplete"
+                required
+                {% if not puede_editar_datos_solicitante %}readonly{% endif %}
+                aria-describedby="nombre-usuario-ayuda"
+              >
+              <small id="nombre-usuario-ayuda" class="field-help">
+                {% if puede_editar_datos_solicitante %}
+                  Escriba el nombre y seleccione una sugerencia si aparece.
+                {% else %}
+                  Este dato se toma de su sesión.
                 {% endif %}
               </small>
             </div>
@@ -194,6 +196,38 @@
 
         <div class="form-card">
           <p class="alert alert--info">Seleccione el área solicitante para mostrar sus subcategorías y opciones de servicio.</p>
+
+          <fieldset class="service-fieldset" aria-describedby="modo-seleccion-ayuda">
+            <legend>Modo de selección de opciones</legend>
+            <div class="option-grid" data-selection-mode>
+              <div class="option">
+                <input
+                  type="radio"
+                  id="modo_seleccion_radio"
+                  name="modo_seleccion_servicio"
+                  value="radio"
+                  {% if modo_seleccion != 'checkbox' %}checked{% endif %}
+                  required
+                >
+                <label for="modo_seleccion_radio">Selección única</label>
+              </div>
+              <div class="option">
+                <input
+                  type="radio"
+                  id="modo_seleccion_checkbox"
+                  name="modo_seleccion_servicio"
+                  value="checkbox"
+                  {% if modo_seleccion == 'checkbox' %}checked{% endif %}
+                  required
+                >
+                <label for="modo_seleccion_checkbox">Selección múltiple</label>
+              </div>
+            </div>
+            <small id="modo-seleccion-ayuda" class="field-help" data-selection-mode-help>
+              Selección única: elija exactamente una opción.
+            </small>
+          </fieldset>
+
           {% for area in catalogo_servicios %}
             {{ area_servicio(area) }}
           {% endfor %}
