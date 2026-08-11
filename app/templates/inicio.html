@@ -18,54 +18,81 @@
         <span class="topbar__name">{{ usuario.nombre }}</span>
         <span class="topbar__role">{{ usuario.rol }}</span>
       </div>
+      <span class="topbar__avatar" aria-hidden="true">{{ usuario.nombre[:1] }}</span>
       <a class="topbar__logout" href="/logout">Cerrar sesión</a>
     </div>
   </div>
 </header>
 
-<main id="contenido-principal" class="shell page-main">
-  <header class="page-header">
-    <p class="eyebrow">Inicio</p>
-    <h1 class="page-header__title">Bienvenido, {{ usuario.nombre }}.</h1>
-    <p class="page-header__lede">
-      Selecciona una tarea. Las opciones disponibles se mantienen determinadas por tu rol en el servidor.
-    </p>
-    <hr class="strata-rule" aria-hidden="true">
-  </header>
+<main id="contenido-principal" class="dashboard-page">
+  <section class="dashboard-hero" aria-labelledby="dashboard-title">
+    <div class="shell dashboard-hero__inner">
+      <p class="eyebrow">Sistema interno · Inicio</p>
+      <h1 id="dashboard-title">Bienvenido, {{ usuario.nombre }}.</h1>
+      <p class="dashboard-hero__lede">
+        Un punto de entrada para registrar servicios y operaciones del Pabellón. Tus accesos continúan determinados por el rol asignado en el servidor.
+      </p>
+      <hr class="sequence-rule" aria-hidden="true" style="width:min(19rem,100%);margin:1.75rem 0 0;">
 
-  <nav aria-label="Áreas de trabajo">
-    <div class="dashboard-grid">
-      {% if usuario.rol in ["biologo", "admin", "desarrollador"] %}
-      <a class="action-card action-card--deep" href="/solicitud">
-        <div class="action-card__content">
-          <p class="eyebrow">Mantenimiento</p>
-          <h2 class="action-card__title">Nueva solicitud de mantenimiento</h2>
-          <p class="action-card__description">
-            Registra una Solicitud Única de Servicios para infraestructura, equipo, seguridad y apoyos del Pabellón.
-          </p>
-        </div>
-        <span class="action-card__cta">Crear solicitud</span>
-      </a>
-      {% endif %}
-
-      {% if usuario.rol in ["seguridad", "admin", "desarrollador"] %}
-      <a class="action-card" href="/visitantes">
-        <div class="action-card__content">
-          <p class="eyebrow">Acceso</p>
-          <h2 class="action-card__title">Registrar visitantes</h2>
-          <p class="action-card__description">
-            Captura el conteo de visitantes recibidos en el Pabellón Nacional de la Biodiversidad.
-          </p>
-        </div>
-        <span class="action-card__cta">Registrar</span>
-      </a>
-      {% endif %}
+      <div class="dashboard-hero__meta" aria-label="Estado de la sesión">
+        <span class="badge badge--deep badge--dot">Sesión activa</span>
+        <span class="badge badge--deep">Rol · {{ usuario.rol }}</span>
+        <span class="badge badge--deep">Pabellón Nacional de la Biodiversidad</span>
+      </div>
     </div>
-  </nav>
+  </section>
 
-  <div class="dashboard-meta" aria-label="Estado de la sesión">
-    <span class="badge badge--ok badge--dot">Sesión activa</span>
-    <span class="badge">Rol: {{ usuario.rol }}</span>
-  </div>
+  <section class="shell dashboard-actions" aria-labelledby="acciones-titulo">
+    <div class="dashboard-actions__header">
+      <div>
+        <p class="eyebrow" style="color:var(--lime-300);margin-bottom:.35rem;">Áreas de trabajo</p>
+        <h2 id="acciones-titulo">Selecciona una tarea</h2>
+      </div>
+    </div>
+
+    <nav aria-label="Áreas de trabajo">
+      <div class="dashboard-grid">
+        {% if usuario.rol in ["biologo", "admin", "desarrollador"] %}
+        <a class="action-card action-card--deep" href="/solicitud">
+          <div>
+            <span class="action-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 5h6"></path><path d="M9 3h6a2 2 0 0 1 2 2v1h2a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2V5a2 2 0 0 1 2-2Z"></path><path d="M12 10v6"></path><path d="M9 13h6"></path>
+              </svg>
+            </span>
+            <div class="action-card__content">
+              <p class="eyebrow">Mantenimiento</p>
+              <h3 class="action-card__title">Nueva solicitud de mantenimiento</h3>
+              <p class="action-card__description">
+                Registra una Solicitud Única de Servicios para infraestructura, equipo, seguridad y apoyos del Pabellón.
+              </p>
+            </div>
+          </div>
+          <span class="action-card__cta">Crear solicitud</span>
+        </a>
+        {% endif %}
+
+        {% if usuario.rol in ["seguridad", "admin", "desarrollador"] %}
+        <a class="action-card" href="/visitantes">
+          <div>
+            <span class="action-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </span>
+            <div class="action-card__content">
+              <p class="eyebrow">Acceso</p>
+              <h3 class="action-card__title">Registrar visitantes</h3>
+              <p class="action-card__description">
+                Captura el conteo de visitantes recibidos en el Pabellón Nacional de la Biodiversidad.
+              </p>
+            </div>
+          </div>
+          <span class="action-card__cta">Registrar</span>
+        </a>
+        {% endif %}
+      </div>
+    </nav>
+  </section>
 </main>
 {% endblock %}
