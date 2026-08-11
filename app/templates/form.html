@@ -2,6 +2,10 @@
 
 {% block title %}Solicitud Única de Servicios | Pabellón Nacional de la Biodiversidad{% endblock %}
 
+{% set modo_servicio =
+  'checkbox' if modo_seleccion_servicio|default('radio') == 'checkbox' else 'radio'
+%}
+
 {% macro opciones_servicio(subcategoria) %}
   <fieldset
     class="service-fieldset"
@@ -15,11 +19,15 @@
         {% set opcion_id = subcategoria.id ~ '-' ~ opcion.valor %}
         <div class="option">
           <input
-            type="radio"
+            type="{{ modo_servicio }}"
             id="{{ opcion_id }}"
             name="{{ subcategoria.id }}"
             value="{{ opcion.valor }}"
-            required
+            data-service-option
+            {% if opcion.valor in (
+              (opciones_seleccionadas|default({})).get(subcategoria.id, []) or []
+            ) %}checked{% endif %}
+            {% if modo_servicio == 'radio' %}required{% endif %}
           >
           <label for="{{ opcion_id }}">{{ opcion.etiqueta }}</label>
         </div>
@@ -194,6 +202,43 @@
 
         <div class="form-card">
           <p class="alert alert--info">Seleccione el área solicitante para mostrar sus subcategorías y opciones de servicio.</p>
+
+          <fieldset class="selection-mode" data-selection-mode-control>
+            <legend>Modo de selección</legend>
+            <input
+              type="hidden"
+              id="modo_seleccion_servicio"
+              name="modo_seleccion_servicio"
+              value="{{ modo_servicio }}"
+              data-selection-mode-input
+            >
+            <div class="selection-mode__buttons" role="group" aria-label="Modo de selección de opciones de servicio">
+              <button
+                class="btn btn--secondary selection-mode__button"
+                type="button"
+                data-selection-mode="radio"
+                aria-pressed="{{ 'true' if modo_servicio == 'radio' else 'false' }}"
+              >
+                Selección única
+              </button>
+              <button
+                class="btn btn--secondary selection-mode__button"
+                type="button"
+                data-selection-mode="checkbox"
+                aria-pressed="{{ 'true' if modo_servicio == 'checkbox' else 'false' }}"
+              >
+                Selección múltiple
+              </button>
+            </div>
+            <small class="field-help" data-selection-mode-help aria-live="polite">
+              {% if modo_servicio == 'checkbox' %}
+                Puede seleccionar una o varias opciones.
+              {% else %}
+                Debe seleccionar exactamente una opción.
+              {% endif %}
+            </small>
+          </fieldset>
+
           {% for area in catalogo_servicios %}
             {{ area_servicio(area) }}
           {% endfor %}

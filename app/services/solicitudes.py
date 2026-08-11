@@ -20,6 +20,13 @@ AREAS_SOLICITUD_INACTIVAS = [
     "Delegación Administrativa",
 ]
 
+MODO_SELECCION_SERVICIO_RADIO = "radio"
+MODO_SELECCION_SERVICIO_CHECKBOX = "checkbox"
+MODOS_SELECCION_SERVICIO = {
+    MODO_SELECCION_SERVICIO_RADIO,
+    MODO_SELECCION_SERVICIO_CHECKBOX,
+}
+
 
 class AreaSolicitanteInvalida(ValueError):
     """Se lanza cuando el área solicitante no pertenece al catálogo permitido."""
@@ -27,6 +34,10 @@ class AreaSolicitanteInvalida(ValueError):
 
 class SubcategoriaServicioInvalida(ValueError):
     """Se lanza cuando la subcategoría no corresponde al área seleccionada."""
+
+
+class ModoSeleccionServicioInvalido(ValueError):
+    """Se lanza cuando el modo de selección no está permitido."""
 
 
 class OpcionServicioInvalida(ValueError):
@@ -41,6 +52,7 @@ def generar_folio(db: Session) -> str:
 def _normalizar_opciones_servicio(
     area_solicitante: str,
     subcategoria_servicio: Optional[str],
+    modo_seleccion_servicio: str,
     opciones_por_campo: Dict[str, Optional[List[str]]],
 ) -> Dict[str, Optional[List[str]]]:
     if area_solicitante not in AREAS_SOLICITUD_ACTIVAS:
@@ -54,8 +66,34 @@ def _normalizar_opciones_servicio(
     valores_validos = {opcion["valor"] for opcion in subcategoria["opciones"]}
     opciones_seleccionadas = opciones_por_campo.get(subcategoria_servicio) or []
 
-    if len(opciones_seleccionadas) != 1:
-        raise OpcionServicioInvalida("Seleccione exactamente una opción para la subcategoría elegida.")
+    if modo_seleccion_servicio not in MODOS_SELECCION_SERVICIO:
+        raise ModoSeleccionServicioInvalido("Modo de selección de servicio inválido.")
+
+    hay_opciones_de_otra_subcategoria = any(
+        opciones_por_campo.get(campo)
+        for campo in CAMPOS_OPCIONES_SERVICIO
+        if campo != subcategoria_servicio
+    )
+    if hay_opciones_de_otra_subcategoria:
+        raise OpcionServicioInvalida(
+            "Las opciones seleccionadas deben pertenecer a la subcategoría elegida."
+        )
+
+    if (
+        modo_seleccion_servicio == MODO_SELECCION_SERVICIO_RADIO
+        and len(opciones_seleccionadas) != 1
+    ):
+        raise OpcionServicioInvalida(
+            "Seleccione exactamente una opción para la subcategoría elegida."
+        )
+
+    if (
+        modo_seleccion_servicio == MODO_SELECCION_SERVICIO_CHECKBOX
+        and not opciones_seleccionadas
+    ):
+        raise OpcionServicioInvalida(
+            "Seleccione al menos una opción para la subcategoría elegida."
+        )
 
     if any(opcion not in valores_validos for opcion in opciones_seleccionadas):
         raise OpcionServicioInvalida("Seleccione una opción válida para la subcategoría elegida.")
@@ -75,6 +113,7 @@ def crear_solicitud(
     area_solicitante: str,
     descripcion_servicio: str,
     subcategoria_servicio: Optional[str] = None,
+    modo_seleccion_servicio: str = MODO_SELECCION_SERVICIO_RADIO,
     infraestructura: Optional[List[str]] = None,
     equipo_parque_vehicular: Optional[List[str]] = None,
     seguridad: Optional[List[str]] = None,
@@ -87,6 +126,7 @@ def crear_solicitud(
     opciones_servicio = _normalizar_opciones_servicio(
         area_solicitante,
         subcategoria_servicio,
+        modo_seleccion_servicio,
         {
             "infraestructura": infraestructura,
             "equipo_parque_vehicular": equipo_parque_vehicular,
