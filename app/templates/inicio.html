@@ -1,31 +1,71 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
-    <link rel="stylesheet" href="/static/css/museo.css">
-</head>
-<body>
-    <a class="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
-    <main id="contenido-principal" class="container">
-        <header>
-            <h1>Pabellón Nacional de la Biodiversidad</h1>
-            <p>Bienvenido, {{ usuario.nombre }}</p>
-        </header>
-        <nav aria-label="Áreas de trabajo">
-            <ul>
-                {% if usuario.rol in ["biologo", "admin", "desarrollador"] %}
-                <li><a class="button" href="/solicitud">Nueva solicitud de mantenimiento</a></li>
-                {% endif %}
-                {% if usuario.rol in ["seguridad", "admin", "desarrollador"] %}
-                <li><a class="button" href="/visitantes">Registrar visitantes</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-        <footer>
-            <a href="/logout">Cerrar sesión</a>
-        </footer>
-    </main>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Inicio | Pabellón Nacional de la Biodiversidad{% endblock %}
+
+{% block body %}
+<header class="topbar">
+  <div class="shell topbar__inner">
+    <a class="brand" href="/inicio" aria-label="Ir al inicio">
+      <span class="brand__mark" aria-hidden="true"></span>
+      <span>
+        <span class="brand__name">Pabellón Nacional<br>de la Biodiversidad</span>
+        <span class="brand__meta">UNAM · Sistema interno</span>
+      </span>
+    </a>
+
+    <div class="topbar__session">
+      <div class="topbar__identity">
+        <span class="topbar__name">{{ usuario.nombre }}</span>
+        <span class="topbar__role">{{ usuario.rol }}</span>
+      </div>
+      <a class="topbar__logout" href="/logout">Cerrar sesión</a>
+    </div>
+  </div>
+</header>
+
+<main id="contenido-principal" class="shell page-main">
+  <header class="page-header">
+    <p class="eyebrow">Inicio</p>
+    <h1 class="page-header__title">Bienvenido, {{ usuario.nombre }}.</h1>
+    <p class="page-header__lede">
+      Selecciona una tarea. Las opciones disponibles se mantienen determinadas por tu rol en el servidor.
+    </p>
+    <hr class="strata-rule" aria-hidden="true">
+  </header>
+
+  <nav aria-label="Áreas de trabajo">
+    <div class="dashboard-grid">
+      {% if usuario.rol in ["biologo", "admin", "desarrollador"] %}
+      <a class="action-card action-card--deep" href="/solicitud">
+        <div class="action-card__content">
+          <p class="eyebrow">Mantenimiento</p>
+          <h2 class="action-card__title">Nueva solicitud de mantenimiento</h2>
+          <p class="action-card__description">
+            Registra una Solicitud Única de Servicios para infraestructura, equipo, seguridad y apoyos del Pabellón.
+          </p>
+        </div>
+        <span class="action-card__cta">Crear solicitud</span>
+      </a>
+      {% endif %}
+
+      {% if usuario.rol in ["seguridad", "admin", "desarrollador"] %}
+      <a class="action-card" href="/visitantes">
+        <div class="action-card__content">
+          <p class="eyebrow">Acceso</p>
+          <h2 class="action-card__title">Registrar visitantes</h2>
+          <p class="action-card__description">
+            Captura el conteo de visitantes recibidos en el Pabellón Nacional de la Biodiversidad.
+          </p>
+        </div>
+        <span class="action-card__cta">Registrar</span>
+      </a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <div class="dashboard-meta" aria-label="Estado de la sesión">
+    <span class="badge badge--ok badge--dot">Sesión activa</span>
+    <span class="badge">Rol: {{ usuario.rol }}</span>
+  </div>
+</main>
+{% endblock %}
