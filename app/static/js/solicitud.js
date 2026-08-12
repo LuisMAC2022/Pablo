@@ -1,16 +1,14 @@
 (() => {
   const areaSelect = document.querySelector('#area_solicitante');
   const areaSections = document.querySelectorAll('[data-area-section]');
-  const selectionModeInput = document.querySelector('[data-selection-mode-input]');
-  const selectionModeButtons = document.querySelectorAll('[data-selection-mode]');
+  const selectionModeInputs = document.querySelectorAll('[data-selection-mode-input]');
   const selectionModeHelp = document.querySelector('[data-selection-mode-help]');
   const validSelectionModes = new Set(['radio', 'checkbox']);
 
   if (
     !areaSelect
     || areaSections.length === 0
-    || !selectionModeInput
-    || selectionModeButtons.length === 0
+    || selectionModeInputs.length === 0
   ) {
     return;
   }
@@ -31,6 +29,13 @@
     options.forEach((option, index) => {
       option.required = option.type === 'radio' || (index === 0 && !hasSelection);
     });
+  }
+
+  function getSelectionMode() {
+    const selectedMode = Array.from(selectionModeInputs)
+      .find((input) => input.checked)?.value;
+
+    return validSelectionModes.has(selectedMode) ? selectedMode : 'radio';
   }
 
   function setServiceOptionsMode(fieldset, mode) {
@@ -55,12 +60,6 @@
   }
 
   function updateSelectionModeControl(mode) {
-    selectionModeInput.value = mode;
-
-    selectionModeButtons.forEach((button) => {
-      button.setAttribute('aria-pressed', String(button.dataset.selectionMode === mode));
-    });
-
     if (selectionModeHelp) {
       selectionModeHelp.textContent = mode === 'checkbox'
         ? 'Puede seleccionar una o varias opciones.'
@@ -84,7 +83,7 @@
 
       setFieldsetState(fieldset, isActive);
       if (isActive) {
-        setServiceOptionsMode(fieldset, selectionModeInput.value);
+        setServiceOptionsMode(fieldset, getSelectionMode());
       }
     });
   }
@@ -110,15 +109,14 @@
 
   areaSelect.addEventListener('change', updateAreaSections);
 
-  selectionModeButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      const mode = button.dataset.selectionMode;
-      if (!validSelectionModes.has(mode)) {
+  selectionModeInputs.forEach((input) => {
+    input.addEventListener('change', () => {
+      if (!input.checked || !validSelectionModes.has(input.value)) {
         return;
       }
 
-      setServiceOptionsMode(getActiveOptionsFieldset(), mode);
-      updateSelectionModeControl(mode);
+      setServiceOptionsMode(getActiveOptionsFieldset(), input.value);
+      updateSelectionModeControl(input.value);
     });
   });
 
@@ -136,9 +134,7 @@
     });
   });
 
-  const initialMode = validSelectionModes.has(selectionModeInput.value)
-    ? selectionModeInput.value
-    : 'radio';
+  const initialMode = getSelectionMode();
   updateSelectionModeControl(initialMode);
   updateAreaSections();
 })();

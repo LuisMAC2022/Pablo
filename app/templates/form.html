@@ -205,32 +205,44 @@
 
           <fieldset class="selection-mode" data-selection-mode-control>
             <legend>Modo de selección</legend>
-            <input
-              type="hidden"
-              id="modo_seleccion_servicio"
-              name="modo_seleccion_servicio"
-              value="{{ modo_servicio }}"
-              data-selection-mode-input
-            >
-            <div class="selection-mode__buttons" role="group" aria-label="Modo de selección de opciones de servicio">
-              <button
+            <div class="selection-mode__buttons">
+              <input
+                class="selection-mode__input"
+                type="radio"
+                id="modo-seleccion-radio"
+                name="modo_seleccion_servicio"
+                value="radio"
+                data-selection-mode-input
+                aria-describedby="modo-seleccion-ayuda"
+                required
+                {% if modo_servicio == 'radio' %}checked{% endif %}
+              >
+              <label
                 class="btn btn--secondary selection-mode__button"
-                type="button"
-                data-selection-mode="radio"
-                aria-pressed="{{ 'true' if modo_servicio == 'radio' else 'false' }}"
+                for="modo-seleccion-radio"
               >
                 Selección única
-              </button>
-              <button
+              </label>
+
+              <input
+                class="selection-mode__input"
+                type="radio"
+                id="modo-seleccion-checkbox"
+                name="modo_seleccion_servicio"
+                value="checkbox"
+                data-selection-mode-input
+                aria-describedby="modo-seleccion-ayuda"
+                required
+                {% if modo_servicio == 'checkbox' %}checked{% endif %}
+              >
+              <label
                 class="btn btn--secondary selection-mode__button"
-                type="button"
-                data-selection-mode="checkbox"
-                aria-pressed="{{ 'true' if modo_servicio == 'checkbox' else 'false' }}"
+                for="modo-seleccion-checkbox"
               >
                 Selección múltiple
-              </button>
+              </label>
             </div>
-            <small class="field-help" data-selection-mode-help aria-live="polite">
+            <small id="modo-seleccion-ayuda" class="field-help" data-selection-mode-help aria-live="polite">
               {% if modo_servicio == 'checkbox' %}
                 Puede seleccionar una o varias opciones.
               {% else %}
@@ -277,5 +289,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="/static/js/solicitud.js" defer></script>
+<script src="/static/js/solicitud.js?v=2" defer></script>
 {% endblock %}

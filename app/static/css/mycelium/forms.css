@@ -151,14 +151,32 @@ fieldset { min-inline-size: 0; }
   gap: var(--space-2);
   margin-bottom: var(--space-2);
 }
-.selection-mode__button[aria-pressed="true"] {
+.selection-mode__input {
+  position: absolute;
+  width: 1px;
+  min-height: 0;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.selection-mode__button { cursor: pointer; }
+.selection-mode__input:checked + .selection-mode__button {
   border-color: var(--green-600);
   background: var(--green-600);
   color: var(--text-on-accent);
 }
-.selection-mode__button[aria-pressed="true"]:hover {
+.selection-mode__input:checked + .selection-mode__button:hover {
   background: var(--green-700);
   color: var(--text-on-accent);
+}
+.selection-mode__input:focus-visible + .selection-mode__button {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .option-grid {
