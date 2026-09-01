@@ -17,6 +17,9 @@ from app.services.plantilla_solicitud import (
 )
 from app.services.solicitudes import (
     AreaSolicitanteInvalida,
+    MODO_SELECCION_SERVICIO_RADIO,
+    MODOS_SELECCION_SERVICIO,
+    ModoSeleccionServicioInvalido,
     OpcionServicioInvalida,
     SubcategoriaServicioInvalida,
     crear_solicitud,
@@ -47,6 +50,12 @@ def cargar_personas_autocomplete() -> list[dict[str, str]]:
 
 def contexto_formulario(usuario: dict, **valores) -> dict:
     puede_editar = puede_editar_datos_solicitante(usuario)
+    modo_seleccion_servicio = valores.get(
+        "modo_seleccion_servicio", MODO_SELECCION_SERVICIO_RADIO
+    )
+    if modo_seleccion_servicio not in MODOS_SELECCION_SERVICIO:
+        modo_seleccion_servicio = MODO_SELECCION_SERVICIO_RADIO
+
     return {
         "areas": AREAS_SOLICITUD_ACTIVAS,
         "catalogo_servicios": CATALOGO_SERVICIOS,
@@ -55,6 +64,8 @@ def contexto_formulario(usuario: dict, **valores) -> dict:
         "telefono": valores.get("telefono", TELEFONO_JEFE_MANTENIMIENTO),
         "area_solicitante": valores.get("area_solicitante", ""),
         "subcategoria_servicio": valores.get("subcategoria_servicio", ""),
+        "modo_seleccion_servicio": modo_seleccion_servicio,
+        "opciones_seleccionadas": valores.get("opciones_seleccionadas", {}),
         "descripcion_servicio": valores.get("descripcion_servicio", ""),
         "personas_autocomplete": cargar_personas_autocomplete(),
         "puede_editar_datos_solicitante": puede_editar,
@@ -110,6 +121,7 @@ async def recibir_formulario(
     telefono: str = Form(TELEFONO_JEFE_MANTENIMIENTO),
     descripcion_servicio: str = Form(...),
     subcategoria_servicio: Optional[str] = Form(None),
+    modo_seleccion_servicio: str = Form(...),
     infraestructura: Optional[List[str]] = Form(None),
     equipo_parque_vehicular: Optional[List[str]] = Form(None),
     seguridad: Optional[List[str]] = Form(None),
@@ -132,6 +144,17 @@ async def recibir_formulario(
         nombre_usuario = str(usuario.get("nombre", "")).strip()
         responsable_area_solicitante = responsable_area_solicitante or nombre_usuario
 
+    opciones_por_campo = {
+        "infraestructura": infraestructura,
+        "equipo_parque_vehicular": equipo_parque_vehicular,
+        "seguridad": seguridad,
+        "transporte": transporte,
+        "diversos_limpieza": diversos_limpieza,
+        "prestamo_de": prestamo_de,
+        "correspondencia_paqueteria": correspondencia_paqueteria,
+        "reproduccion_engargolado": reproduccion_engargolado,
+    }
+
     try:
         solicitud = crear_solicitud(
             db,
@@ -141,16 +164,15 @@ async def recibir_formulario(
             area_solicitante=area_solicitante,
             descripcion_servicio=descripcion_servicio,
             subcategoria_servicio=subcategoria_servicio,
-            infraestructura=infraestructura,
-            equipo_parque_vehicular=equipo_parque_vehicular,
-            seguridad=seguridad,
-            transporte=transporte,
-            diversos_limpieza=diversos_limpieza,
-            prestamo_de=prestamo_de,
-            correspondencia_paqueteria=correspondencia_paqueteria,
-            reproduccion_engargolado=reproduccion_engargolado,
+            modo_seleccion_servicio=modo_seleccion_servicio,
+            **opciones_por_campo,
         )
-    except (AreaSolicitanteInvalida, SubcategoriaServicioInvalida, OpcionServicioInvalida) as exc:
+    except (
+        AreaSolicitanteInvalida,
+        SubcategoriaServicioInvalida,
+        ModoSeleccionServicioInvalido,
+        OpcionServicioInvalida,
+    ) as exc:
         return templates.TemplateResponse(
             request=request,
             name="form.html",
@@ -162,6 +184,8 @@ async def recibir_formulario(
                     telefono=telefono,
                     area_solicitante=area_solicitante,
                     subcategoria_servicio=subcategoria_servicio,
+                    modo_seleccion_servicio=modo_seleccion_servicio,
+                    opciones_seleccionadas=opciones_por_campo,
                     descripcion_servicio=descripcion_servicio,
                 ),
                 "error": str(exc),
