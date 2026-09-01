@@ -2,6 +2,10 @@
 
 {% block title %}Solicitud Única de Servicios | Pabellón Nacional de la Biodiversidad{% endblock %}
 
+{% set modo_servicio =
+  'checkbox' if modo_seleccion_servicio|default('radio') == 'checkbox' else 'radio'
+%}
+
 {% macro opciones_servicio(subcategoria) %}
   <fieldset
     class="service-fieldset"
@@ -15,11 +19,15 @@
         {% set opcion_id = subcategoria.id ~ '-' ~ opcion.valor %}
         <div class="option">
           <input
-            type="radio"
+            type="{{ modo_servicio }}"
             id="{{ opcion_id }}"
             name="{{ subcategoria.id }}"
             value="{{ opcion.valor }}"
-            required
+            data-service-option
+            {% if opcion.valor in (
+              (opciones_seleccionadas|default({})).get(subcategoria.id, []) or []
+            ) %}checked{% endif %}
+            {% if modo_servicio == 'radio' %}required{% endif %}
           >
           <label for="{{ opcion_id }}">{{ opcion.etiqueta }}</label>
         </div>
@@ -117,27 +125,6 @@
 
           <div class="form-grid">
             <div class="field">
-              <label for="nombre_usuario">Nombre del usuario</label>
-              <input
-                type="text"
-                id="nombre_usuario"
-                name="nombre_usuario"
-                value="{{ nombre_usuario }}"
-                list="personas-autocomplete"
-                required
-                {% if not puede_editar_datos_solicitante %}readonly{% endif %}
-                aria-describedby="nombre-usuario-ayuda"
-              >
-              <small id="nombre-usuario-ayuda" class="field-help">
-                {% if puede_editar_datos_solicitante %}
-                  Escriba el nombre y seleccione una sugerencia si aparece.
-                {% else %}
-                  Este dato se toma de su sesión.
-                {% endif %}
-              </small>
-            </div>
-
-            <div class="field">
               <label for="responsable_area_solicitante">Responsable del área solicitante</label>
               <input
                 type="text"
@@ -154,6 +141,27 @@
                   Escriba el nombre del responsable y seleccione una sugerencia si aparece.
                 {% else %}
                   Este dato se valida con la política del servidor.
+                {% endif %}
+              </small>
+            </div>
+
+            <div class="field">
+              <label for="nombre_usuario">Nombre del usuario</label>
+              <input
+                type="text"
+                id="nombre_usuario"
+                name="nombre_usuario"
+                value="{{ nombre_usuario }}"
+                list="personas-autocomplete"
+                required
+                {% if not puede_editar_datos_solicitante %}readonly{% endif %}
+                aria-describedby="nombre-usuario-ayuda"
+              >
+              <small id="nombre-usuario-ayuda" class="field-help">
+                {% if puede_editar_datos_solicitante %}
+                  Escriba el nombre y seleccione una sugerencia si aparece.
+                {% else %}
+                  Este dato se toma de su sesión.
                 {% endif %}
               </small>
             </div>
@@ -194,6 +202,55 @@
 
         <div class="form-card">
           <p class="alert alert--info">Seleccione el área solicitante para mostrar sus subcategorías y opciones de servicio.</p>
+
+          <fieldset class="selection-mode" data-selection-mode-control>
+            <legend>Modo de selección</legend>
+            <div class="selection-mode__buttons">
+              <input
+                class="selection-mode__input"
+                type="radio"
+                id="modo-seleccion-radio"
+                name="modo_seleccion_servicio"
+                value="radio"
+                data-selection-mode-input
+                aria-describedby="modo-seleccion-ayuda"
+                required
+                {% if modo_servicio == 'radio' %}checked{% endif %}
+              >
+              <label
+                class="btn btn--secondary selection-mode__button"
+                for="modo-seleccion-radio"
+              >
+                Selección única
+              </label>
+
+              <input
+                class="selection-mode__input"
+                type="radio"
+                id="modo-seleccion-checkbox"
+                name="modo_seleccion_servicio"
+                value="checkbox"
+                data-selection-mode-input
+                aria-describedby="modo-seleccion-ayuda"
+                required
+                {% if modo_servicio == 'checkbox' %}checked{% endif %}
+              >
+              <label
+                class="btn btn--secondary selection-mode__button"
+                for="modo-seleccion-checkbox"
+              >
+                Selección múltiple
+              </label>
+            </div>
+            <small id="modo-seleccion-ayuda" class="field-help" data-selection-mode-help aria-live="polite">
+              {% if modo_servicio == 'checkbox' %}
+                Puede seleccionar una o varias opciones.
+              {% else %}
+                Debe seleccionar exactamente una opción.
+              {% endif %}
+            </small>
+          </fieldset>
+
           {% for area in catalogo_servicios %}
             {{ area_servicio(area) }}
           {% endfor %}
@@ -232,5 +289,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="/static/js/solicitud.js" defer></script>
+<script src="/static/js/solicitud.js?v=2" defer></script>
 {% endblock %}

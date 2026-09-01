@@ -133,6 +133,52 @@ fieldset { min-inline-size: 0; }
   font-size: var(--text-h4);
 }
 
+.selection-mode {
+  margin: 0 0 var(--space-5);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+.selection-mode > legend {
+  padding-inline: var(--space-2);
+  color: var(--text-strong);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-bold);
+}
+.selection-mode__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+.selection-mode__input {
+  position: absolute;
+  width: 1px;
+  min-height: 0;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.selection-mode__button { cursor: pointer; }
+.selection-mode__input:checked + .selection-mode__button {
+  border-color: var(--green-600);
+  background: var(--green-600);
+  color: var(--text-on-accent);
+}
+.selection-mode__input:checked + .selection-mode__button:hover {
+  background: var(--green-700);
+  color: var(--text-on-accent);
+}
+.selection-mode__input:focus-visible + .selection-mode__button {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
 .option-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -203,4 +249,5 @@ fieldset { min-inline-size: 0; }
 
 @media (max-width: 40rem) {
   .option-grid { grid-template-columns: 1fr; }
+  .selection-mode__buttons { align-items: stretch; flex-direction: column; }
 }
